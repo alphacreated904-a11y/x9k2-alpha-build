@@ -39,18 +39,18 @@ const PESTS: FilterOption[] = [
 ];
 
 const ALL_PRODUCTS = [
-  { name: "Organic Harvest Box", price: "$42", image: vegImage, tag: "Bestseller", priceNum: 42 },
-  { name: "Seasonal Fruit Crate", price: "$38", image: fruitImage, tag: "New", priceNum: 38 },
-  { name: "Raw Wildflower Honey", price: "$18", image: honeyImage, priceNum: 18 },
-  { name: "Artisan Sourdough", price: "$12", image: breadImage, priceNum: 12 },
-  { name: "Heirloom Tomatoes", price: "$8", image: vegImage, priceNum: 8 },
-  { name: "Mixed Berry Basket", price: "$24", image: fruitImage, priceNum: 24 },
-  { name: "Pure Maple Syrup", price: "$16", image: honeyImage, priceNum: 16 },
-  { name: "Rustic Rye Bread", price: "$10", image: breadImage, priceNum: 10 },
-  { name: "Baby Spinach Pack", price: "$6", image: vegImage, tag: "Organic", priceNum: 6 },
-  { name: "Citrus Variety Box", price: "$32", image: fruitImage, priceNum: 32 },
-  { name: "Creamed Honey", price: "$22", image: honeyImage, priceNum: 22 },
-  { name: "Multigrain Loaf", price: "$14", image: breadImage, priceNum: 14 },
+  { id: "1", name: "Organic Harvest Box", price: "$42", image: vegImage, tag: "Bestseller", priceNum: 42 },
+  { id: "2", name: "Seasonal Fruit Crate", price: "$38", image: fruitImage, tag: "New", priceNum: 38 },
+  { id: "3", name: "Raw Wildflower Honey", price: "$18", image: honeyImage, priceNum: 18 },
+  { id: "4", name: "Artisan Sourdough", price: "$12", image: breadImage, priceNum: 12 },
+  { id: "5", name: "Heirloom Tomatoes", price: "$8", image: vegImage, priceNum: 8 },
+  { id: "6", name: "Mixed Berry Basket", price: "$24", image: fruitImage, priceNum: 24 },
+  { id: "7", name: "Pure Maple Syrup", price: "$16", image: honeyImage, priceNum: 16 },
+  { id: "8", name: "Rustic Rye Bread", price: "$10", image: breadImage, priceNum: 10 },
+  { id: "9", name: "Baby Spinach Pack", price: "$6", image: vegImage, tag: "Organic", priceNum: 6 },
+  { id: "10", name: "Citrus Variety Box", price: "$32", image: fruitImage, priceNum: 32 },
+  { id: "11", name: "Creamed Honey", price: "$22", image: honeyImage, priceNum: 22 },
+  { id: "12", name: "Multigrain Loaf", price: "$14", image: breadImage, priceNum: 14 },
 ];
 
 const Collection = () => {
