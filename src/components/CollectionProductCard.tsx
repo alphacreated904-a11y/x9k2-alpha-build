@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import {
@@ -9,20 +9,39 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+interface UnitOption {
+  label: string;
+  price: number;
+}
+
 interface CollectionProductCardProps {
   id: string;
   name: string;
-  price: string;
+  basePrice: number;
   image: string;
   tag?: string;
-  units?: string[];
-  onAddToCart?: (unit: string) => void;
+  units?: UnitOption[];
+  onAddToCart?: (unit: string, price: number) => void;
 }
 
+const DEFAULT_UNITS: UnitOption[] = [
+  { label: "1 kg", price: 1 },
+  { label: "500 g", price: 0.55 },
+  { label: "250 g", price: 0.3 },
+];
+
 const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
-  id, name, price, image, tag, units = ["1 kg", "500 g", "250 g"], onAddToCart,
+  id, name, basePrice, image, tag, units = DEFAULT_UNITS, onAddToCart,
 }) => {
-  const [selectedUnit, setSelectedUnit] = useState(units[0]);
+  const [selectedUnit, setSelectedUnit] = useState(units[0].label);
+
+  const currentUnit = useMemo(() => 
+    units.find(u => u.label === selectedUnit) || units[0],
+  [units, selectedUnit]);
+
+  const currentPrice = useMemo(() => 
+    (basePrice * currentUnit.price).toFixed(2),
+  [basePrice, currentUnit]);
 
   return (
     <div className="group card-hover rounded-2xl bg-card overflow-hidden border-0">
@@ -42,24 +61,27 @@ const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
         </div>
         <div className="p-4 pb-0">
           <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
-          <div className="flex items-baseline gap-1 mt-2">
-            <span className="text-lg font-bold text-primary">{price}</span>
-          </div>
         </div>
       </Link>
       <div className="p-4 pt-3 space-y-3">
+        <div className="flex items-baseline gap-1">
+          <span className="text-lg font-bold text-primary">${currentPrice}</span>
+          <span className="text-xs text-muted-foreground">/ {selectedUnit}</span>
+        </div>
         <Select value={selectedUnit} onValueChange={setSelectedUnit}>
           <SelectTrigger className="h-9 text-xs rounded-lg border-border/60 min-h-0">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {units.map((u) => (
-              <SelectItem key={u} value={u} className="text-xs">{u}</SelectItem>
+              <SelectItem key={u.label} value={u.label} className="text-xs">
+                {u.label} — ${(basePrice * u.price).toFixed(2)}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <AddToCartButton
-          onAddToCart={() => onAddToCart?.(selectedUnit)}
+          onAddToCart={() => onAddToCart?.(selectedUnit, parseFloat(currentPrice))}
           label="Add to Cart"
           addedLabel="Added!"
           variant="default"
