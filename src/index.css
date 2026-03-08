@@ -120,11 +120,7 @@
     @apply bg-background text-foreground;
   }
 
-  /* Touch-friendly: minimum 44px tap targets */
-  button, a, [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
+  /* Touch-friendly tap targets — applied only to primary interactive elements via utility class */
 }
 
 @layer components {

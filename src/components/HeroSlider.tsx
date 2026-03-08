@@ -64,7 +64,7 @@ const HeroSlider: React.FC = () => {
             <img
               src={slide.image}
               alt={slide.title[language]}
-              className="h-[420px] md:h-[520px] w-full object-cover"
+              className="h-[320px] sm:h-[420px] md:h-[520px] w-full object-cover"
               loading={i === 0 ? "eager" : "lazy"}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
