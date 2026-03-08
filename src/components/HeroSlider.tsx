@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
-import heroImage from "@/assets/hero-farm.jpg";
-import vegImage from "@/assets/product-vegetables.jpg";
-import fruitImage from "@/assets/product-fruits.jpg";
+import heroImage from "@/assets/hero-farm.webp";
+import vegImage from "@/assets/product-vegetables.webp";
+import fruitImage from "@/assets/product-fruits.webp";
 
 const SLIDES = [
   {

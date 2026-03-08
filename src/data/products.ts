@@ -1,7 +1,7 @@
-import vegImage from "@/assets/product-vegetables.jpg";
-import fruitImage from "@/assets/product-fruits.jpg";
-import honeyImage from "@/assets/product-honey.jpg";
-import breadImage from "@/assets/product-bread.jpg";
+import vegImage from "@/assets/product-vegetables.webp";
+import fruitImage from "@/assets/product-fruits.webp";
+import honeyImage from "@/assets/product-honey.webp";
+import breadImage from "@/assets/product-bread.webp";
 
 export interface UnitOption {
   label: string;
