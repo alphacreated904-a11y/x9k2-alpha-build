@@ -94,7 +94,7 @@ const Checkout: React.FC = () => {
     );
   }
 
-  const shipping = totalPrice > 500 ? 0 : 50;
+  const shipping = totalPrice > 999 ? 0 : 99;
   const grandTotal = totalPrice + shipping;
 
   return (
