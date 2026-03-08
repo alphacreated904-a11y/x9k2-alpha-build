@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <Leaf className="size-7 text-primary" />
+          <img src={logoImg} alt="AgriMart" className="size-9 object-contain" />
           <span className="text-xl font-bold text-foreground tracking-tight">AgriMart</span>
         </Link>
 
