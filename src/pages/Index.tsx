@@ -115,10 +115,10 @@ const Index = () => {
       <footer className="border-t border-border py-10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logoImg} alt="AgriMart" className="size-8 object-contain" />
-            <span className="font-semibold text-foreground">AgriMart</span>
+            <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
+            <span className="font-semibold text-foreground">AbhiAgri</span>
           </Link>
-          <p className="text-sm text-muted-foreground">© 2026 AgriMart. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">© 2026 AbhiAgri. All rights reserved.</p>
         </div>
       </footer>
     </div>

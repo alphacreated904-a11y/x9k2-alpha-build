@@ -99,8 +99,8 @@ const Navbar: React.FC = () => {
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <img src={logoImg} alt="AgriMart" className="size-9 object-contain" />
-          <span className="text-xl font-bold text-foreground tracking-tight">AgriMart</span>
+          <img src={logoImg} alt="AbhiAgri" className="size-9 object-contain" />
+          <span className="text-xl font-bold text-foreground tracking-tight">AbhiAgri</span>
         </Link>
 
         {/* Desktop Mega-Menu */}
