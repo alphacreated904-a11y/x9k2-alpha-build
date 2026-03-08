@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Leaf, Search, ShoppingCart, User, Sprout, Shield, Beaker, Wrench, Menu } from "lucide-react";
+import { Search, ShoppingCart, User, Sprout, Shield, Beaker, Wrench, Menu } from "lucide-react";
+import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
