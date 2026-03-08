@@ -45,7 +45,7 @@ const WishlistDrawer: React.FC = () => {
               <p className="text-sm text-muted-foreground mt-1">{t("wishlist.browse")}</p>
             </div>
             <Button variant="default" onClick={closeWishlist} asChild>
-              <Link to="/collection">{t("cart.shop_now")}</Link>
+              <Link to={lp("/collection")}>{t("cart.shop_now")}</Link>
             </Button>
           </div>
         ) : (
