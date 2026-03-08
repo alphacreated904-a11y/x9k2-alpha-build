@@ -52,8 +52,36 @@ const ProductDetail = () => {
     toast.success(`${quantity}x ${product.name} (${selectedUnit}) added to cart`);
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${window.location.origin}/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": category?.name || "Products",
+        "item": `${window.location.origin}/collection?cat=${product.category}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <TopBar />
       <Navbar />
 

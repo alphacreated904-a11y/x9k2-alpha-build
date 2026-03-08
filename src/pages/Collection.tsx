@@ -133,8 +133,30 @@ const Collection = () => {
     />
   );
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${window.location.origin}/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": pageTitle
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <TopBar />
       <Navbar />
 
