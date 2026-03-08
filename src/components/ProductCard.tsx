@@ -13,8 +13,8 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ name, price, unit, image, tag, onAddToCart }) => {
   return (
-    <div className="group card-hover rounded-xl bg-card border-0 overflow-hidden">
-      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+    <div className="group card-hover rounded-2xl bg-card overflow-hidden border-0">
+      <div className="relative aspect-square overflow-hidden bg-secondary">
         <img
           src={image}
           alt={name}
@@ -27,18 +27,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ name, price, unit, image, tag
           </span>
         )}
       </div>
-      <div className="p-5 space-y-3">
-        <h3 className="text-lg font-semibold text-foreground leading-tight">{name}</h3>
-        <div className="flex items-baseline gap-1">
-          <span className="text-xl font-bold text-primary">{price}</span>
-          <span className="text-sm text-muted-foreground">/ {unit}</span>
+      <div className="p-4 space-y-2.5">
+        <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
+        <div className="flex items-center justify-between">
+          <div className="flex items-baseline gap-1">
+            <span className="text-lg font-bold text-primary">{price}</span>
+            <span className="text-xs text-muted-foreground">/ {unit}</span>
+          </div>
+          <AddToCartButton
+            onAddToCart={onAddToCart}
+            label="Add"
+            addedLabel="✓"
+            variant="default"
+            size="sm"
+            className="rounded-full h-9 px-4 min-h-0"
+          />
         </div>
-        <AddToCartButton
-          onAddToCart={onAddToCart}
-          variant="default"
-          size="default"
-          className="w-full"
-        />
       </div>
     </div>
   );
