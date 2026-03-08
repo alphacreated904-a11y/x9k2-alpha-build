@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { SlidersHorizontal, Leaf } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { SlidersHorizontal, Leaf, Clock } from "lucide-react";
+import { useSearchParams, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { FilterSidebar, type FilterOption } from "@/components/FilterSidebar";
