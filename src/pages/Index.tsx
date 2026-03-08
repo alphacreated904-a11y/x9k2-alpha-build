@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Leaf, Sprout, Shield, Beaker, Wrench, ArrowRight } from "lucide-react";
+import { Sprout, Shield, Beaker, Wrench, ArrowRight } from "lucide-react";
+import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { TopBar } from "@/components/TopBar";
