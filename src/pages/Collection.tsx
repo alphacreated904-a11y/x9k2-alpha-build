@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { SlidersHorizontal, Clock } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
+import logo from "@/assets/logo.webp";
 import { Footer } from "@/components/Footer";
 import { useSearchParams, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
