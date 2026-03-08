@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Sprout, Shield, Beaker, Wrench, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
