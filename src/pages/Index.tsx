@@ -112,16 +112,16 @@ const Index = () => {
       </section>
 
       {/* CTA Banner */}
-      <section className="container py-16 md:py-20">
-        <div className="rounded-2xl bg-primary p-10 md:p-16 text-center space-y-6">
-          <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground tracking-tight">
+      <section className="container py-10 sm:py-16 md:py-20 px-4 sm:px-6">
+        <div className="rounded-2xl bg-primary p-6 sm:p-10 md:p-16 text-center space-y-4 sm:space-y-6">
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-primary-foreground tracking-tight">
             {t("index.cta_title")}
           </h2>
-          <p className="text-primary-foreground/80 max-w-lg mx-auto text-base md:text-lg">
+          <p className="text-primary-foreground/80 max-w-lg mx-auto text-sm sm:text-base md:text-lg">
             {t("index.cta_subtitle")}
           </p>
-          <Button variant="accent" size="xl" asChild>
-            <Link to={lp("/collection")}>{t("index.start_shopping")} <ArrowRight className="size-5" /></Link>
+          <Button variant="accent" size="lg" className="sm:!h-14 sm:!px-10 sm:!text-lg sm:!rounded-xl" asChild>
+            <Link to={lp("/collection")}>{t("index.start_shopping")} <ArrowRight className="size-4 sm:size-5" /></Link>
           </Button>
         </div>
       </section>

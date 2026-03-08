@@ -84,9 +84,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </div>
       </Link>
-      <div className="p-4 pt-2 space-y-2.5">
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-bold text-primary">{formatINR(currentPrice)}</span>
+      <div className="p-3 sm:p-4 pt-2 space-y-2">
+        <div className="flex items-baseline gap-1.5 sm:gap-2">
+          <span className="text-base sm:text-lg font-bold text-primary">{formatINR(currentPrice)}</span>
           {discount > 0 && (
             <span className="text-xs text-muted-foreground line-through">{formatINR(currentOriginal)}</span>
           )}
