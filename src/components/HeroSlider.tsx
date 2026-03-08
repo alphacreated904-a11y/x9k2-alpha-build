@@ -64,25 +64,25 @@ const HeroSlider: React.FC = () => {
             <img
               src={slide.image}
               alt={slide.title[language]}
-              className="h-[420px] md:h-[520px] w-full object-cover"
+              className="h-[320px] sm:h-[420px] md:h-[520px] w-full object-cover"
               loading={i === 0 ? "eager" : "lazy"}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
             <div className="absolute inset-0 flex items-center">
-              <div className="container">
-                <div className="max-w-xl space-y-5">
-                  <span className="inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
+                <div className="container px-5 sm:px-6">
+                <div className="max-w-xl space-y-3 sm:space-y-5">
+                  <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs sm:text-sm font-semibold text-accent-foreground">
                     {slide.badge[language]}
                   </span>
-                  <h1 className="text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
                     {slide.title[language]}
                   </h1>
-                  <p className="text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
+                  <p className="text-xs sm:text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
                     {slide.subtitle[language]}
                   </p>
-                  <Button variant="accent" size="xl" className="mt-2" asChild>
+                  <Button variant="accent" size="lg" className="mt-2 sm:!h-14 sm:!px-10 sm:!text-lg sm:!rounded-xl" asChild>
                     <Link to={lp(slide.href)}>
-                      {slide.cta[language]} <ArrowRight className="size-5" />
+                      {slide.cta[language]} <ArrowRight className="size-4 sm:size-5" />
                     </Link>
                   </Button>
                 </div>

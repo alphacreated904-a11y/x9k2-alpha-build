@@ -59,8 +59,8 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[hsl(150,10%,12%)] text-[hsl(40,20%,85%)]">
-      <div className="container py-14 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+      <div className="container px-4 sm:px-6 py-10 sm:py-14 md:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-8">
 
           {/* Column 1 — Brand & About */}
           <div className="lg:col-span-1">
@@ -196,7 +196,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="border-t border-[hsl(150,8%,18%)]">
-        <div className="container flex flex-col sm:flex-row items-center justify-between gap-3 py-5">
+        <div className="container px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 py-5">
           <p className="text-xs text-[hsl(40,10%,45%)]">
             © 2026 AbhiAgri Pvt Ltd. All rights reserved.
           </p>

@@ -70,9 +70,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           )}
         </div>
-        <div className="p-4 pb-1">
-          <p className="text-[11px] font-medium text-primary uppercase tracking-wide mb-1">{brand}</p>
-          <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
+        <div className="p-3 sm:p-4 pb-1">
+          <p className="text-[10px] sm:text-[11px] font-medium text-primary uppercase tracking-wide mb-0.5 sm:mb-1">{brand}</p>
+          <h3 className="text-xs sm:text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
           <div className="flex items-center gap-1 mt-2">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -84,9 +84,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </div>
       </Link>
-      <div className="p-4 pt-2 space-y-2.5">
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-bold text-primary">{formatINR(currentPrice)}</span>
+      <div className="p-3 sm:p-4 pt-2 space-y-2">
+        <div className="flex items-baseline gap-1.5 sm:gap-2">
+          <span className="text-base sm:text-lg font-bold text-primary">{formatINR(currentPrice)}</span>
           {discount > 0 && (
             <span className="text-xs text-muted-foreground line-through">{formatINR(currentOriginal)}</span>
           )}
