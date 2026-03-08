@@ -64,7 +64,7 @@ const Index = () => {
               to={lp(`/collection?cat=${cat.id}`)}
               className="card-hover flex flex-col items-center gap-2 sm:gap-3 rounded-2xl bg-card p-4 sm:p-6 md:p-8 text-center transition-all duration-200 hover:bg-secondary/50 border-0"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <div className="flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 {CATEGORY_ICONS[cat.id]}
               </div>
               <span className="font-semibold text-foreground text-sm">
