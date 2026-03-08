@@ -115,8 +115,8 @@ const Collection = () => {
       });
   }, [priceRange, sortBy]);
 
-  const handleAddToCart = (name: string, unit: string) => {
-    toast.success(`${name} (${unit}) added to cart`);
+  const handleAddToCart = (name: string, unit: string, price: number) => {
+    toast.success(`${name} (${unit}) — $${price.toFixed(2)} added to cart`);
   };
 
   const filterSidebarContent = (
