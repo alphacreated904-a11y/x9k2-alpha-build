@@ -8,6 +8,7 @@ import { WishlistProvider } from "@/contexts/WishlistContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartDrawer } from "@/components/CartDrawer";
 import { WishlistDrawer } from "@/components/WishlistDrawer";
+import { FloatingContact } from "@/components/FloatingContact";
 import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
@@ -29,6 +30,7 @@ const App = () => (
               <Sonner />
               <CartDrawer />
               <WishlistDrawer />
+              <FloatingContact />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/collection" element={<Collection />} />
