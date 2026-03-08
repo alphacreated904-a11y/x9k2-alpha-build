@@ -24,11 +24,11 @@ const App = () => (
       <LanguageProvider>
         <CartProvider>
           <WishlistProvider>
-            <Toaster />
-            <Sonner />
-            <CartDrawer />
-            <WishlistDrawer />
             <BrowserRouter>
+              <Toaster />
+              <Sonner />
+              <CartDrawer />
+              <WishlistDrawer />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/collection" element={<Collection />} />
