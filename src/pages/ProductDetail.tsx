@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star } from "lucide-react";
 import logoImg from "@/assets/logo.webp";
+import { Footer } from "@/components/Footer";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { ProductGallery } from "@/components/ProductGallery";
