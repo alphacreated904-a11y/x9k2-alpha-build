@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import { formatINR } from "@/contexts/CartContext";
 
 interface FilterSectionProps {
   title: string;
@@ -44,6 +45,7 @@ interface FilterSidebarProps {
   pests: FilterOption[];
   selectedPests: string[];
   onPestToggle: (id: string) => void;
+  maxPrice?: number;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -51,6 +53,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   brands, selectedBrands, onBrandToggle,
   cropTypes, selectedCropTypes, onCropTypeToggle,
   pests, selectedPests, onPestToggle,
+  maxPrice = 5000,
 }) => {
   return (
     <aside className="w-full space-y-0">
@@ -59,15 +62,15 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <FilterSection title="Price Range">
         <Slider
           min={0}
-          max={200}
-          step={5}
+          max={maxPrice}
+          step={50}
           value={priceRange}
           onValueChange={(v) => onPriceChange(v as [number, number])}
           className="py-2"
         />
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>${priceRange[0]}</span>
-          <span>${priceRange[1]}</span>
+          <span>{formatINR(priceRange[0])}</span>
+          <span>{formatINR(priceRange[1])}</span>
         </div>
       </FilterSection>
 
