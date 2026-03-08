@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 import heroImage from "@/assets/hero-farm.jpg";
 import vegImage from "@/assets/product-vegetables.jpg";
@@ -10,24 +11,27 @@ import fruitImage from "@/assets/product-fruits.jpg";
 const SLIDES = [
   {
     image: heroImage,
-    badge: "Farm to Table",
-    title: "Fresh from the field, straight to you.",
-    subtitle: "Premium organic produce sourced directly from local farmers. No middlemen, no compromises.",
-    cta: "Browse Marketplace",
+    badge: "Kharif Season Sale",
+    title: "Premium Seeds & Crop Care – Delivered to Your Farm",
+    subtitle: "Shop 10,000+ agriculture products from trusted brands like Syngenta, Bayer & UPL. Fast pan-India delivery.",
+    cta: "Shop Now",
+    href: "/collection",
   },
   {
     image: vegImage,
-    badge: "Seasonal Picks",
-    title: "This week's harvest is here.",
-    subtitle: "Hand-picked vegetables from farms within 50 miles. Delivered fresh to your door.",
-    cta: "Shop Vegetables",
+    badge: "New Arrivals",
+    title: "Hybrid Seeds with 20% Higher Yield Guarantee",
+    subtitle: "BG-II Cotton, Basmati Paddy, NS Chilli — certified quality seeds at the best prices.",
+    cta: "Browse Seeds",
+    href: "/collection?cat=seeds",
   },
   {
     image: fruitImage,
-    badge: "New Arrivals",
-    title: "Sun-ripened fruits, peak flavor.",
-    subtitle: "Organic berries, citrus, and stone fruits — sourced at the perfect moment.",
-    cta: "Shop Fruits",
+    badge: "Crop Protection",
+    title: "Protect Your Crops. Maximize Returns.",
+    subtitle: "Confidor, Dithane M-45 & more — insecticides and fungicides from India's top manufacturers.",
+    cta: "Shop Crop Protection",
+    href: "/collection?cat=crop-protection",
   },
 ];
 
@@ -44,7 +48,6 @@ const HeroSlider: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Slides */}
       {SLIDES.map((slide, i) => (
         <div
           key={i}
@@ -57,23 +60,26 @@ const HeroSlider: React.FC = () => {
             <img
               src={slide.image}
               alt={slide.title}
-              className="h-[480px] md:h-[560px] w-full object-cover"
+              className="h-[420px] md:h-[520px] w-full object-cover"
+              loading={i === 0 ? "eager" : "lazy"}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
             <div className="absolute inset-0 flex items-center">
               <div className="container">
-                <div className="max-w-lg space-y-5">
+                <div className="max-w-xl space-y-5">
                   <span className="inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
                     {slide.badge}
                   </span>
                   <h1 className="text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
                     {slide.title}
                   </h1>
-                  <p className="text-base md:text-lg text-primary-foreground/80 leading-relaxed">
+                  <p className="text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
                     {slide.subtitle}
                   </p>
-                  <Button variant="accent" size="xl" className="mt-2">
-                    {slide.cta} <ArrowRight className="size-5" />
+                  <Button variant="accent" size="xl" className="mt-2" asChild>
+                    <Link to={slide.href}>
+                      {slide.cta} <ArrowRight className="size-5" />
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -82,7 +88,6 @@ const HeroSlider: React.FC = () => {
         </div>
       ))}
 
-      {/* Navigation Arrows */}
       <button
         onClick={prev}
         className="absolute left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-background/20 backdrop-blur-sm text-primary-foreground hover:bg-background/40 transition-colors min-h-0 min-w-0"
@@ -98,7 +103,6 @@ const HeroSlider: React.FC = () => {
         <ChevronRight className="size-5" />
       </button>
 
-      {/* Dots */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
         {SLIDES.map((_, i) => (
           <button

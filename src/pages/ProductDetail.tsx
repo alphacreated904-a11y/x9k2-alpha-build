@@ -1,103 +1,54 @@
-import React, { useState } from "react";
-import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { useParams, Link } from "react-router-dom";
+import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star, Leaf } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { ProductGallery } from "@/components/ProductGallery";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useCart, formatINR } from "@/contexts/CartContext";
+import { ALL_PRODUCTS, CATEGORIES } from "@/data/products";
 import { toast } from "sonner";
 
-import vegImage from "@/assets/product-vegetables.jpg";
-import fruitImage from "@/assets/product-fruits.jpg";
-import honeyImage from "@/assets/product-honey.jpg";
-import breadImage from "@/assets/product-bread.jpg";
-
-// Mock product data
-const PRODUCT = {
-  id: "1",
-  name: "Organic Harvest Box – Premium Selection",
-  brand: "Green Acres Farm",
-  sku: "GAF-VEG-001",
-  originalPrice: 4650,
-  price: 3500,
-  unit: "box",
-  rating: 4.8,
-  reviewCount: 124,
-  images: [vegImage, fruitImage, honeyImage, breadImage],
-  description: `
-    <p>Experience the finest organic vegetables, hand-picked at peak ripeness from our certified organic farms. Each Harvest Box contains a curated selection of seasonal produce, ensuring you receive the freshest, most flavorful vegetables available.</p>
-    <p class="mt-4">Our farming practices prioritize soil health, biodiversity, and sustainable water management. No synthetic pesticides or fertilizers are ever used, and all produce is non-GMO verified.</p>
-    <h4 class="mt-6 font-semibold">What's Included:</h4>
-    <ul class="list-disc pl-5 mt-2 space-y-1">
-      <li>Mixed leafy greens (lettuce, spinach, arugula)</li>
-      <li>Root vegetables (carrots, beets, radishes)</li>
-      <li>Seasonal squash or zucchini</li>
-      <li>Fresh herbs (basil, cilantro, or parsley)</li>
-      <li>Heirloom tomatoes</li>
-    </ul>
-  `,
-  specs: [
-    { label: "Weight", value: "2.5–3 kg (varies by season)" },
-    { label: "Servings", value: "4–6 people" },
-    { label: "Certification", value: "India Organic, Non-GMO Verified" },
-    { label: "Origin", value: "Local farms within 50 km" },
-    { label: "Shelf Life", value: "5–7 days refrigerated" },
-    { label: "Storage", value: "Refrigerate at 2–4°C" },
-    { label: "Packaging", value: "100% compostable materials" },
-  ],
-  dosage: `
-    <p>For optimal nutrition and freshness, we recommend consuming the contents of your Harvest Box within 5–7 days of delivery.</p>
-    <h4 class="mt-6 font-semibold">Daily Serving Suggestions:</h4>
-    <ul class="list-disc pl-5 mt-2 space-y-1">
-      <li><strong>Leafy Greens:</strong> 2–3 cups per day, raw or lightly sautéed</li>
-      <li><strong>Root Vegetables:</strong> 1 cup per day, roasted or steamed</li>
-      <li><strong>Fresh Herbs:</strong> Use liberally as garnish or in cooking</li>
-    </ul>
-    <p class="mt-4">Wash all produce thoroughly before consumption. For best results, store leafy greens in a damp paper towel inside a sealed container.</p>
-  `,
-  safety: `
-    <div class="space-y-4">
-      <div class="flex items-start gap-3 p-4 rounded-xl bg-secondary/50">
-        <ShieldCheck class="size-5 text-primary mt-0.5 shrink-0" />
-        <div>
-          <p class="font-semibold">Allergen Information</p>
-          <p class="text-sm text-muted-foreground mt-1">This product is handled in a facility that also processes tree nuts. While our vegetables are allergen-free, cross-contamination may occur.</p>
-        </div>
-      </div>
-      <div class="flex items-start gap-3 p-4 rounded-xl bg-secondary/50">
-        <ShieldCheck class="size-5 text-primary mt-0.5 shrink-0" />
-        <div>
-          <p class="font-semibold">Food Safety</p>
-          <p class="text-sm text-muted-foreground mt-1">All produce is tested for pesticide residue and microbial contamination. Our farms follow GAP (Good Agricultural Practices) certification standards.</p>
-        </div>
-      </div>
-      <div class="flex items-start gap-3 p-4 rounded-xl bg-secondary/50">
-        <ShieldCheck class="size-5 text-primary mt-0.5 shrink-0" />
-        <div>
-          <p class="font-semibold">Quality Guarantee</p>
-          <p class="text-sm text-muted-foreground mt-1">If you're not 100% satisfied with the quality of your produce, contact us within 24 hours for a full refund or replacement.</p>
-        </div>
-      </div>
-    </div>
-  `,
-};
-
 const ProductDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  const product = ALL_PRODUCTS.find(p => p.id === id) || ALL_PRODUCTS[0];
+  const category = CATEGORIES.find(c => c.id === product.category);
+
   const [quantity, setQuantity] = useState(1);
+  const [selectedUnit, setSelectedUnit] = useState(product.units[0].label);
   const { addItem } = useCart();
 
-  const savings = Math.round(((PRODUCT.originalPrice - PRODUCT.price) / PRODUCT.originalPrice) * 100);
+  const currentUnit = useMemo(() =>
+    product.units.find(u => u.label === selectedUnit) || product.units[0],
+    [product.units, selectedUnit]);
+
+  const currentPrice = useMemo(() =>
+    Math.round(product.basePrice * currentUnit.multiplier),
+    [product.basePrice, currentUnit]);
+
+  const currentOriginal = useMemo(() =>
+    Math.round(product.originalPrice * currentUnit.multiplier),
+    [product.originalPrice, currentUnit]);
+
+  const discount = Math.round(((currentOriginal - currentPrice) / currentOriginal) * 100);
 
   const handleAddToCart = () => {
     addItem({
-      id: PRODUCT.id,
-      name: PRODUCT.name,
-      price: PRODUCT.price,
-      unit: PRODUCT.unit,
-      image: PRODUCT.images[0],
+      id: `${product.id}-${selectedUnit}`,
+      name: product.name,
+      price: currentPrice,
+      unit: selectedUnit,
+      image: product.images[0],
     }, quantity);
-    toast.success(`${quantity}x ${PRODUCT.name} added to cart`);
+    toast.success(`${quantity}x ${product.name} (${selectedUnit}) added to cart`);
   };
 
   return (
@@ -108,50 +59,79 @@ const ProductDetail = () => {
       {/* Breadcrumb */}
       <div className="container py-4">
         <nav className="text-xs text-muted-foreground">
-          <a href="/" className="hover:text-foreground transition-colors min-h-0 min-w-0">Home</a>
+          <Link to="/" className="hover:text-foreground transition-colors min-h-0 min-w-0">Home</Link>
           <span className="mx-2">/</span>
-          <a href="/collection" className="hover:text-foreground transition-colors min-h-0 min-w-0">Vegetables</a>
+          <Link to={`/collection?cat=${product.category}`} className="hover:text-foreground transition-colors min-h-0 min-w-0">
+            {category?.name || "Products"}
+          </Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground font-medium">{PRODUCT.name}</span>
+          <span className="text-foreground font-medium">{product.name}</span>
         </nav>
       </div>
 
       {/* Product Hero */}
       <section className="container pb-12">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Gallery */}
-          <ProductGallery images={PRODUCT.images} productName={PRODUCT.name} />
+          <ProductGallery images={product.images} productName={product.name} />
 
-          {/* Product Info */}
           <div className="space-y-6">
             {/* Brand & Title */}
             <div>
-              <p className="text-sm font-medium text-primary mb-1">{PRODUCT.brand}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-sm font-medium text-primary">{product.brand}</p>
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                  <BadgeCheck className="size-3" /> Verified Seller
+                </span>
+              </div>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight leading-tight">
-                {PRODUCT.name}
+                {product.name}
               </h1>
               <div className="flex items-center gap-3 mt-3">
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`size-4 ${i < Math.floor(PRODUCT.rating) ? "fill-accent text-accent" : "text-border"}`}
+                      className={`size-4 ${i < Math.floor(product.rating) ? "fill-accent text-accent" : "text-border"}`}
                     />
                   ))}
-                  <span className="text-sm font-medium text-foreground ml-1">{PRODUCT.rating}</span>
+                  <span className="text-sm font-medium text-foreground ml-1">{product.rating}</span>
                 </div>
-                <span className="text-sm text-muted-foreground">({PRODUCT.reviewCount} reviews)</span>
+                <span className="text-sm text-muted-foreground">({product.reviewCount} reviews)</span>
               </div>
+              <p className="text-xs text-muted-foreground mt-2">SKU: {product.sku}</p>
             </div>
 
             {/* Pricing */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-foreground">{formatINR(PRODUCT.price)}</span>
-              <span className="text-lg text-muted-foreground line-through">{formatINR(PRODUCT.originalPrice)}</span>
-              <span className="inline-flex items-center rounded-full bg-accent/20 px-3 py-1 text-sm font-semibold text-accent-foreground">
-                Save {savings}%
-              </span>
+              <span className="text-3xl font-bold text-foreground">{formatINR(currentPrice)}</span>
+              {discount > 0 && (
+                <>
+                  <span className="text-lg text-muted-foreground line-through">{formatINR(currentOriginal)}</span>
+                  <span className="inline-flex items-center rounded-full bg-accent/20 px-3 py-1 text-sm font-semibold text-accent-foreground">
+                    Save {discount}%
+                  </span>
+                </>
+              )}
             </div>
+
+            {/* Unit Selector */}
+            {product.units.length > 1 && (
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">Pack Size</label>
+                <Select value={selectedUnit} onValueChange={setSelectedUnit}>
+                  <SelectTrigger className="w-full max-w-xs h-11 rounded-lg border-border/60">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {product.units.map((u) => (
+                      <SelectItem key={u.label} value={u.label}>
+                        {u.label} — {formatINR(Math.round(product.basePrice * u.multiplier))}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             {/* Quantity & Add to Cart */}
             <div className="space-y-4">
@@ -177,7 +157,7 @@ const ProductDetail = () => {
               </div>
 
               <Button onClick={handleAddToCart} variant="default" size="xl" className="w-full text-base font-semibold">
-                Add to Cart — {formatINR(PRODUCT.price * quantity)}
+                Add to Cart — {formatINR(currentPrice * quantity)}
               </Button>
             </div>
 
@@ -188,8 +168,8 @@ const ProductDetail = () => {
                   <BadgeCheck className="size-4" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Verified Partner</p>
-                  <p className="text-xs">Certified organic supplier</p>
+                  <p className="font-medium text-foreground">Verified Seller</p>
+                  <p className="text-xs">Genuine products guaranteed</p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
@@ -197,14 +177,37 @@ const ProductDetail = () => {
                   <Truck className="size-4" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Secure Delivery</p>
-                  <p className="text-xs">Temperature-controlled shipping</p>
+                  <p className="font-medium text-foreground">Pan-India Delivery</p>
+                  <p className="text-xs">Free shipping above ₹999</p>
                 </div>
               </div>
             </div>
 
-            {/* SKU */}
-            <p className="text-xs text-muted-foreground pt-2">SKU: {PRODUCT.sku}</p>
+            {/* Applicable Crops & Pests */}
+            {(product.crops.length > 0 || product.pests.length > 0) && (
+              <div className="space-y-3 pt-2">
+                {product.crops.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Target Crops</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {product.crops.map(c => (
+                        <span key={c} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-foreground">{c}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {product.pests.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Target Pests</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {product.pests.map(p => (
+                        <span key={p} className="rounded-full bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">{p}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -226,30 +229,15 @@ const ProductDetail = () => {
               >
                 Technical Specs
               </TabsTrigger>
-              <TabsTrigger
-                value="dosage"
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm"
-              >
-                Dosage Instructions
-              </TabsTrigger>
-              <TabsTrigger
-                value="safety"
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm"
-              >
-                Safety Information
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="description" className="mt-8 max-w-3xl">
-              <div
-                className="prose prose-sm text-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: PRODUCT.description }}
-              />
+              <p className="text-foreground leading-relaxed">{product.description}</p>
             </TabsContent>
 
             <TabsContent value="specs" className="mt-8 max-w-2xl">
               <div className="rounded-xl border border-border overflow-hidden">
-                {PRODUCT.specs.map((spec, i) => (
+                {product.specs.map((spec, i) => (
                   <div
                     key={spec.label}
                     className={`flex py-3.5 px-4 text-sm ${i % 2 === 0 ? "bg-card" : "bg-secondary/30"}`}
@@ -260,54 +248,17 @@ const ProductDetail = () => {
                 ))}
               </div>
             </TabsContent>
-
-            <TabsContent value="dosage" className="mt-8 max-w-3xl">
-              <div
-                className="prose prose-sm text-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: PRODUCT.dosage }}
-              />
-            </TabsContent>
-
-            <TabsContent value="safety" className="mt-8 max-w-3xl">
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-secondary/50">
-                  <ShieldCheck className="size-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-semibold text-foreground">Allergen Information</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      This product is handled in a facility that also processes tree nuts. While our vegetables are allergen-free, cross-contamination may occur.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-secondary/50">
-                  <ShieldCheck className="size-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-semibold text-foreground">Food Safety</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      All produce is tested for pesticide residue and microbial contamination. Our farms follow GAP (Good Agricultural Practices) certification standards.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-secondary/50">
-                  <ShieldCheck className="size-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <p className="font-semibold text-foreground">Quality Guarantee</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      If you're not 100% satisfied with the quality of your produce, contact us within 24 hours for a full refund or replacement.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
           </Tabs>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-border py-10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="font-semibold text-foreground">Terroir</span>
-          <p className="text-sm text-muted-foreground">© 2026 Terroir. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <Leaf className="size-5 text-primary" />
+            <span className="font-semibold text-foreground">AgriMart</span>
+          </div>
+          <p className="text-sm text-muted-foreground">© 2026 AgriMart. All rights reserved.</p>
         </div>
       </footer>
     </div>
