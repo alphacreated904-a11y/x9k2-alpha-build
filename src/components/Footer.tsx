@@ -196,7 +196,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="border-t border-[hsl(150,8%,18%)]">
-        <div className="container flex flex-col sm:flex-row items-center justify-between gap-3 py-5">
+        <div className="container px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 py-5">
           <p className="text-xs text-[hsl(40,10%,45%)]">
             © 2026 AbhiAgri Pvt Ltd. All rights reserved.
           </p>

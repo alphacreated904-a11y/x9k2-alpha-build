@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border/40">
-      <div className="container flex h-16 items-center gap-4">
+      <div className="container px-4 sm:px-6 flex h-14 sm:h-16 items-center gap-2 sm:gap-4">
         {/* Mobile Menu */}
         <Sheet>
           <SheetTrigger asChild>
