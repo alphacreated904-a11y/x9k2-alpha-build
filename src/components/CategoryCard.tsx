@@ -1,5 +1,4 @@
 import React from "react";
-import { cn } from "@/lib/utils";
 
 interface CategoryCardProps {
   name: string;
@@ -9,12 +8,12 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ name, icon, count }) => {
   return (
-    <button className="card-hover flex flex-col items-center gap-3 rounded-xl bg-card p-6 text-center transition-all duration-200 hover:bg-secondary border-0 min-h-[44px]">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+    <button className="card-hover flex flex-col items-center gap-3 rounded-2xl bg-card p-6 md:p-8 text-center transition-all duration-200 hover:bg-secondary/50 border-0">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/8 text-primary">
         {icon}
       </div>
-      <span className="font-semibold text-foreground">{name}</span>
-      <span className="text-sm text-muted-foreground">{count} products</span>
+      <span className="font-semibold text-foreground text-sm">{name}</span>
+      <span className="text-xs text-muted-foreground">{count} products</span>
     </button>
   );
 };
