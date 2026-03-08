@@ -226,12 +226,14 @@ const Collection = () => {
               </div>
             )}
 
-            {isComingSoon && (
+             {isComingSoon && (
               <div className="py-20 text-center">
                 <div className="flex justify-center mb-6">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/20">
-                    <Clock className="size-10 text-accent" />
-                  </div>
+                  <img
+                    src={logo}
+                    alt="AbhiAgri mascot"
+                    className="w-28 h-28 object-contain drop-shadow-lg"
+                  />
                 </div>
                 <h2 className="text-2xl font-bold text-foreground mb-2">{t("collection.coming_soon")}</h2>
                 <p className="text-muted-foreground max-w-md mx-auto mb-6">
