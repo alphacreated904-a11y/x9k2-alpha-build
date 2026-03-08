@@ -242,7 +242,7 @@ const Collection = () => {
             )}
 
             {/* Load More */}
-            {hasMore && (
+            {!isComingSoon && hasMore && (
               <div className="flex justify-center mt-10">
                 <Button
                   variant="outline"
