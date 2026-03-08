@@ -203,7 +203,8 @@ const Collection = () => {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
               {filteredProducts.map((product) => (
                 <CollectionProductCard
-                  key={product.name}
+                  key={product.id}
+                  id={product.id}
                   name={product.name}
                   price={product.price}
                   image={product.image}
