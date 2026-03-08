@@ -26,10 +26,6 @@ const TopBar: React.FC = () => {
     <div className="bg-primary text-primary-foreground">
       <div className="container px-4 sm:px-6 flex h-9 items-center justify-between text-xs font-medium">
         {/* Left — delivery info */}
-        <span className="hidden sm:flex items-center gap-1.5">
-          <Truck className="size-3.5" />
-          {t("topbar.free_delivery")}
-        </span>
 
         {/* Mobile — phone */}
         <a
