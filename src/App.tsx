@@ -20,17 +20,6 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const AppRoutes = () => (
-  <>
-    <Route path="/" element={<Index />} />
-    <Route path="/collection" element={<Collection />} />
-    <Route path="/product/:id" element={<ProductDetail />} />
-    <Route path="/checkout" element={<Checkout />} />
-    <Route path="/track-order" element={<TrackOrder />} />
-    <Route path="/login" element={<Login />} />
-  </>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -46,10 +35,20 @@ const App = () => (
               <FloatingContact />
               <Routes>
                 {/* English routes */}
-                {AppRoutes()}
-                {/* Hindi routes — same components, language detected from URL */}
-                <Route path="/hi">{AppRoutes()}</Route>
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="/" element={<Index />} />
+                <Route path="/collection" element={<Collection />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/track-order" element={<TrackOrder />} />
+                <Route path="/login" element={<Login />} />
+                {/* Hindi routes — relative paths under /hi */}
+                <Route path="/hi" element={<Index />} />
+                <Route path="/hi/collection" element={<Collection />} />
+                <Route path="/hi/product/:id" element={<ProductDetail />} />
+                <Route path="/hi/checkout" element={<Checkout />} />
+                <Route path="/hi/track-order" element={<TrackOrder />} />
+                <Route path="/hi/login" element={<Login />} />
+                {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
