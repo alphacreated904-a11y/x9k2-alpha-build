@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { SlidersHorizontal, Leaf } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { SlidersHorizontal, Leaf, Clock } from "lucide-react";
+import { useSearchParams, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { FilterSidebar, type FilterOption } from "@/components/FilterSidebar";
@@ -70,6 +70,14 @@ const Collection = () => {
     setSelectedCropTypes([]);
     setSelectedPests([]);
   }, []);
+
+  // Show "Coming Soon" for categories with no products
+  const categoryProductCount = useMemo(() => {
+    if (!categoryFilter) return ALL_PRODUCTS.length;
+    return ALL_PRODUCTS.filter(p => p.category === categoryFilter).length;
+  }, [categoryFilter]);
+
+  const isComingSoon = categoryFilter && categoryProductCount === 0;
 
   const filteredProducts = useMemo(() => {
     return ALL_PRODUCTS
@@ -180,32 +188,53 @@ const Collection = () => {
               </div>
             </div>
 
-            {activeFilters.length > 0 && (
+            {activeFilters.length > 0 && !isComingSoon && (
               <div className="mb-5">
                 <ActiveFilters filters={activeFilters} onRemove={removeFilter} onClearAll={clearAll} />
               </div>
             )}
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-              {visibleProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  brand={product.brand}
-                  basePrice={product.basePrice}
-                  originalPrice={product.originalPrice}
-                  image={product.image}
-                  tag={product.tag}
-                  rating={product.rating}
-                  reviewCount={product.reviewCount}
-                  units={product.units}
-                  onAddToCart={(unit, price) => handleAddToCart(product, unit, price)}
-                />
-              ))}
-            </div>
+            {/* Coming Soon State */}
+            {isComingSoon && (
+              <div className="py-20 text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/20">
+                    <Clock className="size-10 text-accent" />
+                  </div>
+                </div>
+                <h2 className="text-2xl font-bold text-foreground mb-2">Coming Soon!</h2>
+                <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                  We're working hard to bring you the best {pageTitle.toLowerCase()} products. 
+                  Check back soon or browse our other categories.
+                </p>
+                <Button variant="default" asChild>
+                  <Link to="/collection">Browse All Products</Link>
+                </Button>
+              </div>
+            )}
 
-            {filteredProducts.length === 0 && (
+            {!isComingSoon && (
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                {visibleProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    brand={product.brand}
+                    basePrice={product.basePrice}
+                    originalPrice={product.originalPrice}
+                    image={product.image}
+                    tag={product.tag}
+                    rating={product.rating}
+                    reviewCount={product.reviewCount}
+                    units={product.units}
+                    onAddToCart={(unit, price) => handleAddToCart(product, unit, price)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {!isComingSoon && filteredProducts.length === 0 && (
               <div className="py-20 text-center">
                 <p className="text-muted-foreground">No products match your filters.</p>
                 <Button variant="link" onClick={clearAll} className="mt-2">Clear all filters</Button>
@@ -213,7 +242,7 @@ const Collection = () => {
             )}
 
             {/* Load More */}
-            {hasMore && (
+            {!isComingSoon && hasMore && (
               <div className="flex justify-center mt-10">
                 <Button
                   variant="outline"
