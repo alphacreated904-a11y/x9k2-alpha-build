@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { Leaf, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import logo from "@/assets/logo.webp";
 import { toast } from "sonner";
 
 const Login: React.FC = () => {
@@ -37,9 +38,11 @@ const Login: React.FC = () => {
         <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                <Leaf className="size-7 text-primary" />
-              </div>
+              <img
+                src={logo}
+                alt="AbhiAgri mascot"
+                className="h-14 w-14 object-contain rounded-full"
+              />
             </div>
             <h1 className="text-xl font-bold text-foreground">
               {isSignUp ? t("login.create_account") : t("login.title")}
