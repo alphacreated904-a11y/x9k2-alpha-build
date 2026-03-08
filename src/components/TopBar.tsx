@@ -1,12 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Phone, Truck, PackageSearch, Heart, LogIn, Globe } from "lucide-react";
+import { Phone, Truck, PackageSearch, LogIn, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useWishlist } from "@/contexts/WishlistContext";
 
 const TopBar: React.FC = () => {
   const { language, toggleLanguage, t } = useLanguage();
-  const { totalItems: wishlistCount, openWishlist } = useWishlist();
 
   return (
     <div className="bg-primary text-primary-foreground">
@@ -50,22 +48,6 @@ const TopBar: React.FC = () => {
             <PackageSearch className="size-3.5" />
             {t("topbar.track_order")}
           </Link>
-
-          <span className="w-px h-3.5 bg-primary-foreground/20 mx-0.5 hidden sm:block" />
-
-          {/* Wishlist */}
-          <button
-            onClick={openWishlist}
-            className="relative flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
-          >
-            <Heart className="size-3.5" />
-            <span className="hidden sm:inline">{t("topbar.wishlist")}</span>
-            {wishlistCount > 0 && (
-              <span className="absolute -top-0.5 left-4 sm:left-auto sm:-right-1 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground px-1">
-                {wishlistCount > 9 ? "9+" : wishlistCount}
-              </span>
-            )}
-          </button>
 
           <span className="w-px h-3.5 bg-primary-foreground/20 mx-0.5 hidden sm:block" />
 
