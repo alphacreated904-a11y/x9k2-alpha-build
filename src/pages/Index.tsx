@@ -52,10 +52,10 @@ const Index = () => {
       <HeroSlider />
 
       {/* Shop by Category */}
-      <section className="container py-16 md:py-20">
-        <div className="mb-10 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">{t("index.shop_by_category")}</h2>
-          <p className="mt-2 text-muted-foreground text-sm">{t("index.category_subtitle")}</p>
+      <section className="container py-10 sm:py-16 md:py-20 px-4 sm:px-6">
+        <div className="mb-8 sm:mb-10 text-center">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">{t("index.shop_by_category")}</h2>
+          <p className="mt-1.5 sm:mt-2 text-muted-foreground text-xs sm:text-sm">{t("index.category_subtitle")}</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
           {CATEGORIES.map((cat) => (
