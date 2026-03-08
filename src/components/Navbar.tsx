@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Leaf, Search, ShoppingCart, User, Sprout, Shield, Beaker, Wrench, Menu } from "lucide-react";
+import { Search, ShoppingCart, User, Sprout, Shield, Beaker, Wrench, Menu } from "lucide-react";
+import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -60,7 +61,7 @@ const Navbar: React.FC = () => {
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-6 overflow-y-auto">
             <div className="flex items-center gap-2 mb-8">
-              <Leaf className="size-6 text-primary" />
+              <img src={logoImg} alt="AgriMart" className="size-8 object-contain" />
               <span className="text-lg font-bold text-foreground">AgriMart</span>
             </div>
             <nav className="space-y-6">
@@ -98,7 +99,7 @@ const Navbar: React.FC = () => {
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <Leaf className="size-7 text-primary" />
+          <img src={logoImg} alt="AgriMart" className="size-9 object-contain" />
           <span className="text-xl font-bold text-foreground tracking-tight">AgriMart</span>
         </Link>
 
