@@ -71,6 +71,14 @@ const Collection = () => {
     setSelectedPests([]);
   }, []);
 
+  // Show "Coming Soon" for categories with no products
+  const categoryProductCount = useMemo(() => {
+    if (!categoryFilter) return ALL_PRODUCTS.length;
+    return ALL_PRODUCTS.filter(p => p.category === categoryFilter).length;
+  }, [categoryFilter]);
+
+  const isComingSoon = categoryFilter && categoryProductCount === 0;
+
   const filteredProducts = useMemo(() => {
     return ALL_PRODUCTS
       .filter((p) => {
