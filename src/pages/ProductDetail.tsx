@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star } from "lucide-react";
-import logoImg from "@/assets/logo.webp";
 import { Footer } from "@/components/Footer";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
@@ -16,33 +15,45 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCart, formatINR } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { ALL_PRODUCTS, CATEGORIES } from "@/data/products";
 import { toast } from "sonner";
+
+const CATEGORY_NAMES_HI: Record<string, string> = {
+  seeds: "बीज",
+  "crop-protection": "फसल सुरक्षा",
+  nutrition: "पोषण",
+  equipment: "उपकरण",
+};
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const product = ALL_PRODUCTS.find(p => p.id === id) || ALL_PRODUCTS[0];
-  const category = CATEGORIES.find(c => c.id === product.category);
+  const category = CATEGORIES.find(c => c.id === product?.category);
+  const { language, t } = useLanguage();
+  const lp = useLocalizedPath();
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedUnit, setSelectedUnit] = useState(product.units[0].label);
+  const [selectedUnit, setSelectedUnit] = useState(product?.units[0]?.label || "");
   const { addItem } = useCart();
 
   const currentUnit = useMemo(() =>
-    product.units.find(u => u.label === selectedUnit) || product.units[0],
-    [product.units, selectedUnit]);
+    product?.units.find(u => u.label === selectedUnit) || product?.units[0],
+    [product?.units, selectedUnit]);
 
   const currentPrice = useMemo(() =>
-    Math.round(product.basePrice * currentUnit.multiplier),
-    [product.basePrice, currentUnit]);
+    Math.round((product?.basePrice || 0) * (currentUnit?.multiplier || 1)),
+    [product?.basePrice, currentUnit]);
 
   const currentOriginal = useMemo(() =>
-    Math.round(product.originalPrice * currentUnit.multiplier),
-    [product.originalPrice, currentUnit]);
+    Math.round((product?.originalPrice || 0) * (currentUnit?.multiplier || 1)),
+    [product?.originalPrice, currentUnit]);
 
-  const discount = Math.round(((currentOriginal - currentPrice) / currentOriginal) * 100);
+  const discount = currentOriginal > 0 ? Math.round(((currentOriginal - currentPrice) / currentOriginal) * 100) : 0;
 
   const handleAddToCart = () => {
+    if (!product) return;
     addItem({
       id: `${product.id}-${selectedUnit}`,
       name: product.name,
@@ -53,6 +64,10 @@ const ProductDetail = () => {
     toast.success(`${quantity}x ${product.name} (${selectedUnit}) added to cart`);
   };
 
+  if (!product) return null;
+
+  const categoryName = language === "hi" ? CATEGORY_NAMES_HI[product.category] || category?.name || t("common.products") : category?.name || "Products";
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -60,14 +75,14 @@ const ProductDetail = () => {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
-        "item": `${window.location.origin}/`
+        "name": t("common.home"),
+        "item": `${window.location.origin}${lp("/")}`
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": category?.name || "Products",
-        "item": `${window.location.origin}/collection?cat=${product.category}`
+        "name": categoryName,
+        "item": `${window.location.origin}${lp(`/collection?cat=${product.category}`)}`
       },
       {
         "@type": "ListItem",
@@ -86,31 +101,28 @@ const ProductDetail = () => {
       <TopBar />
       <Navbar />
 
-      {/* Breadcrumb */}
       <div className="container py-4">
         <nav className="text-xs text-muted-foreground">
-          <Link to="/" className="hover:text-foreground transition-colors min-h-0 min-w-0">Home</Link>
+          <Link to={lp("/")} className="hover:text-foreground transition-colors min-h-0 min-w-0">{t("common.home")}</Link>
           <span className="mx-2">/</span>
-          <Link to={`/collection?cat=${product.category}`} className="hover:text-foreground transition-colors min-h-0 min-w-0">
-            {category?.name || "Products"}
+          <Link to={lp(`/collection?cat=${product.category}`)} className="hover:text-foreground transition-colors min-h-0 min-w-0">
+            {categoryName}
           </Link>
           <span className="mx-2">/</span>
           <span className="text-foreground font-medium">{product.name}</span>
         </nav>
       </div>
 
-      {/* Product Hero */}
       <section className="container pb-12">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           <ProductGallery images={product.images} productName={product.name} />
 
           <div className="space-y-6">
-            {/* Brand & Title */}
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <p className="text-sm font-medium text-primary">{product.brand}</p>
                 <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                  <BadgeCheck className="size-3" /> Verified Seller
+                  <BadgeCheck className="size-3" /> {t("product.verified_seller")}
                 </span>
               </div>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight leading-tight">
@@ -126,28 +138,26 @@ const ProductDetail = () => {
                   ))}
                   <span className="text-sm font-medium text-foreground ml-1">{product.rating}</span>
                 </div>
-                <span className="text-sm text-muted-foreground">({product.reviewCount} reviews)</span>
+                <span className="text-sm text-muted-foreground">({product.reviewCount} {t("product.reviews")})</span>
               </div>
               <p className="text-xs text-muted-foreground mt-2">SKU: {product.sku}</p>
             </div>
 
-            {/* Pricing */}
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold text-foreground">{formatINR(currentPrice)}</span>
               {discount > 0 && (
                 <>
                   <span className="text-lg text-muted-foreground line-through">{formatINR(currentOriginal)}</span>
                   <span className="inline-flex items-center rounded-full bg-accent/20 px-3 py-1 text-sm font-semibold text-accent-foreground">
-                    Save {discount}%
+                    {t("product.save")} {discount}%
                   </span>
                 </>
               )}
             </div>
 
-            {/* Unit Selector */}
             {product.units.length > 1 && (
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">Pack Size</label>
+                <label className="text-sm font-medium text-foreground mb-2 block">{t("product.pack_size")}</label>
                 <Select value={selectedUnit} onValueChange={setSelectedUnit}>
                   <SelectTrigger className="w-full max-w-xs h-11 rounded-lg border-border/60">
                     <SelectValue />
@@ -163,10 +173,9 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Quantity & Add to Cart */}
             <div className="space-y-4">
               <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-foreground">Quantity:</span>
+                <span className="text-sm font-medium text-foreground">{t("product.quantity")}:</span>
                 <div className="flex items-center rounded-full border border-border">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -187,19 +196,18 @@ const ProductDetail = () => {
               </div>
 
               <Button onClick={handleAddToCart} variant="default" size="xl" className="w-full text-base font-semibold">
-                Add to Cart — {formatINR(currentPrice * quantity)}
+                {t("common.add_to_cart")} — {formatINR(currentPrice * quantity)}
               </Button>
             </div>
 
-            {/* Trust Signals */}
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <BadgeCheck className="size-4" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Verified Seller</p>
-                  <p className="text-xs">Genuine products guaranteed</p>
+                  <p className="font-medium text-foreground">{t("product.verified_seller")}</p>
+                  <p className="text-xs">{t("product.genuine")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
@@ -207,18 +215,17 @@ const ProductDetail = () => {
                   <Truck className="size-4" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Pan-India Delivery</p>
-                  <p className="text-xs">Free shipping above ₹999</p>
+                  <p className="font-medium text-foreground">{t("product.delivery")}</p>
+                  <p className="text-xs">{t("product.free_shipping")}</p>
                 </div>
               </div>
             </div>
 
-            {/* Applicable Crops & Pests */}
             {(product.crops.length > 0 || product.pests.length > 0) && (
               <div className="space-y-3 pt-2">
                 {product.crops.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Target Crops</p>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("product.target_crops")}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {product.crops.map(c => (
                         <span key={c} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-foreground">{c}</span>
@@ -228,7 +235,7 @@ const ProductDetail = () => {
                 )}
                 {product.pests.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Target Pests</p>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("product.target_pests")}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {product.pests.map(p => (
                         <span key={p} className="rounded-full bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">{p}</span>
@@ -242,7 +249,6 @@ const ProductDetail = () => {
         </div>
       </section>
 
-      {/* Technical Tabs */}
       <section className="border-t border-border bg-secondary/20">
         <div className="container py-10 md:py-14">
           <Tabs defaultValue="description" className="w-full">
@@ -251,13 +257,13 @@ const ProductDetail = () => {
                 value="description"
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm"
               >
-                Description
+                {t("product.description")}
               </TabsTrigger>
               <TabsTrigger
                 value="specs"
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm"
               >
-                Technical Specs
+                {t("product.specs")}
               </TabsTrigger>
             </TabsList>
 

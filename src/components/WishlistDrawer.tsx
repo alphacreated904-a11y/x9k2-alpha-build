@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { toast } from "sonner";
 
 const WishlistDrawer: React.FC = () => {
   const { items, isOpen, closeWishlist, removeItem } = useWishlist();
   const { addItem: addToCart } = useCart();
   const { t } = useLanguage();
+  const lp = useLocalizedPath();
 
   const handleMoveToCart = (item: typeof items[0]) => {
     addToCart({
@@ -43,7 +45,7 @@ const WishlistDrawer: React.FC = () => {
               <p className="text-sm text-muted-foreground mt-1">{t("wishlist.browse")}</p>
             </div>
             <Button variant="default" onClick={closeWishlist} asChild>
-              <Link to="/collection">{t("cart.shop_now")}</Link>
+              <Link to={lp("/collection")}>{t("cart.shop_now")}</Link>
             </Button>
           </div>
         ) : (

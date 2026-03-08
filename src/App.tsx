@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { LanguageSync } from "@/components/LanguageSync";
 import { CartDrawer } from "@/components/CartDrawer";
 import { WishlistDrawer } from "@/components/WishlistDrawer";
 import { FloatingContact } from "@/components/FloatingContact";
@@ -19,6 +20,17 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const AppRoutes = () => (
+  <>
+    <Route path="/" element={<Index />} />
+    <Route path="/collection" element={<Collection />} />
+    <Route path="/product/:id" element={<ProductDetail />} />
+    <Route path="/checkout" element={<Checkout />} />
+    <Route path="/track-order" element={<TrackOrder />} />
+    <Route path="/login" element={<Login />} />
+  </>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -26,18 +38,17 @@ const App = () => (
         <CartProvider>
           <WishlistProvider>
             <BrowserRouter>
+              <LanguageSync />
               <Toaster />
               <Sonner />
               <CartDrawer />
               <WishlistDrawer />
               <FloatingContact />
               <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/collection" element={<Collection />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/track-order" element={<TrackOrder />} />
-                <Route path="/login" element={<Login />} />
+                {/* English routes */}
+                {AppRoutes()}
+                {/* Hindi routes — same components, language detected from URL */}
+                <Route path="/hi">{AppRoutes()}</Route>
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

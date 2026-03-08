@@ -8,12 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { Leaf, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
-
 const Login: React.FC = () => {
   const { t } = useLanguage();
+  const lp = useLocalizedPath();
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", name: "" });
@@ -24,7 +25,6 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder — real auth requires Lovable Cloud
     toast.info("Authentication requires backend setup. Enable Lovable Cloud to add real login!");
   };
 
@@ -35,7 +35,6 @@ const Login: React.FC = () => {
 
       <div className="container max-w-md py-12 md:py-20">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
-          {/* Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
@@ -43,17 +42,17 @@ const Login: React.FC = () => {
               </div>
             </div>
             <h1 className="text-xl font-bold text-foreground">
-              {isSignUp ? "Create your AbhiAgri account" : t("login.title")}
+              {isSignUp ? t("login.create_account") : t("login.title")}
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              {isSignUp ? "Join thousands of farmers across India" : "Welcome back! Enter your details"}
+              {isSignUp ? t("login.join") : t("login.welcome")}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && (
               <div>
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">{t("login.full_name")}</Label>
                 <Input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Abhishek Sharma" required />
               </div>
             )}
@@ -88,7 +87,7 @@ const Login: React.FC = () => {
             {!isSignUp && (
               <div className="flex justify-end">
                 <button type="button" className="text-xs text-primary hover:underline">
-                  Forgot password?
+                  {t("login.forgot_password")}
                 </button>
               </div>
             )}
@@ -101,7 +100,7 @@ const Login: React.FC = () => {
           <Separator className="my-6" />
 
           <p className="text-center text-sm text-muted-foreground">
-            {isSignUp ? "Already have an account?" : t("login.no_account")}{" "}
+            {isSignUp ? t("login.already_account") : t("login.no_account")}{" "}
             <button
               onClick={() => setIsSignUp(!isSignUp)}
               className="font-semibold text-primary hover:underline"

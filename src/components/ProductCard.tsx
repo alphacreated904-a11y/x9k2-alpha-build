@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { formatINR } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import {
   Select,
   SelectContent,
@@ -30,6 +32,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   id, name, brand, basePrice, originalPrice, image, tag, rating, reviewCount, units, onAddToCart,
 }) => {
   const [selectedUnit, setSelectedUnit] = useState(units[0].label);
+  const { t } = useLanguage();
+  const lp = useLocalizedPath();
 
   const currentUnit = useMemo(() =>
     units.find(u => u.label === selectedUnit) || units[0],
@@ -47,7 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div className="group card-hover rounded-2xl bg-card overflow-hidden border-0">
-      <Link to={`/product/${id}`} className="block">
+      <Link to={lp(`/product/${id}`)} className="block">
         <div className="relative aspect-square overflow-hidden bg-secondary">
           <img
             src={image}
@@ -55,7 +59,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
-          {/* Discount Badge */}
           {discount > 0 && (
             <span className="absolute top-3 right-3 rounded-full bg-destructive px-2.5 py-1 text-[10px] font-bold text-destructive-foreground">
               {discount}% OFF
@@ -70,7 +73,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="p-4 pb-1">
           <p className="text-[11px] font-medium text-primary uppercase tracking-wide mb-1">{brand}</p>
           <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
-          {/* Star Rating */}
           <div className="flex items-center gap-1 mt-2">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -105,8 +107,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
         <AddToCartButton
           onAddToCart={() => onAddToCart?.(selectedUnit, currentPrice)}
-          label="Add to Cart"
-          addedLabel="Added!"
+          label={t("common.add_to_cart")}
+          addedLabel={t("common.added")}
           variant="default"
           size="sm"
           className="w-full rounded-lg font-semibold"

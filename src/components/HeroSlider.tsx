@@ -3,6 +3,8 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 
 import heroImage from "@/assets/hero-farm.webp";
 import vegImage from "@/assets/product-vegetables.webp";
@@ -11,32 +13,34 @@ import fruitImage from "@/assets/product-fruits.webp";
 const SLIDES = [
   {
     image: heroImage,
-    badge: "Kharif Season Sale",
-    title: "Premium Seeds & Crop Care – Delivered to Your Farm",
-    subtitle: "Shop 10,000+ agriculture products from trusted brands like Syngenta, Bayer & UPL. Fast pan-India delivery.",
-    cta: "Shop Now",
+    badge: { en: "Kharif Season Sale", hi: "खरीफ सीजन सेल" },
+    title: { en: "Premium Seeds & Crop Care – Delivered to Your Farm", hi: "प्रीमियम बीज और फसल देखभाल — आपके खेत तक डिलीवरी" },
+    subtitle: { en: "Shop 10,000+ agriculture products from trusted brands like Syngenta, Bayer & UPL. Fast pan-India delivery.", hi: "Syngenta, Bayer और UPL जैसे विश्वसनीय ब्रांडों से 10,000+ कृषि उत्पाद खरीदें। तेज़ पूरे भारत में डिलीवरी।" },
+    cta: { en: "Shop Now", hi: "अभी खरीदें" },
     href: "/collection",
   },
   {
     image: vegImage,
-    badge: "New Arrivals",
-    title: "Hybrid Seeds with 20% Higher Yield Guarantee",
-    subtitle: "BG-II Cotton, Basmati Paddy, NS Chilli — certified quality seeds at the best prices.",
-    cta: "Browse Seeds",
+    badge: { en: "New Arrivals", hi: "नई उपलब्धता" },
+    title: { en: "Hybrid Seeds with 20% Higher Yield Guarantee", hi: "20% अधिक उपज गारंटी के साथ हाइब्रिड बीज" },
+    subtitle: { en: "BG-II Cotton, Basmati Paddy, NS Chilli — certified quality seeds at the best prices.", hi: "BG-II कपास, बासमती धान, NS मिर्च — सबसे अच्छी कीमतों पर प्रमाणित गुणवत्ता वाले बीज।" },
+    cta: { en: "Browse Seeds", hi: "बीज देखें" },
     href: "/collection?cat=seeds",
   },
   {
     image: fruitImage,
-    badge: "Crop Protection",
-    title: "Protect Your Crops. Maximize Returns.",
-    subtitle: "Confidor, Dithane M-45 & more — insecticides and fungicides from India's top manufacturers.",
-    cta: "Shop Crop Protection",
+    badge: { en: "Crop Protection", hi: "फसल सुरक्षा" },
+    title: { en: "Protect Your Crops. Maximize Returns.", hi: "अपनी फसलों की रक्षा करें। अधिकतम मुनाफा कमाएं।" },
+    subtitle: { en: "Confidor, Dithane M-45 & more — insecticides and fungicides from India's top manufacturers.", hi: "Confidor, Dithane M-45 और अन्य — भारत के शीर्ष निर्माताओं से कीटनाशक और फफूंदनाशक।" },
+    cta: { en: "Shop Crop Protection", hi: "फसल सुरक्षा खरीदें" },
     href: "/collection?cat=crop-protection",
   },
 ];
 
 const HeroSlider: React.FC = () => {
   const [current, setCurrent] = useState(0);
+  const { language } = useLanguage();
+  const lp = useLocalizedPath();
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % SLIDES.length), []);
   const prev = useCallback(() => setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length), []);
@@ -59,7 +63,7 @@ const HeroSlider: React.FC = () => {
           <div className="relative">
             <img
               src={slide.image}
-              alt={slide.title}
+              alt={slide.title[language]}
               className="h-[420px] md:h-[520px] w-full object-cover"
               loading={i === 0 ? "eager" : "lazy"}
             />
@@ -68,17 +72,17 @@ const HeroSlider: React.FC = () => {
               <div className="container">
                 <div className="max-w-xl space-y-5">
                   <span className="inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground">
-                    {slide.badge}
+                    {slide.badge[language]}
                   </span>
                   <h1 className="text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
-                    {slide.title}
+                    {slide.title[language]}
                   </h1>
                   <p className="text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
-                    {slide.subtitle}
+                    {slide.subtitle[language]}
                   </p>
                   <Button variant="accent" size="xl" className="mt-2" asChild>
-                    <Link to={slide.href}>
-                      {slide.cta} <ArrowRight className="size-5" />
+                    <Link to={lp(slide.href)}>
+                      {slide.cta[language]} <ArrowRight className="size-5" />
                     </Link>
                   </Button>
                 </div>

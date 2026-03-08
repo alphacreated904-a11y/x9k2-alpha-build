@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Leaf, ArrowRight, Instagram, Facebook, Youtube, Twitter, Linkedin } from "lucide-react";
 import logoImg from "@/assets/logo.webp";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 
-const QUICK_LINKS = [
+const QUICK_LINKS_EN = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy" },
@@ -15,12 +16,31 @@ const QUICK_LINKS = [
   { label: "Sitemap", href: "/sitemap" },
 ];
 
-const SHOP_LINKS = [
+const QUICK_LINKS_HI = [
+  { label: "हमारे बारे में", href: "/about" },
+  { label: "हमसे संपर्क करें", href: "/contact" },
+  { label: "गोपनीयता नीति", href: "/privacy" },
+  { label: "वापसी और धनवापसी नीति", href: "/returns" },
+  { label: "सेवा की शर्तें", href: "/terms" },
+  { label: "शिपिंग नीति", href: "/shipping" },
+  { label: "अक्सर पूछे जाने वाले प्रश्न", href: "/faq" },
+  { label: "साइटमैप", href: "/sitemap" },
+];
+
+const SHOP_LINKS_EN = [
   { label: "Seeds", href: "/collection?cat=seeds" },
   { label: "Crop Protection", href: "/collection?cat=crop-protection" },
   { label: "Nutrition", href: "/collection?cat=nutrition" },
   { label: "Equipment", href: "/collection?cat=equipment" },
   { label: "Shop All", href: "/collection" },
+];
+
+const SHOP_LINKS_HI = [
+  { label: "बीज", href: "/collection?cat=seeds" },
+  { label: "फसल सुरक्षा", href: "/collection?cat=crop-protection" },
+  { label: "पोषण", href: "/collection?cat=nutrition" },
+  { label: "उपकरण", href: "/collection?cat=equipment" },
+  { label: "सभी खरीदें", href: "/collection" },
 ];
 
 const SOCIAL_LINKS = [
@@ -32,32 +52,29 @@ const SOCIAL_LINKS = [
 ];
 
 const Footer: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const lp = useLocalizedPath();
+  const quickLinks = language === "hi" ? QUICK_LINKS_HI : QUICK_LINKS_EN;
+  const shopLinks = language === "hi" ? SHOP_LINKS_HI : SHOP_LINKS_EN;
 
   return (
     <footer className="bg-[hsl(150,10%,12%)] text-[hsl(40,20%,85%)]">
-      {/* Main Footer */}
       <div className="container py-14 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
 
           {/* Column 1 — Brand & About */}
           <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2.5 mb-5">
+            <Link to={lp("/")} className="flex items-center gap-2.5 mb-5">
               <img src={logoImg} alt="AbhiAgri" className="size-10 object-contain" />
               <span className="text-xl font-bold text-white tracking-tight">AbhiAgri</span>
             </Link>
             <p className="text-sm leading-relaxed text-[hsl(40,10%,60%)] mb-6">
-              AbhiAgri is one of India's fastest-growing AgriTech platforms, 
-              dedicated to empowering farmers with quality seeds, crop protection 
-              products, fertilizers, and modern equipment — delivered to your doorstep.
+              {t("footer.about")}
             </p>
             <p className="text-sm leading-relaxed text-[hsl(40,10%,60%)]">
-              We leverage technology and data-driven insights to help farmers 
-              optimize practices, boost yields, and build a sustainable future 
-              for Indian agriculture.
+              {t("footer.about2")}
             </p>
 
-            {/* Social Icons */}
             <div className="flex items-center gap-2.5 mt-6">
               {SOCIAL_LINKS.map(({ icon: Icon, href, label, hoverClass }) => (
                 <a
@@ -78,13 +95,13 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-base font-semibold text-primary mb-5 flex items-center gap-2">
               <span className="h-px w-5 bg-primary" />
-              Quick Links
+              {t("footer.quick_links")}
             </h3>
             <ul className="space-y-2.5">
-              {QUICK_LINKS.map(({ label, href }) => (
-                <li key={label}>
+              {quickLinks.map(({ label, href }) => (
+                <li key={href}>
                   <Link
-                    to={href}
+                    to={lp(href)}
                     className="text-sm text-[hsl(40,10%,60%)] hover:text-white hover:pl-1 transition-all duration-200 inline-flex items-center gap-1.5 group"
                   >
                     <ArrowRight className="size-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
@@ -99,13 +116,13 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-base font-semibold text-primary mb-5 flex items-center gap-2">
               <span className="h-px w-5 bg-primary" />
-              Shop Categories
+              {t("footer.shop_categories")}
             </h3>
             <ul className="space-y-2.5">
-              {SHOP_LINKS.map(({ label, href }) => (
-                <li key={label}>
+              {shopLinks.map(({ label, href }) => (
+                <li key={href}>
                   <Link
-                    to={href}
+                    to={lp(href)}
                     className="text-sm text-[hsl(40,10%,60%)] hover:text-white hover:pl-1 transition-all duration-200 inline-flex items-center gap-1.5 group"
                   >
                     <ArrowRight className="size-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200" />
@@ -115,13 +132,12 @@ const Footer: React.FC = () => {
               ))}
             </ul>
 
-            {/* Download App placeholder */}
             <div className="mt-8">
               <h3 className="text-base font-semibold text-primary mb-3 flex items-center gap-2">
                 <span className="h-px w-5 bg-primary" />
-                Download App
+                {t("footer.download_app")}
               </h3>
-              <p className="text-xs text-[hsl(40,10%,50%)]">Coming soon on Play Store & App Store</p>
+              <p className="text-xs text-[hsl(40,10%,50%)]">{t("footer.coming_soon_app")}</p>
             </div>
           </div>
 
@@ -129,13 +145,12 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-base font-semibold text-primary mb-5 flex items-center gap-2">
               <span className="h-px w-5 bg-primary" />
-              Contact Us
+              {t("footer.contact_us")}
             </h3>
 
-            {/* Phone */}
             <div className="mb-5">
               <p className="text-xs text-[hsl(40,10%,50%)] uppercase tracking-wider font-medium mb-1.5">
-                Missed Call to Order
+                {t("footer.missed_call")}
               </p>
               <a
                 href="tel:+911800123456"
@@ -146,7 +161,6 @@ const Footer: React.FC = () => {
               </a>
             </div>
 
-            {/* Email */}
             <div className="flex items-start gap-3 mb-4">
               <Mail className="size-4 mt-0.5 text-primary shrink-0" />
               <div>
@@ -157,11 +171,12 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Office Address */}
             <div className="flex items-start gap-3 mb-4">
               <MapPin className="size-4 mt-0.5 text-primary shrink-0" />
               <div>
-                <p className="text-xs text-[hsl(40,10%,50%)] uppercase tracking-wider font-medium mb-0.5">Corporate Office</p>
+                <p className="text-xs text-[hsl(40,10%,50%)] uppercase tracking-wider font-medium mb-0.5">
+                  {language === "hi" ? "कॉर्पोरेट कार्यालय" : "Corporate Office"}
+                </p>
                 <p className="text-sm text-[hsl(40,10%,60%)] leading-relaxed">
                   AbhiAgri Pvt Ltd<br />
                   Pune, Maharashtra<br />
@@ -170,27 +185,31 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Trust Badge */}
             <div className="mt-6 flex items-center gap-2 rounded-lg bg-[hsl(150,8%,16%)] px-3.5 py-2.5">
               <Leaf className="size-5 text-primary shrink-0" />
               <p className="text-xs text-[hsl(40,10%,55%)] leading-snug">
-                <span className="font-semibold text-primary">100% Genuine</span> products from certified sellers
+                <span className="font-semibold text-primary">{t("footer.genuine")}</span> {t("footer.genuine_desc")}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-[hsl(150,8%,18%)]">
         <div className="container flex flex-col sm:flex-row items-center justify-between gap-3 py-5">
           <p className="text-xs text-[hsl(40,10%,45%)]">
             © 2026 AbhiAgri Pvt Ltd. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <Link to="/privacy" className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">Privacy</Link>
-            <Link to="/terms" className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">Terms</Link>
-            <Link to="/returns" className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">Refunds</Link>
+            <Link to={lp("/privacy")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
+              {language === "hi" ? "गोपनीयता" : "Privacy"}
+            </Link>
+            <Link to={lp("/terms")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
+              {language === "hi" ? "शर्तें" : "Terms"}
+            </Link>
+            <Link to={lp("/returns")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
+              {language === "hi" ? "धनवापसी" : "Refunds"}
+            </Link>
           </div>
         </div>
       </div>

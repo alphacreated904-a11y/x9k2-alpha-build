@@ -14,40 +14,48 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 
 const MEGA_CATEGORIES = [
   {
-    name: "Seeds",
+    nameKey: "nav.seeds",
     icon: <Sprout className="size-5 text-primary" />,
     href: "/collection?cat=seeds",
-    description: "Hybrid & open-pollinated seeds for all crops",
+    descKey: "cat.seeds.desc",
     items: ["Vegetable Seeds", "Field Crop Seeds", "Flower Seeds", "Fodder Seeds"],
+    itemsHi: ["सब्जी के बीज", "फसल के बीज", "फूल के बीज", "चारा बीज"],
   },
   {
-    name: "Crop Protection",
+    nameKey: "nav.crop_protection",
     icon: <Shield className="size-5 text-primary" />,
     href: "/collection?cat=crop-protection",
-    description: "Insecticides, fungicides & herbicides",
+    descKey: "cat.crop_protection.desc",
     items: ["Insecticides", "Fungicides", "Herbicides", "Bio Pesticides"],
+    itemsHi: ["कीटनाशक", "फफूंदनाशक", "खरपतवारनाशक", "जैव कीटनाशक"],
   },
   {
-    name: "Nutrition",
+    nameKey: "nav.nutrition",
     icon: <Beaker className="size-5 text-primary" />,
     href: "/collection?cat=nutrition",
-    description: "Fertilizers, micronutrients & growth promoters",
+    descKey: "cat.nutrition.desc",
     items: ["NPK Fertilizers", "Micronutrients", "Organic Manure", "Growth Regulators"],
+    itemsHi: ["NPK उर्वरक", "सूक्ष्म पोषक तत्व", "जैविक खाद", "वृद्धि नियंत्रक"],
   },
   {
-    name: "Equipment",
+    nameKey: "nav.equipment",
     icon: <Wrench className="size-5 text-primary" />,
     href: "/collection?cat=equipment",
-    description: "Sprayers, tools & farm machinery",
+    descKey: "cat.equipment.desc",
     items: ["Sprayers", "Hand Tools", "Irrigation", "Safety Gear"],
+    itemsHi: ["स्प्रेयर", "हाथ के उपकरण", "सिंचाई", "सुरक्षा उपकरण"],
   },
 ];
 
 const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
+  const { language, t } = useLanguage();
+  const lp = useLocalizedPath();
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border/40">
@@ -66,19 +74,19 @@ const Navbar: React.FC = () => {
             </div>
             <nav className="space-y-6">
               {MEGA_CATEGORIES.map((cat) => (
-                <div key={cat.name}>
+                <div key={cat.nameKey}>
                   <Link
-                    to={cat.href}
+                    to={lp(cat.href)}
                     className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2"
                   >
                     {cat.icon}
-                    {cat.name}
+                    {t(cat.nameKey)}
                   </Link>
                   <div className="space-y-1 pl-7">
-                    {cat.items.map((item) => (
+                    {(language === "hi" ? cat.itemsHi : cat.items).map((item, idx) => (
                       <Link
-                        key={item}
-                        to={cat.href}
+                        key={idx}
+                        to={lp(cat.href)}
                         className="block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {item}
@@ -88,17 +96,17 @@ const Navbar: React.FC = () => {
                 </div>
               ))}
               <Link
-                to="/collection"
+                to={lp("/collection")}
                 className="block py-2 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
               >
-                Shop All
+                {t("nav.shop_all")}
               </Link>
             </nav>
           </SheetContent>
         </Sheet>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0">
+        <Link to={lp("/")} className="flex items-center gap-2 shrink-0">
           <img src={logoImg} alt="AbhiAgri" className="size-9 object-contain" />
           <span className="text-xl font-bold text-foreground tracking-tight">AbhiAgri</span>
         </Link>
@@ -107,24 +115,24 @@ const Navbar: React.FC = () => {
         <NavigationMenu className="hidden lg:flex mx-6">
           <NavigationMenuList className="gap-1">
             {MEGA_CATEGORIES.map((cat) => (
-              <NavigationMenuItem key={cat.name}>
+              <NavigationMenuItem key={cat.nameKey}>
                 <NavigationMenuTrigger className="h-9 px-3 text-sm font-medium bg-transparent hover:bg-secondary">
-                  {cat.name}
+                  {t(cat.nameKey)}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[480px] p-5">
                     <div className="flex items-center gap-2 mb-4">
                       {cat.icon}
                       <div>
-                        <p className="text-sm font-semibold text-foreground">{cat.name}</p>
-                        <p className="text-xs text-muted-foreground">{cat.description}</p>
+                        <p className="text-sm font-semibold text-foreground">{t(cat.nameKey)}</p>
+                        <p className="text-xs text-muted-foreground">{t(cat.descKey)}</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-1">
-                      {cat.items.map((item) => (
-                        <NavigationMenuLink key={item} asChild>
+                      {(language === "hi" ? cat.itemsHi : cat.items).map((item, idx) => (
+                        <NavigationMenuLink key={idx} asChild>
                           <Link
-                            to={cat.href}
+                            to={lp(cat.href)}
                             className="block rounded-lg p-3 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                           >
                             {item}
@@ -134,10 +142,10 @@ const Navbar: React.FC = () => {
                     </div>
                     <NavigationMenuLink asChild>
                       <Link
-                        to={cat.href}
+                        to={lp(cat.href)}
                         className="block mt-3 pt-3 border-t border-border text-sm font-semibold text-primary hover:underline"
                       >
-                        View all {cat.name} →
+                        {language === "hi" ? `सभी ${t(cat.nameKey)} देखें →` : `View all ${t(cat.nameKey)} →`}
                       </Link>
                     </NavigationMenuLink>
                   </div>
@@ -147,10 +155,10 @@ const Navbar: React.FC = () => {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
-                  to="/collection"
+                  to={lp("/collection")}
                   className="inline-flex h-9 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-secondary"
                 >
-                  Shop All
+                  {t("nav.shop_all")}
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -162,7 +170,7 @@ const Navbar: React.FC = () => {
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
             <Input
-              placeholder="Search seeds, pesticides, fertilizers..."
+              placeholder={t("nav.search_placeholder")}
               className="pl-10 pr-4 h-10 rounded-full bg-secondary border-0 text-sm placeholder:text-muted-foreground focus-visible:ring-primary/30"
             />
           </div>
@@ -173,8 +181,10 @@ const Navbar: React.FC = () => {
           <Button variant="ghost" size="icon" className="rounded-full sm:hidden">
             <Search className="size-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <User className="size-5" />
+          <Button variant="ghost" size="icon" className="rounded-full" asChild>
+            <Link to={lp("/login")}>
+              <User className="size-5" />
+            </Link>
           </Button>
           <Button variant="ghost" size="icon" className="relative rounded-full" onClick={openCart}>
             <ShoppingCart className="size-5" />

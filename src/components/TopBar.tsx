@@ -1,10 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Phone, Truck, PackageSearch, LogIn, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 
 const TopBar: React.FC = () => {
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const lp = useLocalizedPath();
+
+  const handleToggleLanguage = () => {
+    const currentPath = location.pathname + location.search;
+    if (language === "en") {
+      // Switch to Hindi: add /hi prefix
+      navigate(`/hi${currentPath === "/" ? "" : currentPath}`);
+    } else {
+      // Switch to English: remove /hi prefix
+      const englishPath = currentPath.replace(/^\/hi/, "") || "/";
+      navigate(englishPath);
+    }
+  };
 
   return (
     <div className="bg-primary text-primary-foreground">
@@ -28,7 +44,7 @@ const TopBar: React.FC = () => {
         <div className="flex items-center gap-0.5 sm:gap-1">
           {/* Language Toggle */}
           <button
-            onClick={toggleLanguage}
+            onClick={handleToggleLanguage}
             className="flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
             aria-label="Switch language"
           >
@@ -42,7 +58,7 @@ const TopBar: React.FC = () => {
 
           {/* Track Order */}
           <Link
-            to="/track-order"
+            to={lp("/track-order")}
             className="hidden sm:flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
           >
             <PackageSearch className="size-3.5" />
@@ -53,7 +69,7 @@ const TopBar: React.FC = () => {
 
           {/* Login */}
           <Link
-            to="/login"
+            to={lp("/login")}
             className="flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
           >
             <LogIn className="size-3.5" />
