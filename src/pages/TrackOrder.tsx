@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
+import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PackageSearch, ArrowRight } from "lucide-react";
-import logoImg from "@/assets/logo.webp";
+
 
 const TrackOrder: React.FC = () => {
   const { t } = useLanguage();
@@ -86,15 +87,7 @@ const TrackOrder: React.FC = () => {
         )}
       </div>
 
-      <footer className="border-t border-border py-10">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
-            <span className="font-semibold text-foreground">AbhiAgri</span>
-          </div>
-          <p className="text-sm text-muted-foreground">© 2026 AbhiAgri. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

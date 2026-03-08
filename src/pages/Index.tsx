@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Sprout, Shield, Beaker, Wrench, ArrowRight } from "lucide-react";
-import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
@@ -111,16 +111,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-10">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
-            <span className="font-semibold text-foreground">AbhiAgri</span>
-          </Link>
-          <p className="text-sm text-muted-foreground">© 2026 AbhiAgri. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
