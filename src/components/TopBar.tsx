@@ -24,7 +24,7 @@ const TopBar: React.FC = () => {
 
   return (
     <div className="bg-primary text-primary-foreground">
-      <div className="container px-4 sm:px-6 flex h-9 items-center justify-between text-xs font-medium">
+      <div className="container px-4 sm:px-6 flex h-9 items-center justify-end text-xs font-medium">
         {/* Left — delivery info */}
 
         {/* Mobile — phone */}
