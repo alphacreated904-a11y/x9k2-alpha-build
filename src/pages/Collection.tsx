@@ -281,15 +281,7 @@ const Collection = () => {
         </div>
       </div>
 
-      <footer className="border-t border-border py-10">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
-            <span className="font-semibold text-foreground">AbhiAgri</span>
-          </div>
-          <p className="text-sm text-muted-foreground">© 2026 AbhiAgri. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
