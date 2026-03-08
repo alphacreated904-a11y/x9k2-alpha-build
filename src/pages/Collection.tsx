@@ -104,11 +104,11 @@ const Collection = () => {
   // Filter products
   const filteredProducts = useMemo(() => {
     return ALL_PRODUCTS
-      .filter((p) => p.priceNum >= priceRange[0] && p.priceNum <= priceRange[1])
+      .filter((p) => p.basePrice >= priceRange[0] && p.basePrice <= priceRange[1])
       .sort((a, b) => {
         switch (sortBy) {
-          case "price-low": return a.priceNum - b.priceNum;
-          case "price-high": return b.priceNum - a.priceNum;
+          case "price-low": return a.basePrice - b.basePrice;
+          case "price-high": return b.basePrice - a.basePrice;
           case "name": return a.name.localeCompare(b.name);
           default: return 0;
         }
