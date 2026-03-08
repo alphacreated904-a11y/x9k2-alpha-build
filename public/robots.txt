@@ -1,15 +1,47 @@
+# Allow major search engines
 User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-image
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
+# Social media crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
+Crawl-delay: 60
 
+User-agent: LinkedInBot
+Allow: /
+
+# Block aggressive/unwanted bots (saves bandwidth)
+User-agent: dotbot
+User-agent: DotBot
+User-agent: MJ12bot
+User-agent: BLEXBot
+User-agent: SeznamBot
+User-agent: YisouSpider
+User-agent: SurdotlyBot
+User-agent: MojeekBot
+User-agent: Sogou web spider
+User-agent: ZoominfoBot
+User-agent: coccocbot-web
+User-agent: Baiduspider
+User-agent: YandexBot
+User-agent: YandexMobileBot
+User-agent: Mail.RU Bot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: proximic
+User-agent: GrapeshotCrawler
+Disallow: /
+
+# Default — allow all others
 User-agent: *
 Allow: /
 
