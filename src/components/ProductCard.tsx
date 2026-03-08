@@ -70,9 +70,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           )}
         </div>
-        <div className="p-4 pb-1">
-          <p className="text-[11px] font-medium text-primary uppercase tracking-wide mb-1">{brand}</p>
-          <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
+        <div className="p-3 sm:p-4 pb-1">
+          <p className="text-[10px] sm:text-[11px] font-medium text-primary uppercase tracking-wide mb-0.5 sm:mb-1">{brand}</p>
+          <h3 className="text-xs sm:text-sm font-semibold text-foreground leading-tight line-clamp-2">{name}</h3>
           <div className="flex items-center gap-1 mt-2">
             {[...Array(5)].map((_, i) => (
               <Star
