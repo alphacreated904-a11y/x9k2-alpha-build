@@ -206,10 +206,10 @@ const Collection = () => {
                   key={product.id}
                   id={product.id}
                   name={product.name}
-                  price={product.price}
+                  basePrice={product.basePrice}
                   image={product.image}
                   tag={product.tag}
-                  onAddToCart={(unit) => handleAddToCart(product.name, unit)}
+                  onAddToCart={(unit, price) => handleAddToCart(product.name, unit, price)}
                 />
               ))}
             </div>
