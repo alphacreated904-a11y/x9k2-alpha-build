@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Leaf, Search, ShoppingCart, User, ChevronDown, Menu } from "lucide-react";
+import { Leaf, Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +12,8 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 const CATEGORIES = [
   { name: "Vegetables", href: "/collection", description: "Fresh organic vegetables" },
@@ -31,6 +33,8 @@ const PAGES = [
 ];
 
 const Navbar: React.FC = () => {
+  const { totalItems, openCart } = useCart();
+
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border/40">
       <div className="container flex h-16 items-center gap-4">
@@ -160,11 +164,13 @@ const Navbar: React.FC = () => {
           <Button variant="ghost" size="icon" className="rounded-full">
             <User className="size-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="relative rounded-full">
+          <Button variant="ghost" size="icon" className="relative rounded-full" onClick={openCart}>
             <ShoppingCart className="size-5" />
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">
-              2
-            </span>
+            {totalItems > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">
+                {totalItems > 9 ? "9+" : totalItems}
+              </span>
+            )}
           </Button>
         </div>
       </div>

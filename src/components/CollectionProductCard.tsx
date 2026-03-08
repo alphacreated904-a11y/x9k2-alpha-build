@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AddToCartButton } from "@/components/AddToCartButton";
+import { formatINR } from "@/contexts/CartContext";
 import {
   Select,
   SelectContent,
@@ -11,7 +12,7 @@ import {
 
 interface UnitOption {
   label: string;
-  price: number;
+  multiplier: number;
 }
 
 interface CollectionProductCardProps {
@@ -25,9 +26,9 @@ interface CollectionProductCardProps {
 }
 
 const DEFAULT_UNITS: UnitOption[] = [
-  { label: "1 kg", price: 1 },
-  { label: "500 g", price: 0.55 },
-  { label: "250 g", price: 0.3 },
+  { label: "1 kg", multiplier: 1 },
+  { label: "500 g", multiplier: 0.55 },
+  { label: "250 g", multiplier: 0.3 },
 ];
 
 const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
@@ -40,7 +41,7 @@ const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
   [units, selectedUnit]);
 
   const currentPrice = useMemo(() => 
-    (basePrice * currentUnit.price).toFixed(2),
+    Math.round(basePrice * currentUnit.multiplier),
   [basePrice, currentUnit]);
 
   return (
@@ -65,7 +66,7 @@ const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
       </Link>
       <div className="p-4 pt-3 space-y-3">
         <div className="flex items-baseline gap-1">
-          <span className="text-lg font-bold text-primary">${currentPrice}</span>
+          <span className="text-lg font-bold text-primary">{formatINR(currentPrice)}</span>
           <span className="text-xs text-muted-foreground">/ {selectedUnit}</span>
         </div>
         <Select value={selectedUnit} onValueChange={setSelectedUnit}>
@@ -75,13 +76,13 @@ const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
           <SelectContent>
             {units.map((u) => (
               <SelectItem key={u.label} value={u.label} className="text-xs">
-                {u.label} — ${(basePrice * u.price).toFixed(2)}
+                {u.label} — {formatINR(Math.round(basePrice * u.multiplier))}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <AddToCartButton
-          onAddToCart={() => onAddToCart?.(selectedUnit, parseFloat(currentPrice))}
+          onAddToCart={() => onAddToCart?.(selectedUnit, currentPrice)}
           label="Add to Cart"
           addedLabel="Added!"
           variant="default"

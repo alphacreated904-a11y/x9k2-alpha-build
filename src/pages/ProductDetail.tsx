@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { ProductGallery } from "@/components/ProductGallery";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCart, formatINR } from "@/contexts/CartContext";
 import { toast } from "sonner";
 
 import vegImage from "@/assets/product-vegetables.jpg";
@@ -14,11 +15,12 @@ import breadImage from "@/assets/product-bread.jpg";
 
 // Mock product data
 const PRODUCT = {
+  id: "1",
   name: "Organic Harvest Box – Premium Selection",
   brand: "Green Acres Farm",
   sku: "GAF-VEG-001",
-  originalPrice: 56,
-  price: 42,
+  originalPrice: 4650,
+  price: 3500,
   unit: "box",
   rating: 4.8,
   reviewCount: 124,
@@ -36,12 +38,12 @@ const PRODUCT = {
     </ul>
   `,
   specs: [
-    { label: "Weight", value: "5–6 lbs (varies by season)" },
+    { label: "Weight", value: "2.5–3 kg (varies by season)" },
     { label: "Servings", value: "4–6 people" },
-    { label: "Certification", value: "USDA Organic, Non-GMO Project Verified" },
-    { label: "Origin", value: "Local farms within 50 miles" },
+    { label: "Certification", value: "India Organic, Non-GMO Verified" },
+    { label: "Origin", value: "Local farms within 50 km" },
     { label: "Shelf Life", value: "5–7 days refrigerated" },
-    { label: "Storage", value: "Refrigerate at 35–40°F" },
+    { label: "Storage", value: "Refrigerate at 2–4°C" },
     { label: "Packaging", value: "100% compostable materials" },
   ],
   dosage: `
@@ -83,10 +85,18 @@ const PRODUCT = {
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
+  const { addItem } = useCart();
 
   const savings = Math.round(((PRODUCT.originalPrice - PRODUCT.price) / PRODUCT.originalPrice) * 100);
 
   const handleAddToCart = () => {
+    addItem({
+      id: PRODUCT.id,
+      name: PRODUCT.name,
+      price: PRODUCT.price,
+      unit: PRODUCT.unit,
+      image: PRODUCT.images[0],
+    }, quantity);
     toast.success(`${quantity}x ${PRODUCT.name} added to cart`);
   };
 
@@ -136,8 +146,8 @@ const ProductDetail = () => {
 
             {/* Pricing */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-foreground">${PRODUCT.price}</span>
-              <span className="text-lg text-muted-foreground line-through">${PRODUCT.originalPrice}</span>
+              <span className="text-3xl font-bold text-foreground">{formatINR(PRODUCT.price)}</span>
+              <span className="text-lg text-muted-foreground line-through">{formatINR(PRODUCT.originalPrice)}</span>
               <span className="inline-flex items-center rounded-full bg-accent/20 px-3 py-1 text-sm font-semibold text-accent-foreground">
                 Save {savings}%
               </span>
@@ -167,7 +177,7 @@ const ProductDetail = () => {
               </div>
 
               <Button onClick={handleAddToCart} variant="default" size="xl" className="w-full text-base font-semibold">
-                Add to Cart — ${PRODUCT.price * quantity}
+                Add to Cart — {formatINR(PRODUCT.price * quantity)}
               </Button>
             </div>
 

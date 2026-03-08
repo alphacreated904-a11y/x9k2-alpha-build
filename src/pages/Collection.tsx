@@ -8,6 +8,7 @@ import { ActiveFilters, type ActiveFilter } from "@/components/ActiveFilters";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useCart, formatINR } from "@/contexts/CartContext";
 import { toast } from "sonner";
 
 import vegImage from "@/assets/product-vegetables.jpg";
@@ -39,26 +40,27 @@ const PESTS: FilterOption[] = [
 ];
 
 const ALL_PRODUCTS = [
-  { id: "1", name: "Organic Harvest Box", basePrice: 42, image: vegImage, tag: "Bestseller" },
-  { id: "2", name: "Seasonal Fruit Crate", basePrice: 38, image: fruitImage, tag: "New" },
-  { id: "3", name: "Raw Wildflower Honey", basePrice: 18, image: honeyImage },
-  { id: "4", name: "Artisan Sourdough", basePrice: 12, image: breadImage },
-  { id: "5", name: "Heirloom Tomatoes", basePrice: 8, image: vegImage },
-  { id: "6", name: "Mixed Berry Basket", basePrice: 24, image: fruitImage },
-  { id: "7", name: "Pure Maple Syrup", basePrice: 16, image: honeyImage },
-  { id: "8", name: "Rustic Rye Bread", basePrice: 10, image: breadImage },
-  { id: "9", name: "Baby Spinach Pack", basePrice: 6, image: vegImage, tag: "Organic" },
-  { id: "10", name: "Citrus Variety Box", basePrice: 32, image: fruitImage },
-  { id: "11", name: "Creamed Honey", basePrice: 22, image: honeyImage },
-  { id: "12", name: "Multigrain Loaf", basePrice: 14, image: breadImage },
+  { id: "1", name: "Organic Harvest Box", basePrice: 3500, image: vegImage, tag: "Bestseller" },
+  { id: "2", name: "Seasonal Fruit Crate", basePrice: 3200, image: fruitImage, tag: "New" },
+  { id: "3", name: "Raw Wildflower Honey", basePrice: 1500, image: honeyImage },
+  { id: "4", name: "Artisan Sourdough", basePrice: 1000, image: breadImage },
+  { id: "5", name: "Heirloom Tomatoes", basePrice: 650, image: vegImage },
+  { id: "6", name: "Mixed Berry Basket", basePrice: 2000, image: fruitImage },
+  { id: "7", name: "Pure Maple Syrup", basePrice: 1350, image: honeyImage },
+  { id: "8", name: "Rustic Rye Bread", basePrice: 850, image: breadImage },
+  { id: "9", name: "Baby Spinach Pack", basePrice: 500, image: vegImage, tag: "Organic" },
+  { id: "10", name: "Citrus Variety Box", basePrice: 2700, image: fruitImage },
+  { id: "11", name: "Creamed Honey", basePrice: 1800, image: honeyImage },
+  { id: "12", name: "Multigrain Loaf", basePrice: 1150, image: breadImage },
 ];
 
 const Collection = () => {
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedCropTypes, setSelectedCropTypes] = useState<string[]>([]);
   const [selectedPests, setSelectedPests] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("featured");
+  const { addItem } = useCart();
 
   const toggle = useCallback((list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id]
@@ -67,8 +69,8 @@ const Collection = () => {
   // Build active filters
   const activeFilters = useMemo<ActiveFilter[]>(() => {
     const filters: ActiveFilter[] = [];
-    if (priceRange[0] > 0 || priceRange[1] < 200) {
-      filters.push({ id: "price", label: `$${priceRange[0]} – $${priceRange[1]}`, category: "price" });
+    if (priceRange[0] > 0 || priceRange[1] < 5000) {
+      filters.push({ id: "price", label: `${formatINR(priceRange[0])} – ${formatINR(priceRange[1])}`, category: "price" });
     }
     selectedBrands.forEach((id) => {
       const b = BRANDS.find((x) => x.id === id);
@@ -87,7 +89,7 @@ const Collection = () => {
 
   const removeFilter = useCallback((filter: ActiveFilter) => {
     switch (filter.category) {
-      case "price": setPriceRange([0, 200]); break;
+      case "price": setPriceRange([0, 5000]); break;
       case "brand": setSelectedBrands((s) => s.filter((x) => x !== filter.id)); break;
       case "crop": setSelectedCropTypes((s) => s.filter((x) => x !== filter.id)); break;
       case "pest": setSelectedPests((s) => s.filter((x) => x !== filter.id)); break;
@@ -95,7 +97,7 @@ const Collection = () => {
   }, []);
 
   const clearAll = useCallback(() => {
-    setPriceRange([0, 200]);
+    setPriceRange([0, 5000]);
     setSelectedBrands([]);
     setSelectedCropTypes([]);
     setSelectedPests([]);
@@ -115,8 +117,15 @@ const Collection = () => {
       });
   }, [priceRange, sortBy]);
 
-  const handleAddToCart = (name: string, unit: string, price: number) => {
-    toast.success(`${name} (${unit}) — $${price.toFixed(2)} added to cart`);
+  const handleAddToCart = (product: typeof ALL_PRODUCTS[0], unit: string, price: number) => {
+    addItem({
+      id: `${product.id}-${unit}`,
+      name: product.name,
+      price,
+      unit,
+      image: product.image,
+    });
+    toast.success(`${product.name} (${unit}) — ${formatINR(price)} added to cart`);
   };
 
   const filterSidebarContent = (
@@ -132,6 +141,7 @@ const Collection = () => {
       pests={PESTS}
       selectedPests={selectedPests}
       onPestToggle={(id) => setSelectedPests((s) => toggle(s, id))}
+      maxPrice={5000}
     />
   );
 
@@ -209,7 +219,7 @@ const Collection = () => {
                   basePrice={product.basePrice}
                   image={product.image}
                   tag={product.tag}
-                  onAddToCart={(unit, price) => handleAddToCart(product.name, unit, price)}
+                  onAddToCart={(unit, price) => handleAddToCart(product, unit, price)}
                 />
               ))}
             </div>
