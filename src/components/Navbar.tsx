@@ -61,8 +61,8 @@ const Navbar: React.FC = () => {
           </SheetTrigger>
           <SheetContent side="left" className="w-80 p-6 overflow-y-auto">
             <div className="flex items-center gap-2 mb-8">
-              <img src={logoImg} alt="AgriMart" className="size-8 object-contain" />
-              <span className="text-lg font-bold text-foreground">AgriMart</span>
+              <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
+              <span className="text-lg font-bold text-foreground">AbhiAgri</span>
             </div>
             <nav className="space-y-6">
               {MEGA_CATEGORIES.map((cat) => (
