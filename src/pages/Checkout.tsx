@@ -94,7 +94,7 @@ const Checkout: React.FC = () => {
     );
   }
 
-  const shipping = totalPrice > 500 ? 0 : 50;
+  const shipping = totalPrice > 999 ? 0 : 99;
   const grandTotal = totalPrice + shipping;
 
   return (
@@ -265,9 +265,9 @@ const Checkout: React.FC = () => {
                     {shipping === 0 ? "Free" : formatINR(shipping)}
                   </span>
                 </div>
-                {totalPrice <= 500 && (
+                {totalPrice <= 999 && (
                   <p className="text-xs text-muted-foreground">
-                    Free shipping on orders above ₹500
+                    Free shipping on orders above ₹999
                   </p>
                 )}
               </div>
