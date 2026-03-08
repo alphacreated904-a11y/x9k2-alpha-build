@@ -7,6 +7,7 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { HeroSlider } from "@/components/HeroSlider";
+import { useCart, formatINR } from "@/contexts/CartContext";
 import { toast } from "sonner";
 
 import vegImage from "@/assets/product-vegetables.jpg";
@@ -15,14 +16,14 @@ import honeyImage from "@/assets/product-honey.jpg";
 import breadImage from "@/assets/product-bread.jpg";
 
 const PRODUCTS = [
-  { id: "1", name: "Organic Harvest Box", price: "$42", unit: "box", image: vegImage, tag: "Bestseller" },
-  { id: "2", name: "Seasonal Fruit Crate", price: "$38", unit: "crate", image: fruitImage, tag: "New" },
-  { id: "3", name: "Raw Wildflower Honey", price: "$18", unit: "jar", image: honeyImage },
-  { id: "4", name: "Artisan Sourdough", price: "$12", unit: "loaf", image: breadImage },
-  { id: "5", name: "Farm Fresh Eggs", price: "$8", unit: "dozen", image: vegImage },
-  { id: "6", name: "Mixed Berry Basket", price: "$24", unit: "basket", image: fruitImage },
-  { id: "7", name: "Pure Maple Syrup", price: "$16", unit: "bottle", image: honeyImage },
-  { id: "8", name: "Rustic Rye Bread", price: "$10", unit: "loaf", image: breadImage },
+  { id: "1", name: "Organic Harvest Box", price: 3500, unit: "box", image: vegImage, tag: "Bestseller" },
+  { id: "2", name: "Seasonal Fruit Crate", price: 3200, unit: "crate", image: fruitImage, tag: "New" },
+  { id: "3", name: "Raw Wildflower Honey", price: 1500, unit: "jar", image: honeyImage },
+  { id: "4", name: "Artisan Sourdough", price: 1000, unit: "loaf", image: breadImage },
+  { id: "5", name: "Farm Fresh Eggs", price: 650, unit: "dozen", image: vegImage },
+  { id: "6", name: "Mixed Berry Basket", price: 2000, unit: "basket", image: fruitImage },
+  { id: "7", name: "Pure Maple Syrup", price: 1350, unit: "bottle", image: honeyImage },
+  { id: "8", name: "Rustic Rye Bread", price: 850, unit: "loaf", image: breadImage },
 ];
 
 const CATEGORIES = [
@@ -37,8 +38,17 @@ const CATEGORIES = [
 ];
 
 const Index = () => {
-  const handleAddToCart = (name: string) => {
-    toast.success(`${name} added to cart`);
+  const { addItem } = useCart();
+
+  const handleAddToCart = (product: typeof PRODUCTS[0]) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      unit: product.unit,
+      image: product.image,
+    });
+    toast.success(`${product.name} added to cart`);
   };
 
   return (
@@ -82,7 +92,8 @@ const Index = () => {
               <ProductCard
                 key={product.id}
                 {...product}
-                onAddToCart={() => handleAddToCart(product.name)}
+                price={formatINR(product.price)}
+                onAddToCart={() => handleAddToCart(product)}
               />
             ))}
           </div>
@@ -96,7 +107,7 @@ const Index = () => {
             Join 10,000+ families eating better
           </h2>
           <p className="text-primary-foreground/80 max-w-lg mx-auto text-base md:text-lg">
-            Get weekly deliveries of the freshest organic produce, sourced within 50 miles of your home.
+            Get weekly deliveries of the freshest organic produce, sourced within 50 km of your home.
           </p>
           <Button variant="accent" size="xl" asChild>
             <Link to="/collection">Get Started Today <ArrowRight className="size-5" /></Link>
