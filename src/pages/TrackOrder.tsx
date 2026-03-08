@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { PackageSearch, ArrowRight } from "lucide-react";
 
-
 const TrackOrder: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const lp = useLocalizedPath();
   const [orderId, setOrderId] = useState("");
   const [searched, setSearched] = useState(false);
 
@@ -19,6 +20,13 @@ const TrackOrder: React.FC = () => {
     e.preventDefault();
     if (orderId.trim()) setSearched(true);
   };
+
+  const TIMELINE = [
+    { label: language === "hi" ? "ऑर्डर दिया गया" : "Order Placed", time: language === "hi" ? "अभी" : "Just now", active: true },
+    { label: language === "hi" ? "प्रोसेसिंग" : "Processing", time: language === "hi" ? "लंबित" : "Pending", active: false },
+    { label: language === "hi" ? "शिप किया गया" : "Shipped", time: language === "hi" ? "लंबित" : "Pending", active: false },
+    { label: language === "hi" ? "डिलीवर किया गया" : "Delivered", time: language === "hi" ? "लंबित" : "Pending", active: false },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,9 +41,7 @@ const TrackOrder: React.FC = () => {
         </div>
 
         <h1 className="text-2xl font-bold text-foreground mb-2">{t("track.title")}</h1>
-        <p className="text-muted-foreground mb-8">
-          Enter your order ID to see the latest status and delivery updates.
-        </p>
+        <p className="text-muted-foreground mb-8">{t("track.subtitle")}</p>
 
         <form onSubmit={handleTrack} className="flex gap-3 max-w-sm mx-auto">
           <Input
@@ -59,18 +65,14 @@ const TrackOrder: React.FC = () => {
               </div>
               <div>
                 <p className="font-semibold text-foreground">{orderId}</p>
-                <p className="text-xs text-muted-foreground">Estimated delivery: 3-5 business days</p>
+                <p className="text-xs text-muted-foreground">
+                  {language === "hi" ? "अनुमानित डिलीवरी: 3-5 व्यावसायिक दिन" : "Estimated delivery: 3-5 business days"}
+                </p>
               </div>
             </div>
 
-            {/* Timeline */}
             <div className="space-y-0 ml-2">
-              {[
-                { label: "Order Placed", time: "Just now", active: true },
-                { label: "Processing", time: "Pending", active: false },
-                { label: "Shipped", time: "Pending", active: false },
-                { label: "Delivered", time: "Pending", active: false },
-              ].map((step, i) => (
+              {TIMELINE.map((step, i) => (
                 <div key={step.label} className="flex gap-3">
                   <div className="flex flex-col items-center">
                     <div className={`h-3 w-3 rounded-full border-2 ${step.active ? "bg-primary border-primary" : "bg-background border-border"}`} />

@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { SlidersHorizontal, Clock } from "lucide-react";
-import logoImg from "@/assets/logo.webp";
 import { Footer } from "@/components/Footer";
 import { useSearchParams, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
@@ -12,14 +11,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart, formatINR } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { ALL_PRODUCTS, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES } from "@/data/products";
 import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 8;
 
+const CATEGORY_NAMES_HI: Record<string, string> = {
+  seeds: "बीज",
+  "crop-protection": "फसल सुरक्षा",
+  nutrition: "पोषण",
+  equipment: "उपकरण",
+};
+
 const Collection = () => {
   const [searchParams] = useSearchParams();
   const categoryFilter = searchParams.get("cat") || "";
+  const { language, t } = useLanguage();
+  const lp = useLocalizedPath();
 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
@@ -37,7 +47,7 @@ const Collection = () => {
     const filters: ActiveFilter[] = [];
     if (categoryFilter) {
       const cat = CATEGORIES.find(c => c.id === categoryFilter);
-      if (cat) filters.push({ id: categoryFilter, label: cat.name, category: "category" });
+      if (cat) filters.push({ id: categoryFilter, label: language === "hi" ? CATEGORY_NAMES_HI[cat.id] || cat.name : cat.name, category: "category" });
     }
     if (priceRange[0] > 0 || priceRange[1] < 5000) {
       filters.push({ id: "price", label: `${formatINR(priceRange[0])} – ${formatINR(priceRange[1])}`, category: "price" });
@@ -55,7 +65,7 @@ const Collection = () => {
       if (p) filters.push({ id, label: p.label, category: "pest" });
     });
     return filters;
-  }, [categoryFilter, priceRange, selectedBrands, selectedCropTypes, selectedPests]);
+  }, [categoryFilter, priceRange, selectedBrands, selectedCropTypes, selectedPests, language]);
 
   const removeFilter = useCallback((filter: ActiveFilter) => {
     switch (filter.category) {
@@ -73,7 +83,6 @@ const Collection = () => {
     setSelectedPests([]);
   }, []);
 
-  // Show "Coming Soon" for categories with no products
   const categoryProductCount = useMemo(() => {
     if (!categoryFilter) return ALL_PRODUCTS.length;
     return ALL_PRODUCTS.filter(p => p.category === categoryFilter).length;
@@ -114,8 +123,10 @@ const Collection = () => {
   };
 
   const pageTitle = categoryFilter
-    ? CATEGORIES.find(c => c.id === categoryFilter)?.name || "Products"
-    : "All Products";
+    ? (language === "hi"
+        ? CATEGORY_NAMES_HI[categoryFilter] || CATEGORIES.find(c => c.id === categoryFilter)?.name || t("common.products")
+        : CATEGORIES.find(c => c.id === categoryFilter)?.name || "Products")
+    : t("collection.all_products");
 
   const filterSidebarContent = (
     <FilterSidebar
@@ -141,8 +152,8 @@ const Collection = () => {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
-        "item": `${window.location.origin}/`
+        "name": t("common.home"),
+        "item": `${window.location.origin}${lp("/")}`
       },
       {
         "@type": "ListItem",
@@ -161,10 +172,9 @@ const Collection = () => {
       <TopBar />
       <Navbar />
 
-      {/* Breadcrumb */}
       <div className="container py-4">
         <nav className="text-xs text-muted-foreground">
-          <a href="/" className="hover:text-foreground transition-colors min-h-0 min-w-0">Home</a>
+          <Link to={lp("/")} className="hover:text-foreground transition-colors min-h-0 min-w-0">{t("common.home")}</Link>
           <span className="mx-2">/</span>
           <span className="text-foreground font-medium">{pageTitle}</span>
         </nav>
@@ -172,24 +182,22 @@ const Collection = () => {
 
       <div className="container pb-16">
         <div className="flex gap-8">
-          {/* Desktop Sidebar */}
           <div className="hidden lg:block w-60 shrink-0">
             {filterSidebarContent}
           </div>
 
-          {/* Main Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-2xl font-bold text-foreground tracking-tight">{pageTitle}</h1>
-                <p className="text-sm text-muted-foreground mt-0.5">{filteredProducts.length} products</p>
+                <p className="text-sm text-muted-foreground mt-0.5">{filteredProducts.length} {t("collection.products_count")}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="outline" size="default" className="lg:hidden rounded-full gap-2">
                       <SlidersHorizontal className="size-4" />
-                      Filters
+                      {t("collection.filters")}
                     </Button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-80 p-6 overflow-y-auto">
@@ -202,11 +210,11 @@ const Collection = () => {
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="featured">Featured</SelectItem>
-                    <SelectItem value="price-low">Price: Low to High</SelectItem>
-                    <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="rating">Top Rated</SelectItem>
-                    <SelectItem value="name">Name: A–Z</SelectItem>
+                    <SelectItem value="featured">{t("collection.sort.featured")}</SelectItem>
+                    <SelectItem value="price-low">{t("collection.sort.price_low")}</SelectItem>
+                    <SelectItem value="price-high">{t("collection.sort.price_high")}</SelectItem>
+                    <SelectItem value="rating">{t("collection.sort.rating")}</SelectItem>
+                    <SelectItem value="name">{t("collection.sort.name")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -218,7 +226,6 @@ const Collection = () => {
               </div>
             )}
 
-            {/* Coming Soon State */}
             {isComingSoon && (
               <div className="py-20 text-center">
                 <div className="flex justify-center mb-6">
@@ -226,13 +233,14 @@ const Collection = () => {
                     <Clock className="size-10 text-accent" />
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground mb-2">Coming Soon!</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-2">{t("collection.coming_soon")}</h2>
                 <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                  We're working hard to bring you the best {pageTitle.toLowerCase()} products. 
-                  Check back soon or browse our other categories.
+                  {language === "hi"
+                    ? `हम आपके लिए सबसे अच्छे ${pageTitle.toLowerCase()} उत्पाद लाने के लिए कड़ी मेहनत कर रहे हैं।`
+                    : `We're working hard to bring you the best ${pageTitle.toLowerCase()} products. Check back soon or browse our other categories.`}
                 </p>
                 <Button variant="default" asChild>
-                  <Link to="/collection">Browse All Products</Link>
+                  <Link to={lp("/collection")}>{t("collection.browse_all")}</Link>
                 </Button>
               </div>
             )}
@@ -260,12 +268,11 @@ const Collection = () => {
 
             {!isComingSoon && filteredProducts.length === 0 && (
               <div className="py-20 text-center">
-                <p className="text-muted-foreground">No products match your filters.</p>
-                <Button variant="link" onClick={clearAll} className="mt-2">Clear all filters</Button>
+                <p className="text-muted-foreground">{t("collection.no_match")}</p>
+                <Button variant="link" onClick={clearAll} className="mt-2">{t("collection.clear_all")}</Button>
               </div>
             )}
 
-            {/* Load More */}
             {!isComingSoon && hasMore && (
               <div className="flex justify-center mt-10">
                 <Button
@@ -274,7 +281,7 @@ const Collection = () => {
                   className="rounded-full px-10"
                   onClick={() => setVisibleCount(v => v + ITEMS_PER_PAGE)}
                 >
-                  Load More Products ({filteredProducts.length - visibleCount} remaining)
+                  {t("collection.load_more")} ({filteredProducts.length - visibleCount} {t("collection.remaining")})
                 </Button>
               </div>
             )}
