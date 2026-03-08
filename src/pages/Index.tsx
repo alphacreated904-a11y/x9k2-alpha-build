@@ -57,12 +57,12 @@ const Index = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">{t("index.shop_by_category")}</h2>
           <p className="mt-1.5 sm:mt-2 text-muted-foreground text-xs sm:text-sm">{t("index.category_subtitle")}</p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.id}
               to={lp(`/collection?cat=${cat.id}`)}
-              className="card-hover flex flex-col items-center gap-3 rounded-2xl bg-card p-6 md:p-8 text-center transition-all duration-200 hover:bg-secondary/50 border-0"
+              className="card-hover flex flex-col items-center gap-2 sm:gap-3 rounded-2xl bg-card p-4 sm:p-6 md:p-8 text-center transition-all duration-200 hover:bg-secondary/50 border-0"
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 {CATEGORY_ICONS[cat.id]}
