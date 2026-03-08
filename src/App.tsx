@@ -30,6 +30,7 @@ const App = () => (
               <Sonner />
               <CartDrawer />
               <WishlistDrawer />
+              <FloatingContact />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/collection" element={<Collection />} />
