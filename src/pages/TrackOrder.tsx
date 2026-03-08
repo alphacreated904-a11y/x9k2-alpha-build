@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PackageSearch, ArrowRight } from "lucide-react";
-import logoImg from "@/assets/logo.webp";
+
 
 const TrackOrder: React.FC = () => {
   const { t } = useLanguage();

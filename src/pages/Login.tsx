@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Leaf, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
-import logoImg from "@/assets/logo.webp";
+
 
 const Login: React.FC = () => {
   const { t } = useLanguage();
