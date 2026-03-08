@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { SlidersHorizontal, Leaf, Clock } from "lucide-react";
+import { SlidersHorizontal, Clock } from "lucide-react";
+import logoImg from "@/assets/logo.webp";
 import { useSearchParams, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
@@ -261,7 +262,7 @@ const Collection = () => {
       <footer className="border-t border-border py-10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <Leaf className="size-5 text-primary" />
+            <img src={logoImg} alt="AgriMart" className="size-8 object-contain" />
             <span className="font-semibold text-foreground">AgriMart</span>
           </div>
           <p className="text-sm text-muted-foreground">© 2026 AgriMart. All rights reserved.</p>
