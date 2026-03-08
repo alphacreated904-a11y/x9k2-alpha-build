@@ -79,18 +79,18 @@ const Index = () => {
       </section>
 
       {/* Best Sellers */}
-      <section className="bg-secondary/30 py-16 md:py-20">
-        <div className="container">
-          <div className="mb-10 flex items-end justify-between">
+      <section className="bg-secondary/30 py-10 sm:py-16 md:py-20">
+        <div className="container px-4 sm:px-6">
+          <div className="mb-6 sm:mb-10 flex items-end justify-between">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">{t("index.best_sellers")}</h2>
-              <p className="mt-2 text-muted-foreground text-sm">{t("index.best_sellers_subtitle")}</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">{t("index.best_sellers")}</h2>
+              <p className="mt-1.5 sm:mt-2 text-muted-foreground text-xs sm:text-sm">{t("index.best_sellers_subtitle")}</p>
             </div>
             <Button variant="link" className="hidden sm:flex text-primary" asChild>
               <Link to={lp("/collection")}>{t("index.view_all")} <ArrowRight className="size-4" /></Link>
             </Button>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {BEST_SELLERS.map((product) => (
               <ProductCard
                 key={product.id}
