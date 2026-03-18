@@ -90,6 +90,17 @@ const CartDrawer: React.FC = () => {
                 <span className="font-semibold text-foreground">{t("cart.total")}</span>
                 <span className="font-bold text-lg text-foreground">{formatINR(totalPrice)}</span>
               </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {t("policy.cart_note")}{" "}
+                <Link
+                  to={lp("/return-refund-policy")}
+                  onClick={closeCart}
+                  className="underline text-primary hover:text-primary/80 transition-colors"
+                >
+                  {t("policy.cart_note_link")}
+                </Link>
+                {t("policy.cart_note_suffix") ? ` ${t("policy.cart_note_suffix")}` : ""}
+              </p>
               <Button variant="default" size="lg" className="w-full" asChild onClick={closeCart}>
                 <Link to={lp("/checkout")}>{t("cart.checkout")}</Link>
               </Button>

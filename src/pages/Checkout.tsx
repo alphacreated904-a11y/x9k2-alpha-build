@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useCart, formatINR } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { toast } from "sonner";
 import { CheckCircle2 } from "lucide-react";
 
@@ -16,6 +19,9 @@ const Checkout: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [agreePolicy, setAgreePolicy] = useState(false);
+  const { t } = useLanguage();
+  const lp = useLocalizedPath();
 
   const [form, setForm] = useState({
     email: "",
@@ -64,12 +70,17 @@ const Checkout: React.FC = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">Order Confirmed!</h1>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-muted-foreground mb-4">
             Thank you for your order. Your order ID is <span className="font-semibold text-foreground">{orderId}</span>
           </p>
-          <p className="text-sm text-muted-foreground mb-8">
+          <p className="text-sm text-muted-foreground mb-4">
             We've sent a confirmation email to <span className="font-medium">{form.email}</span>
           </p>
+          <div className="rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-4 mb-8 text-left">
+            <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed font-medium">
+              {t("policy.order_warning")}
+            </p>
+          </div>
           <Button variant="default" onClick={() => navigate("/collection")}>
             Continue Shopping
           </Button>
@@ -224,7 +235,29 @@ const Checkout: React.FC = () => {
               </div>
             </div>
 
-            <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="agreePolicy"
+                  checked={agreePolicy}
+                  onCheckedChange={(checked) => setAgreePolicy(checked === true)}
+                  className="mt-0.5"
+                />
+                <Label htmlFor="agreePolicy" className="text-sm leading-relaxed cursor-pointer">
+                  {t("policy.checkbox")}{" "}
+                  <Link
+                    to={lp("/return-refund-policy")}
+                    target="_blank"
+                    className="underline text-primary hover:text-primary/80 transition-colors"
+                  >
+                    {t("policy.checkbox_link")}
+                  </Link>
+                  {t("policy.checkbox_suffix") ? ` ${t("policy.checkbox_suffix")}` : ""}
+                </Label>
+              </div>
+            </div>
+
+            <Button type="submit" size="lg" className="w-full" disabled={isProcessing || !agreePolicy}>
               {isProcessing ? "Processing..." : `Place Order — ${formatINR(grandTotal)}`}
             </Button>
           </form>

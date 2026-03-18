@@ -14,6 +14,7 @@ import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
+import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
 import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -39,6 +40,7 @@ const App = () => (
                 <Route path="/collection" element={<Collection />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/track-order" element={<TrackOrder />} />
                 <Route path="/login" element={<Login />} />
                 {/* Hindi routes — relative paths under /hi */}
@@ -46,6 +48,7 @@ const App = () => (
                 <Route path="/hi/collection" element={<Collection />} />
                 <Route path="/hi/product/:id" element={<ProductDetail />} />
                 <Route path="/hi/checkout" element={<Checkout />} />
+                <Route path="/hi/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/hi/track-order" element={<TrackOrder />} />
                 <Route path="/hi/login" element={<Login />} />
                 {/* Catch-all */}

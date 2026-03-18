@@ -9,7 +9,7 @@ const QUICK_LINKS_EN = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy" },
-  { label: "Return & Refund Policy", href: "/returns" },
+  { label: "Return & Refund Policy", href: "/return-refund-policy" },
   { label: "Terms of Service", href: "/terms" },
   { label: "Shipping Policy", href: "/shipping" },
   { label: "FAQ", href: "/faq" },
@@ -20,7 +20,7 @@ const QUICK_LINKS_HI = [
   { label: "हमारे बारे में", href: "/about" },
   { label: "हमसे संपर्क करें", href: "/contact" },
   { label: "गोपनीयता नीति", href: "/privacy" },
-  { label: "वापसी और धनवापसी नीति", href: "/returns" },
+  { label: "वापसी और धनवापसी नीति", href: "/return-refund-policy" },
   { label: "सेवा की शर्तें", href: "/terms" },
   { label: "शिपिंग नीति", href: "/shipping" },
   { label: "अक्सर पूछे जाने वाले प्रश्न", href: "/faq" },
@@ -207,7 +207,7 @@ const Footer: React.FC = () => {
             <Link to={lp("/terms")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
               {language === "hi" ? "शर्तें" : "Terms"}
             </Link>
-            <Link to={lp("/returns")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
+            <Link to={lp("/return-refund-policy")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
               {language === "hi" ? "धनवापसी" : "Refunds"}
             </Link>
           </div>

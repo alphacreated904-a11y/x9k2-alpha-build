@@ -198,6 +198,9 @@ const ProductDetail = () => {
               <Button onClick={handleAddToCart} variant="default" size="xl" className="w-full text-base font-semibold">
                 {t("common.add_to_cart")} — {formatINR(currentPrice * quantity)}
               </Button>
+              <p className="text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 rounded-lg px-3 py-2 leading-relaxed">
+                {t("policy.product_warning")}
+              </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
