@@ -105,6 +105,15 @@ const TRANSLATIONS: Translations = {
   "product.target_pests": { en: "Target Pests", hi: "लक्षित कीट" },
   "product.description": { en: "Description", hi: "विवरण" },
   "product.specs": { en: "Technical Specs", hi: "तकनीकी विशेषताएं" },
+  // Policy
+  "policy.checkbox": { en: "I agree to the", hi: "मैं" },
+  "policy.checkbox_link": { en: "Return & Refund Policy", hi: "वापसी और धनवापसी नीति" },
+  "policy.checkbox_suffix": { en: "", hi: "से सहमत हूं" },
+  "policy.product_warning": { en: "⚠️ Please check product at delivery. Opened or used items are not eligible for return.", hi: "⚠️ कृपया डिलीवरी पर उत्पाद की जांच करें। खोले या उपयोग किए गए उत्पाद वापसी के लिए पात्र नहीं हैं।" },
+  "policy.cart_note": { en: "By placing this order, you agree to our", hi: "यह ऑर्डर देकर, आप हमारी" },
+  "policy.cart_note_link": { en: "Return & Refund Policy", hi: "वापसी और धनवापसी नीति" },
+  "policy.cart_note_suffix": { en: "", hi: "से सहमत हैं" },
+  "policy.order_warning": { en: "Please check your product at the time of delivery. After acceptance, damage-related claims will not be accepted.", hi: "कृपया डिलीवरी के समय अपने उत्पाद की जांच करें। स्वीकृति के बाद, क्षति-संबंधित दावे स्वीकार नहीं किए जाएंगे।" },
   // Footer
   "footer.about": { en: "AbhiAgri is one of India's fastest-growing AgriTech platforms, dedicated to empowering farmers with quality seeds, crop protection products, fertilizers, and modern equipment — delivered to your doorstep.", hi: "AbhiAgri भारत के सबसे तेज़ी से बढ़ते AgriTech प्लेटफार्मों में से एक है, जो किसानों को गुणवत्ता वाले बीज, फसल सुरक्षा उत्पाद, उर्वरक और आधुनिक उपकरण — आपके दरवाज़े तक पहुंचाने के लिए समर्पित है।" },
   "footer.about2": { en: "We leverage technology and data-driven insights to help farmers optimize practices, boost yields, and build a sustainable future for Indian agriculture.", hi: "हम किसानों को प्रथाओं को अनुकूलित करने, उपज बढ़ाने और भारतीय कृषि के लिए एक स्थायी भविष्य बनाने में मदद करने के लिए प्रौद्योगिकी और डेटा-संचालित अंतर्दृष्टि का उपयोग करते हैं।" },
