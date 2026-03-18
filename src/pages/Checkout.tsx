@@ -19,6 +19,9 @@ const Checkout: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [agreePolicy, setAgreePolicy] = useState(false);
+  const { t } = useLanguage();
+  const lp = useLocalizedPath();
 
   const [form, setForm] = useState({
     email: "",
