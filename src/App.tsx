@@ -40,6 +40,7 @@ const App = () => (
                 <Route path="/collection" element={<Collection />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/track-order" element={<TrackOrder />} />
                 <Route path="/login" element={<Login />} />
                 {/* Hindi routes — relative paths under /hi */}
