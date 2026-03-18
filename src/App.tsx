@@ -14,6 +14,7 @@ import Index from "./pages/Index";
 import Collection from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
+import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
 import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
