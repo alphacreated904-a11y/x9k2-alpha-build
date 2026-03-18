@@ -70,12 +70,17 @@ const Checkout: React.FC = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">Order Confirmed!</h1>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-muted-foreground mb-4">
             Thank you for your order. Your order ID is <span className="font-semibold text-foreground">{orderId}</span>
           </p>
-          <p className="text-sm text-muted-foreground mb-8">
+          <p className="text-sm text-muted-foreground mb-4">
             We've sent a confirmation email to <span className="font-medium">{form.email}</span>
           </p>
+          <div className="rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-4 mb-8 text-left">
+            <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed font-medium">
+              {t("policy.order_warning")}
+            </p>
+          </div>
           <Button variant="default" onClick={() => navigate("/collection")}>
             Continue Shopping
           </Button>
