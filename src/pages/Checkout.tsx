@@ -227,10 +227,10 @@ const Checkout: React.FC = () => {
               <h2 className="text-lg font-semibold text-foreground">Payment</h2>
               <div className="rounded-xl border border-border p-4 bg-secondary/30">
                 <p className="text-sm text-muted-foreground">
-                  💳 <span className="font-medium text-foreground">Cash on Delivery (COD)</span> — Pay when your order arrives.
+                  💳 <span className="font-medium text-foreground">100% Prepaid Only</span> — Full payment required before order processing.
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Online payment options coming soon!
+                  We do not offer Cash on Delivery (COD). Online payment via UPI / card / net banking.
                 </p>
               </div>
             </div>
