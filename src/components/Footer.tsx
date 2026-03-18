@@ -9,7 +9,7 @@ const QUICK_LINKS_EN = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy" },
-  { label: "Return & Refund Policy", href: "/returns" },
+  { label: "Return & Refund Policy", href: "/return-refund-policy" },
   { label: "Terms of Service", href: "/terms" },
   { label: "Shipping Policy", href: "/shipping" },
   { label: "FAQ", href: "/faq" },
