@@ -235,7 +235,29 @@ const Checkout: React.FC = () => {
               </div>
             </div>
 
-            <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="agreePolicy"
+                  checked={agreePolicy}
+                  onCheckedChange={(checked) => setAgreePolicy(checked === true)}
+                  className="mt-0.5"
+                />
+                <Label htmlFor="agreePolicy" className="text-sm leading-relaxed cursor-pointer">
+                  {t("policy.checkbox")}{" "}
+                  <Link
+                    to={lp("/return-refund-policy")}
+                    target="_blank"
+                    className="underline text-primary hover:text-primary/80 transition-colors"
+                  >
+                    {t("policy.checkbox_link")}
+                  </Link>
+                  {t("policy.checkbox_suffix") ? ` ${t("policy.checkbox_suffix")}` : ""}
+                </Label>
+              </div>
+            </div>
+
+            <Button type="submit" size="lg" className="w-full" disabled={isProcessing || !agreePolicy}>
               {isProcessing ? "Processing..." : `Place Order — ${formatINR(grandTotal)}`}
             </Button>
           </form>
