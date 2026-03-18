@@ -20,7 +20,7 @@ const QUICK_LINKS_HI = [
   { label: "हमारे बारे में", href: "/about" },
   { label: "हमसे संपर्क करें", href: "/contact" },
   { label: "गोपनीयता नीति", href: "/privacy" },
-  { label: "वापसी और धनवापसी नीति", href: "/returns" },
+  { label: "वापसी और धनवापसी नीति", href: "/return-refund-policy" },
   { label: "सेवा की शर्तें", href: "/terms" },
   { label: "शिपिंग नीति", href: "/shipping" },
   { label: "अक्सर पूछे जाने वाले प्रश्न", href: "/faq" },
