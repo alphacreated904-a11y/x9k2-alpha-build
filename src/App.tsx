@@ -48,6 +48,7 @@ const App = () => (
                 <Route path="/hi/collection" element={<Collection />} />
                 <Route path="/hi/product/:id" element={<ProductDetail />} />
                 <Route path="/hi/checkout" element={<Checkout />} />
+                <Route path="/hi/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/hi/track-order" element={<TrackOrder />} />
                 <Route path="/hi/login" element={<Login />} />
                 {/* Catch-all */}

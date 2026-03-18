@@ -207,7 +207,7 @@ const Footer: React.FC = () => {
             <Link to={lp("/terms")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
               {language === "hi" ? "शर्तें" : "Terms"}
             </Link>
-            <Link to={lp("/returns")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
+            <Link to={lp("/return-refund-policy")} className="text-xs text-[hsl(40,10%,45%)] hover:text-white transition-colors">
               {language === "hi" ? "धनवापसी" : "Refunds"}
             </Link>
           </div>
