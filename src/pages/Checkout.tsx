@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useCart, formatINR } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { toast } from "sonner";
 import { CheckCircle2 } from "lucide-react";
 
