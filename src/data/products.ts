@@ -52,7 +52,42 @@ const NUTRITION_UNITS: UnitOption[] = [
   { label: "5 kg", multiplier: 0.25 },
 ];
 
-export const ALL_PRODUCTS: Product[] = [];
+const GRANULE_UNITS: UnitOption[] = [
+  { label: "250 g", multiplier: 1 },
+  { label: "100 g", multiplier: 0.45 },
+  { label: "50 g", multiplier: 0.25 },
+];
+
+export const ALL_PRODUCTS: Product[] = [
+  {
+    id: "syngenta-actara",
+    name: "Syngenta Actara Insecticide",
+    brand: "Syngenta",
+    category: "crop-protection",
+    basePrice: 550,
+    originalPrice: 650,
+    image: actaraImage,
+    images: [actaraImage],
+    tag: "Bestseller",
+    rating: 4.5,
+    reviewCount: 120,
+    units: GRANULE_UNITS,
+    sku: "SYN-ACT-001",
+    description:
+      "Syngenta Actara is a highly effective systemic insecticide containing Thiamethoxam 25% WG. It provides rapid and long-lasting control of sucking and chewing pests by penetrating plant tissues quickly and protecting new growth. It ensures better crop health and higher yield by stopping pest damage at an early stage.",
+    specs: [
+      { label: "Active Ingredient", value: "Thiamethoxam 25% WG" },
+      { label: "Formulation", value: "Water Dispersible Granules (WG)" },
+      { label: "Mode of Action", value: "Systemic; affects insect nervous system (nAChR)" },
+      { label: "Chemical Group", value: "Neonicotinoid (Group 4A)" },
+      { label: "Dosage", value: "0.25 – 0.5 g per litre of water (crop dependent)" },
+      { label: "Application", value: "Foliar spray / soil application" },
+      { label: "Action Time", value: "Starts working within 24 hours" },
+    ],
+    crops: ["Cotton", "Rice (Paddy)", "Tomato", "Chilli", "Potato", "Vegetables"],
+    pests: ["Aphids", "Whiteflies", "Thrips", "Jassids", "Leafhoppers", "Mealybugs", "Beetles"],
+  },
+];
 export const CATEGORIES = [
   { id: "seeds", name: "Seeds", description: "Hybrid & open-pollinated seeds for all crops" },
   { id: "crop-protection", name: "Crop Protection", description: "Insecticides, fungicides & herbicides" },
