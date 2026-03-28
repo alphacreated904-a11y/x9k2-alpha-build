@@ -2,6 +2,7 @@ import vegImage from "@/assets/product-vegetables.webp";
 import fruitImage from "@/assets/product-fruits.webp";
 import honeyImage from "@/assets/product-honey.webp";
 import breadImage from "@/assets/product-bread.webp";
+import actaraImage from "@/assets/product-actara.webp";
 
 export interface UnitOption {
   label: string;
