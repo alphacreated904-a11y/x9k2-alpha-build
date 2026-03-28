@@ -60,12 +60,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
             loading="lazy"
           />
           {discount > 0 && (
-            <span className="absolute top-3 right-3 rounded-full bg-destructive px-2.5 py-1 text-[10px] font-bold text-destructive-foreground">
+            <span className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-destructive px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[8px] sm:text-[10px] font-bold text-destructive-foreground">
               {discount}% OFF
             </span>
           )}
           {tag && (
-            <span className="absolute top-3 left-3 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
+            <span className="absolute top-2 left-2 sm:top-3 sm:left-3 rounded-full bg-accent px-2 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-xs font-semibold text-accent-foreground">
               {tag}
             </span>
           )}
