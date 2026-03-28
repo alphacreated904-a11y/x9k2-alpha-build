@@ -188,26 +188,26 @@ const Collection = () => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-foreground tracking-tight">{pageTitle}</h1>
-                <p className="text-sm text-muted-foreground mt-0.5">{filteredProducts.length} {t("collection.products_count")}</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">{pageTitle}</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{filteredProducts.length} {t("collection.products_count")}</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <Sheet>
                   <SheetTrigger asChild>
-                    <Button variant="outline" size="default" className="lg:hidden rounded-full gap-2">
-                      <SlidersHorizontal className="size-4" />
+                    <Button variant="outline" size="sm" className="lg:hidden rounded-full gap-1.5 text-xs sm:text-sm h-9 sm:h-11 px-3 sm:px-4">
+                      <SlidersHorizontal className="size-3.5 sm:size-4" />
                       {t("collection.filters")}
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left" className="w-80 p-6 overflow-y-auto">
+                  <SheetContent side="left" className="w-[85vw] max-w-80 p-4 sm:p-6 overflow-y-auto">
                     {filterSidebarContent}
                   </SheetContent>
                 </Sheet>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-48 h-11 rounded-full border-border/60 text-sm">
+                  <SelectTrigger className="w-32 sm:w-48 h-9 sm:h-11 rounded-full border-border/60 text-xs sm:text-sm">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
