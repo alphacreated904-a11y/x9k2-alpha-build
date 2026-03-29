@@ -271,7 +271,10 @@ const ProductDetail = () => {
             </TabsList>
 
             <TabsContent value="description" className="mt-8 max-w-3xl">
-              <p className="text-foreground leading-relaxed">{product.description}</p>
+              <div
+                className="prose prose-sm md:prose-base max-w-none text-foreground prose-headings:text-foreground prose-h2:text-xl prose-h2:font-bold prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg prose-h3:font-semibold prose-h3:mt-5 prose-h3:mb-2 prose-p:leading-relaxed prose-p:text-muted-foreground prose-ul:text-muted-foreground prose-li:marker:text-primary prose-table:border prose-table:border-border prose-th:bg-secondary prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:text-foreground prose-th:font-medium prose-td:px-4 prose-td:py-2 prose-td:border prose-td:border-border prose-td:text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
             </TabsContent>
 
             <TabsContent value="specs" className="mt-8 max-w-2xl">
