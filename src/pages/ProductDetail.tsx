@@ -270,9 +270,21 @@ const ProductDetail = () => {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="description" className="mt-8 max-w-3xl">
+            <TabsContent value="description" className="mt-8 max-w-[900px]">
               <div
-                className="prose prose-sm md:prose-base max-w-none text-foreground prose-headings:text-foreground prose-h2:text-xl prose-h2:font-bold prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg prose-h3:font-semibold prose-h3:mt-5 prose-h3:mb-2 prose-p:leading-relaxed prose-p:text-muted-foreground prose-ul:text-muted-foreground prose-li:marker:text-primary prose-table:border prose-table:border-border prose-th:bg-secondary prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:text-foreground prose-th:font-medium prose-td:px-4 prose-td:py-2 prose-td:border prose-td:border-border prose-td:text-muted-foreground"
+                className="prose prose-base md:prose-lg max-w-none text-foreground
+                  prose-headings:text-foreground prose-headings:font-sans
+                  prose-h2:text-[24px] md:prose-h2:text-[28px] prose-h2:font-bold prose-h2:mt-10 prose-h2:mb-4 prose-h2:leading-tight prose-h2:border-b prose-h2:border-border prose-h2:pb-2
+                  prose-h3:text-[18px] md:prose-h3:text-[20px] prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-2 prose-h3:text-primary
+                  prose-p:text-[14px] md:prose-p:text-[15px] prose-p:leading-[1.75] prose-p:text-muted-foreground prose-p:mb-4
+                  prose-ul:my-4 prose-ul:pl-5 prose-ul:text-muted-foreground prose-ul:space-y-1
+                  prose-li:text-[14px] md:prose-li:text-[15px] prose-li:leading-[1.7] prose-li:marker:text-primary
+                  prose-strong:text-foreground prose-strong:font-semibold
+                  prose-table:w-full prose-table:border-collapse prose-table:border prose-table:border-border prose-table:rounded-lg prose-table:overflow-hidden prose-table:my-6
+                  prose-thead:bg-primary/10
+                  prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:text-foreground prose-th:font-semibold prose-th:text-sm prose-th:border prose-th:border-border
+                  prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-border prose-td:text-muted-foreground prose-td:text-sm
+                  prose-tr:even:bg-secondary/30"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </TabsContent>
