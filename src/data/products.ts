@@ -73,8 +73,37 @@ export const ALL_PRODUCTS: Product[] = [
     reviewCount: 120,
     units: GRANULE_UNITS,
     sku: "SYN-ACT-001",
-    description:
-      "Syngenta Actara is a highly effective systemic insecticide containing Thiamethoxam 25% WG. It provides rapid and long-lasting control of sucking and chewing pests by penetrating plant tissues quickly and protecting new growth. It ensures better crop health and higher yield by stopping pest damage at an early stage.",
+    description: `<p>Syngenta Actara, widely known as actara insecticide, is a powerful systemic solution designed to control a broad range of sucking and chewing pests such as aphids, jassids, and thrips across multiple crops.</p>
+<p>This advanced insecticide is rapidly absorbed by plant leaves and moves throughout the plant via the vascular system, ensuring complete protection from pests.</p>
+<h2>How Actara Insecticide Works</h2>
+<p>Actara insecticide works by targeting the nervous system of insects, leading to quick pest elimination. Its systemic nature ensures that even newly growing plant parts remain protected.</p>
+<p>The Wettable Granular (WG) formulation allows for easy mixing and convenient application through foliar spray, making it highly suitable for modern farming practices.</p>
+<h2>Actara Insecticide Technical Name</h2>
+<p>Thiamethoxam 25% WG</p>
+<h2>Key Features and Benefits of Actara Insecticide</h2>
+<h3>Fast Action</h3>
+<p>Syngenta Actara begins working within hours of application, providing quick knockdown of harmful pests and reducing crop damage.</p>
+<h3>Dual Application Flexibility</h3>
+<p>Actara insecticide can be used both as a preventive and curative treatment, giving farmers flexibility in pest management.</p>
+<h3>Long-Lasting Protection</h3>
+<p>Its strong residual activity ensures prolonged protection, reducing the need for frequent applications.</p>
+<h3>Easy to Use</h3>
+<p>The WG (Wettable Granular) formulation makes actara insecticide easy to handle, mix, and apply using foliar spray methods.</p>
+<h2>Dosage and Application Method</h2>
+<h3>Foliar Spray</h3>
+<p>Use 0.3 to 0.4 gm per litre of water</p>
+<h2>Mode of Action</h2>
+<ul><li>Mode of Application: Preventive and Curative</li><li>Mode of Action: Systemic</li></ul>
+<h2>Actara Insecticide Uses</h2>
+<p>Actara insecticide is suitable for a wide variety of crops, including cotton, potato, mango, rice, citrus, cumin, wheat, brinjal, tea, and other crops.</p>
+<h2>Target Pests Controlled by Syngenta Actara</h2>
+<ul><li>Jassids</li><li>Aphids</li><li>Whiteflies</li><li>Hoppers</li><li>Stem borers</li><li>Leaf folders</li><li>Other sucking and chewing pests</li></ul>
+<h2>Recommended Dosage Table</h2>
+<table><thead><tr><th>Suitable Crops</th><th>Target Pests</th><th>Dosage</th></tr></thead><tbody><tr><td>Cotton</td><td>Jassids, aphids, whiteflies</td><td>40 ml</td></tr><tr><td>Potato</td><td>Aphids</td><td>40 to 80 ml</td></tr><tr><td>Mango</td><td>Hopper</td><td>40 ml</td></tr><tr><td>Rice</td><td>Stem borer, leaf folder, hoppers</td><td>40 ml</td></tr><tr><td>Citrus</td><td>Psyllids</td><td>40 ml</td></tr><tr><td>Okra</td><td>Jassids, aphids</td><td>40 ml</td></tr><tr><td>Mustard</td><td>Aphids</td><td>20 to 40 ml</td></tr><tr><td>Cumin</td><td>Aphids</td><td>40 ml</td></tr><tr><td>Wheat</td><td>Aphids</td><td>20 ml</td></tr><tr><td>Brinjal</td><td>Whiteflies, jassids</td><td>80 ml</td></tr><tr><td>Tea</td><td>Mosquito bug</td><td>40 ml</td></tr></tbody></table>
+<h2>Safety Precautions</h2>
+<ul><li>Always read the product instructions carefully before use</li><li>Wear protective equipment such as gloves, mask, and goggles</li><li>Avoid eating or drinking during application</li><li>Wash hands thoroughly after handling the insecticide</li></ul>
+<h2>Important Note</h2>
+<p>Syngenta Actara insecticide is strictly intended for agricultural use only.</p>`,
     specs: [
       { label: "Active Ingredient", value: "Thiamethoxam 25% WG" },
       { label: "Formulation", value: "Water Dispersible Granules (WG)" },
