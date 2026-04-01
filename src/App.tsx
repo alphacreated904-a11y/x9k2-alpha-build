@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
 import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/track-order" element={<TrackOrder />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/admin" element={<Admin />} />
                 {/* Hindi routes — relative paths under /hi */}
                 <Route path="/hi" element={<Index />} />
                 <Route path="/hi/collection" element={<Collection />} />

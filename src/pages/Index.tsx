@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Sprout, Shield, Beaker, Wrench, ArrowRight } from "lucide-react";
+import { Sprout, Shield, Beaker, Wrench, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
@@ -10,7 +10,7 @@ import { HeroSlider } from "@/components/HeroSlider";
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { ALL_PRODUCTS, CATEGORIES } from "@/data/products";
+import { useProducts, CATEGORIES, type Product } from "@/hooks/useProducts";
 import { toast } from "sonner";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -27,14 +27,15 @@ const CATEGORY_TRANSLATIONS: Record<string, { name: string; description: string 
   equipment: { name: "उपकरण", description: "स्प्रेयर, उपकरण और कृषि मशीनरी" },
 };
 
-const BEST_SELLERS = ALL_PRODUCTS.filter(p => p.tag || p.rating >= 4.5).slice(0, 8);
-
 const Index = () => {
   const { addItem } = useCart();
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
+  const { data: products, isLoading } = useProducts();
 
-  const handleAddToCart = (product: typeof ALL_PRODUCTS[0], unit: string, price: number) => {
+  const bestSellers = (products || []).filter(p => p.tag || p.rating >= 4.5).slice(0, 8);
+
+  const handleAddToCart = (product: Product, unit: string, price: number) => {
     addItem({
       id: `${product.id}-${unit}`,
       name: product.name,
@@ -90,24 +91,34 @@ const Index = () => {
               <Link to={lp("/collection")}>{t("index.view_all")} <ArrowRight className="size-4" /></Link>
             </Button>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-            {BEST_SELLERS.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                brand={product.brand}
-                basePrice={product.basePrice}
-                originalPrice={product.originalPrice}
-                image={product.image}
-                tag={product.tag}
-                rating={product.rating}
-                reviewCount={product.reviewCount}
-                units={product.units}
-                onAddToCart={(unit, price) => handleAddToCart(product, unit, price)}
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="size-8 animate-spin text-primary" />
+            </div>
+          ) : bestSellers.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-muted-foreground">No products available yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+              {bestSellers.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  brand={product.brand}
+                  basePrice={product.basePrice}
+                  originalPrice={product.originalPrice}
+                  image={product.image}
+                  tag={product.tag}
+                  rating={product.rating}
+                  reviewCount={product.reviewCount}
+                  units={product.units}
+                  onAddToCart={(unit, price) => handleAddToCart(product, unit, price)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

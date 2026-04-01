@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { UnitOption } from "@/data/products";
+import type { UnitOption } from "@/hooks/useProducts";
 
 interface ProductCardProps {
   id: string;

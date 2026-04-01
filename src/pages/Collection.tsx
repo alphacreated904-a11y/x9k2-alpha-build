@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Loader2 } from "lucide-react";
 import logo from "@/assets/logo.webp";
 import { Footer } from "@/components/Footer";
 import { useSearchParams, Link } from "react-router-dom";
@@ -14,7 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { ALL_PRODUCTS, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES } from "@/data/products";
+import { useProducts, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES, type Product } from "@/hooks/useProducts";
 import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 8;
@@ -39,6 +39,7 @@ const Collection = () => {
   const [sortBy, setSortBy] = useState("featured");
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const { addItem } = useCart();
+  const { data: allProducts, isLoading } = useProducts();
 
   const toggle = useCallback((list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id]
@@ -84,15 +85,17 @@ const Collection = () => {
     setSelectedPests([]);
   }, []);
 
-  const categoryProductCount = useMemo(() => {
-    if (!categoryFilter) return ALL_PRODUCTS.length;
-    return ALL_PRODUCTS.filter(p => p.category === categoryFilter).length;
-  }, [categoryFilter]);
+  const products = allProducts || [];
 
-  const isComingSoon = categoryFilter && categoryProductCount === 0;
+  const categoryProductCount = useMemo(() => {
+    if (!categoryFilter) return products.length;
+    return products.filter(p => p.category === categoryFilter).length;
+  }, [categoryFilter, products]);
+
+  const isComingSoon = categoryFilter && categoryProductCount === 0 && !isLoading;
 
   const filteredProducts = useMemo(() => {
-    return ALL_PRODUCTS
+    return products
       .filter((p) => {
         if (categoryFilter && p.category !== categoryFilter) return false;
         if (p.basePrice < priceRange[0] || p.basePrice > priceRange[1]) return false;
@@ -107,12 +110,12 @@ const Collection = () => {
           default: return 0;
         }
       });
-  }, [categoryFilter, priceRange, sortBy]);
+  }, [categoryFilter, priceRange, sortBy, products]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;
 
-  const handleAddToCart = (product: typeof ALL_PRODUCTS[0], unit: string, price: number) => {
+  const handleAddToCart = (product: Product, unit: string, price: number) => {
     addItem({
       id: `${product.id}-${unit}`,
       name: product.name,
@@ -227,7 +230,13 @@ const Collection = () => {
               </div>
             )}
 
-             {isComingSoon && (
+            {isLoading && (
+              <div className="flex justify-center py-20">
+                <Loader2 className="size-8 animate-spin text-primary" />
+              </div>
+            )}
+
+            {!isLoading && isComingSoon && (
               <div className="py-20 text-center">
                 <div className="flex justify-center mb-6">
                   <img
@@ -248,7 +257,7 @@ const Collection = () => {
               </div>
             )}
 
-            {!isComingSoon && (
+            {!isLoading && !isComingSoon && (
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {visibleProducts.map((product) => (
                   <ProductCard
@@ -269,14 +278,14 @@ const Collection = () => {
               </div>
             )}
 
-            {!isComingSoon && filteredProducts.length === 0 && (
+            {!isLoading && !isComingSoon && filteredProducts.length === 0 && (
               <div className="py-20 text-center">
                 <p className="text-muted-foreground">{t("collection.no_match")}</p>
                 <Button variant="link" onClick={clearAll} className="mt-2">{t("collection.clear_all")}</Button>
               </div>
             )}
 
-            {!isComingSoon && hasMore && (
+            {!isLoading && !isComingSoon && hasMore && (
               <div className="flex justify-center mt-10">
                 <Button
                   variant="outline"
