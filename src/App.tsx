@@ -44,6 +44,7 @@ const App = () => (
                 <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/track-order" element={<TrackOrder />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/admin" element={<Admin />} />
                 {/* Hindi routes — relative paths under /hi */}
                 <Route path="/hi" element={<Index />} />
                 <Route path="/hi/collection" element={<Collection />} />
