@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
 import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
