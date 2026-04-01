@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star } from "lucide-react";
+import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star, Loader2 } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
@@ -17,7 +17,7 @@ import {
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { ALL_PRODUCTS, CATEGORIES } from "@/data/products";
+import { useProduct, CATEGORIES } from "@/hooks/useProducts";
 import { toast } from "sonner";
 
 const CATEGORY_NAMES_HI: Record<string, string> = {
@@ -29,14 +29,21 @@ const CATEGORY_NAMES_HI: Record<string, string> = {
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const product = ALL_PRODUCTS.find(p => p.id === id) || ALL_PRODUCTS[0];
+  const { data: product, isLoading, error } = useProduct(id);
   const category = CATEGORIES.find(c => c.id === product?.category);
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedUnit, setSelectedUnit] = useState(product?.units[0]?.label || "");
+  const [selectedUnit, setSelectedUnit] = useState("");
   const { addItem } = useCart();
+
+  // Set default unit when product loads
+  React.useEffect(() => {
+    if (product && product.units.length > 0 && !selectedUnit) {
+      setSelectedUnit(product.units[0].label);
+    }
+  }, [product, selectedUnit]);
 
   const currentUnit = useMemo(() =>
     product?.units.find(u => u.label === selectedUnit) || product?.units[0],
@@ -64,7 +71,33 @@ const ProductDetail = () => {
     toast.success(`${quantity}x ${product.name} (${selectedUnit}) added to cart`);
   };
 
-  if (!product) return null;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <TopBar />
+        <Navbar />
+        <div className="flex justify-center py-32">
+          <Loader2 className="size-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-background">
+        <TopBar />
+        <Navbar />
+        <div className="container py-32 text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-2">Product Not Found</h1>
+          <p className="text-muted-foreground mb-6">The product you're looking for doesn't exist.</p>
+          <Button asChild><Link to={lp("/collection")}>Browse Products</Link></Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   const categoryName = language === "hi" ? CATEGORY_NAMES_HI[product.category] || category?.name || t("common.products") : category?.name || "Products";
 
