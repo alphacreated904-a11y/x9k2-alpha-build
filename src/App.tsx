@@ -48,6 +48,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<Privacy />} />
                 {/* Hindi routes — relative paths under /hi */}
                 <Route path="/hi" element={<Index />} />
                 <Route path="/hi/collection" element={<Collection />} />
