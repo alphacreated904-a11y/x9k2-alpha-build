@@ -58,6 +58,7 @@ const App = () => (
                 <Route path="/hi/track-order" element={<TrackOrder />} />
                 <Route path="/hi/login" element={<Login />} />
                 <Route path="/hi/about" element={<About />} />
+                <Route path="/hi/privacy" element={<Privacy />} />
                 {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
