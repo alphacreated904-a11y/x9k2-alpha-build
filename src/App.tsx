@@ -19,6 +19,7 @@ import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<Privacy />} />
                 {/* Hindi routes — relative paths under /hi */}
                 <Route path="/hi" element={<Index />} />
                 <Route path="/hi/collection" element={<Collection />} />
@@ -56,6 +58,7 @@ const App = () => (
                 <Route path="/hi/track-order" element={<TrackOrder />} />
                 <Route path="/hi/login" element={<Login />} />
                 <Route path="/hi/about" element={<About />} />
+                <Route path="/hi/privacy" element={<Privacy />} />
                 {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
