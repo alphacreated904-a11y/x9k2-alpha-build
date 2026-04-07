@@ -55,6 +55,7 @@ const App = () => (
                 <Route path="/hi/return-refund-policy" element={<ReturnRefundPolicy />} />
                 <Route path="/hi/track-order" element={<TrackOrder />} />
                 <Route path="/hi/login" element={<Login />} />
+                <Route path="/hi/about" element={<About />} />
                 {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
