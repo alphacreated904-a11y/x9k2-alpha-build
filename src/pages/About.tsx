@@ -194,9 +194,6 @@ const About: React.FC = () => {
           <p className="text-muted-foreground text-[15px]">
             Our team is led by passionate individuals committed to transforming agriculture. Together, they bring vision, dedication, and a strong commitment to building a platform that truly serves the agricultural community.
           </p>
-          <p className="text-muted-foreground mt-6 text-[15px] text-center">
-            Together, they bring vision, dedication, and a strong commitment to building a platform that truly serves the agricultural community.
-          </p>
         </section>
 
         {/* CTA */}
