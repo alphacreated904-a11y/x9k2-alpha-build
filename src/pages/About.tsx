@@ -191,22 +191,8 @@ const About: React.FC = () => {
           <p className="text-muted-foreground mb-6 text-[15px]">
             Abhi Agri is led by passionate individuals committed to transforming agriculture:
           </p>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              { name: "Abhishek Sidhdhapara", role: "Founder" },
-              { name: "Jatin Chavda", role: "Co-Founder" },
-            ].map((member) => (
-              <div key={member.name} className="rounded-2xl bg-card p-6 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] transition-shadow text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary text-xl font-bold">
-                  {member.name.charAt(0)}
-                </div>
-                <h3 className="font-semibold text-foreground text-lg">{member.name}</h3>
-                <p className="text-sm text-primary font-medium">{member.role}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-muted-foreground mt-6 text-[15px] text-center">
-            Together, they bring vision, dedication, and a strong commitment to building a platform that truly serves the agricultural community.
+          <p className="text-muted-foreground text-[15px]">
+            Our team is led by passionate individuals committed to transforming agriculture. Together, they bring vision, dedication, and a strong commitment to building a platform that truly serves the agricultural community.
           </p>
         </section>
 
