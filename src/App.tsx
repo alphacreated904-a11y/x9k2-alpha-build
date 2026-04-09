@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
                 {/* Hindi routes — relative paths under /hi */}
                 <Route path="/hi" element={<Index />} />
                 <Route path="/hi/collection" element={<Collection />} />
@@ -59,6 +61,7 @@ const App = () => (
                 <Route path="/hi/login" element={<Login />} />
                 <Route path="/hi/about" element={<About />} />
                 <Route path="/hi/privacy" element={<Privacy />} />
+                <Route path="/hi/terms-of-service" element={<TermsOfService />} />
                 {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
