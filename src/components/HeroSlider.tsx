@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -39,58 +39,89 @@ const SLIDES = [
 
 const HeroSlider: React.FC = () => {
   const [current, setCurrent] = useState(0);
+  const loadedRef = useRef<Set<number>>(new Set([0]));
   const { language } = useLanguage();
   const lp = useLocalizedPath();
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % SLIDES.length), []);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length), []);
+  const next = useCallback(() => setCurrent((c) => {
+    const n = (c + 1) % SLIDES.length;
+    loadedRef.current.add(n);
+    return n;
+  }), []);
+  const prev = useCallback(() => setCurrent((c) => {
+    const n = (c - 1 + SLIDES.length) % SLIDES.length;
+    loadedRef.current.add(n);
+    return n;
+  }), []);
 
   useEffect(() => {
     const timer = setInterval(next, 6000);
     return () => clearInterval(timer);
   }, [next]);
 
+  // Preload next slide image after first paint
+  useEffect(() => {
+    const nextIdx = (current + 1) % SLIDES.length;
+    if (!loadedRef.current.has(nextIdx)) {
+      const img = new Image();
+      img.src = SLIDES[nextIdx].image;
+      loadedRef.current.add(nextIdx);
+    }
+  }, [current]);
+
   return (
     <section className="relative overflow-hidden">
-      {SLIDES.map((slide, i) => (
-        <div
-          key={i}
-          className={cn(
-            "transition-opacity duration-700 ease-in-out",
-            i === current ? "relative opacity-100" : "absolute inset-0 opacity-0 pointer-events-none"
-          )}
-        >
-          <div className="relative">
-            <img
-              src={slide.image}
-              alt={slide.title[language]}
-              className="h-[320px] sm:h-[420px] md:h-[520px] w-full object-cover"
-              loading={i === 0 ? "eager" : "lazy"}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
-            <div className="absolute inset-0 flex items-center">
-                <div className="container px-5 sm:px-6">
-                <div className="max-w-xl space-y-3 sm:space-y-5">
-                  <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs sm:text-sm font-semibold text-accent-foreground">
-                    {slide.badge[language]}
-                  </span>
-                  <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
-                    {slide.title[language]}
-                  </h1>
-                  <p className="text-xs sm:text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
-                    {slide.subtitle[language]}
-                  </p>
-                  <Button variant="accent" size="lg" className="mt-2 sm:!h-14 sm:!px-10 sm:!text-lg sm:!rounded-xl" asChild>
-                    <Link to={lp(slide.href)}>
-                      {slide.cta[language]} <ArrowRight className="size-4 sm:size-5" />
-                    </Link>
-                  </Button>
+      {SLIDES.map((slide, i) => {
+        const isActive = i === current;
+        const isLoaded = loadedRef.current.has(i);
+        return (
+          <div
+            key={i}
+            className={cn(
+              "transition-opacity duration-700 ease-in-out",
+              isActive ? "relative opacity-100" : "absolute inset-0 opacity-0 pointer-events-none"
+            )}
+          >
+            <div className="relative">
+              {(isActive || isLoaded) && (
+                <img
+                  src={slide.image}
+                  alt={slide.title[language]}
+                  className="h-[320px] sm:h-[420px] md:h-[520px] w-full object-cover"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  fetchPriority={i === 0 ? "high" : "auto"}
+                  decoding={i === 0 ? "sync" : "async"}
+                />
+              )}
+              {/* Placeholder for non-loaded slides to maintain layout */}
+              {!isActive && !isLoaded && (
+                <div className="h-[320px] sm:h-[420px] md:h-[520px] w-full bg-muted" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
+              <div className="absolute inset-0 flex items-center">
+                  <div className="container px-5 sm:px-6">
+                  <div className="max-w-xl space-y-3 sm:space-y-5">
+                    <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs sm:text-sm font-semibold text-accent-foreground">
+                      {slide.badge[language]}
+                    </span>
+                    <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
+                      {slide.title[language]}
+                    </h1>
+                    <p className="text-xs sm:text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
+                      {slide.subtitle[language]}
+                    </p>
+                    <Button variant="accent" size="lg" className="mt-2 sm:!h-14 sm:!px-10 sm:!text-lg sm:!rounded-xl" asChild>
+                      <Link to={lp(slide.href)}>
+                        {slide.cta[language]} <ArrowRight className="size-4 sm:size-5" />
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       <button
         onClick={prev}
@@ -111,7 +142,10 @@ const HeroSlider: React.FC = () => {
         {SLIDES.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrent(i)}
+            onClick={() => {
+              loadedRef.current.add(i);
+              setCurrent(i);
+            }}
             className={cn(
               "h-2 rounded-full transition-all duration-300 min-h-0 min-w-0",
               i === current ? "w-8 bg-accent" : "w-2 bg-primary-foreground/40"
