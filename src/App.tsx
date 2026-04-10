@@ -22,6 +22,7 @@ import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
         <CartProvider>
           <WishlistProvider>
             <BrowserRouter>
+              <ScrollToTop />
               <LanguageSync />
               <Toaster />
               <Sonner />
