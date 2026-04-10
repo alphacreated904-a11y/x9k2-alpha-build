@@ -35,12 +35,16 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ images, productName }) 
         <img
           src={images[selectedIndex]}
           alt={`${productName} - Image ${selectedIndex + 1}`}
+          width={600}
+          height={600}
           className={cn(
             "h-full w-full object-cover transition-transform duration-300",
             isZoomed && "scale-[2.5]"
           )}
           style={isZoomed ? { transformOrigin: `${mousePos.x}% ${mousePos.y}%` } : undefined}
           draggable={false}
+          loading={selectedIndex === 0 ? "eager" : "lazy"}
+          decoding="async"
         />
         
         {/* Zoom indicator */}
@@ -81,7 +85,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ images, productName }) 
                 i === selectedIndex ? "border-primary ring-2 ring-primary/20" : "border-transparent hover:border-border"
               )}
             >
-              <img src={img} alt={`Thumbnail ${i + 1}`} className="h-full w-full object-cover" />
+              <img src={img} alt={`Thumbnail ${i + 1}`} className="h-full w-full object-cover" loading="lazy" decoding="async" width={80} height={80} />
             </button>
           ))}
         </div>
