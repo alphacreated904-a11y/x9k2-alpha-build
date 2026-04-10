@@ -76,7 +76,9 @@ const LazyFallback = () => (
   </div>
 );
 
-const App = () => (
+const App = () => {
+  usePrefetchRoutes();
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <LanguageProvider>
