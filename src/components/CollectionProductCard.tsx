@@ -51,8 +51,11 @@ const CollectionProductCard: React.FC<CollectionProductCardProps> = ({
           <img
             src={image}
             alt={name}
+            width={400}
+            height={400}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
+            decoding="async"
           />
           {tag && (
             <span className="absolute top-3 left-3 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
