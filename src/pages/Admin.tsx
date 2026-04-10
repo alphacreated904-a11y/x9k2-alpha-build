@@ -72,6 +72,11 @@ const Admin = () => {
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [form, setForm] = useState(EMPTY_PRODUCT);
 
   // Auth + admin role check
   useEffect(() => {
