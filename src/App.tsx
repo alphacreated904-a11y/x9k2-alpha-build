@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,18 +17,47 @@ import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 
 // Lazy-load all other routes to reduce initial bundle
-const Collection = lazy(() => import("./pages/Collection"));
-const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const Checkout = lazy(() => import("./pages/Checkout"));
-const ReturnRefundPolicy = lazy(() => import("./pages/ReturnRefundPolicy"));
-const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
-const TrackOrder = lazy(() => import("./pages/TrackOrder"));
-const Login = lazy(() => import("./pages/Login"));
-const Admin = lazy(() => import("./pages/Admin"));
-const About = lazy(() => import("./pages/About"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const TermsOfService = lazy(() => import("./pages/TermsOfService"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const lazyImports = {
+  Collection: () => import("./pages/Collection"),
+  ProductDetail: () => import("./pages/ProductDetail"),
+  Checkout: () => import("./pages/Checkout"),
+  ReturnRefundPolicy: () => import("./pages/ReturnRefundPolicy"),
+  ShippingPolicy: () => import("./pages/ShippingPolicy"),
+  TrackOrder: () => import("./pages/TrackOrder"),
+  Login: () => import("./pages/Login"),
+  Admin: () => import("./pages/Admin"),
+  About: () => import("./pages/About"),
+  Privacy: () => import("./pages/Privacy"),
+  TermsOfService: () => import("./pages/TermsOfService"),
+  NotFound: () => import("./pages/NotFound"),
+};
+
+const Collection = lazy(lazyImports.Collection);
+const ProductDetail = lazy(lazyImports.ProductDetail);
+const Checkout = lazy(lazyImports.Checkout);
+const ReturnRefundPolicy = lazy(lazyImports.ReturnRefundPolicy);
+const ShippingPolicy = lazy(lazyImports.ShippingPolicy);
+const TrackOrder = lazy(lazyImports.TrackOrder);
+const Login = lazy(lazyImports.Login);
+const Admin = lazy(lazyImports.Admin);
+const About = lazy(lazyImports.About);
+const Privacy = lazy(lazyImports.Privacy);
+const TermsOfService = lazy(lazyImports.TermsOfService);
+const NotFound = lazy(lazyImports.NotFound);
+
+// Prefetch all lazy chunks once home page is idle
+function usePrefetchRoutes() {
+  useEffect(() => {
+    const prefetch = () => {
+      Object.values(lazyImports).forEach((fn) => fn());
+    };
+    if ("requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(prefetch, { timeout: 3000 });
+    } else {
+      setTimeout(prefetch, 1500);
+    }
+  }, []);
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
