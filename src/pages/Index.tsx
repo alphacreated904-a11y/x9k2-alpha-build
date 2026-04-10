@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Sprout, Shield, Beaker, Wrench, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,10 @@ const Index = () => {
   const lp = useLocalizedPath();
   const { data: products, isLoading } = useProducts();
 
-  const bestSellers = (products || []).filter(p => p.tag || p.rating >= 4.5).slice(0, 8);
+  const bestSellers = useMemo(
+    () => (products || []).filter(p => p.tag || p.rating >= 4.5).slice(0, 8),
+    [products]
+  );
 
   const handleAddToCart = (product: Product, unit: string, price: number) => {
     addItem({
@@ -79,8 +82,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Best Sellers */}
-      <section className="bg-secondary/30 py-10 sm:py-16 md:py-20">
+      {/* Best Sellers — use content-visibility for below-fold paint optimization */}
+      <section className="bg-secondary/30 py-10 sm:py-16 md:py-20" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 800px" }}>
         <div className="container px-4 sm:px-6">
           <div className="mb-6 sm:mb-10 flex items-end justify-between">
             <div>
@@ -123,7 +126,7 @@ const Index = () => {
       </section>
 
       {/* CTA Banner */}
-      <section className="container py-10 sm:py-16 md:py-20 px-4 sm:px-6">
+      <section className="container py-10 sm:py-16 md:py-20 px-4 sm:px-6" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 400px" }}>
         <div className="rounded-2xl bg-primary p-6 sm:p-10 md:p-16 text-center space-y-4 sm:space-y-6">
           <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-primary-foreground tracking-tight">
             {t("index.cta_title")}
