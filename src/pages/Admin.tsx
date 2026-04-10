@@ -70,6 +70,7 @@ const Admin = () => {
   const deleteProduct = useDeleteProduct();
 
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -77,14 +78,30 @@ const Admin = () => {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState(EMPTY_PRODUCT);
 
-  // Auth check
+  // Auth + admin role check
   useEffect(() => {
+    const checkAdmin = async (userId: string) => {
+      const { data } = await supabase.rpc('has_role', { _user_id: userId, _role: 'admin' });
+      setIsAdmin(!!data);
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setAuthLoading(false);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        checkAdmin(u.id).finally(() => setAuthLoading(false));
+      } else {
+        setAuthLoading(false);
+      }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        checkAdmin(u.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -102,12 +119,12 @@ const Admin = () => {
     );
   }
 
-  if (!user) {
+  if (!user || !isAdmin) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <h1 className="text-2xl font-bold text-foreground">Admin Access Required</h1>
-        <p className="text-muted-foreground">Please log in to manage products.</p>
-        <Button onClick={() => navigate("/login")}>Go to Login</Button>
+        <p className="text-muted-foreground">{!user ? "Please log in to manage products." : "You do not have admin privileges."}</p>
+        {!user && <Button onClick={() => navigate("/login")}>Go to Login</Button>}
       </div>
     );
   }
