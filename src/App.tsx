@@ -24,7 +24,16 @@ import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,   // data fresh for 5 min — avoids redundant refetches
+      gcTime: 10 * 60 * 1000,     // garbage-collect unused cache after 10 min
+      refetchOnWindowFocus: false, // prevent refetch spam on tab switch
+      retry: 1,                    // fail fast instead of retrying 3 times
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
