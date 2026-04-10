@@ -15,6 +15,7 @@ import Collection from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
 import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
+import ShippingPolicy from "./pages/ShippingPolicy";
 import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
