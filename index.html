@@ -3,31 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
     <title>Premium Farm-to-Table Marketplace</title>
     <meta name="description" content="Fresh organic produce sourced directly from local farmers. Shop premium seeds, crop protection, fertilizers, and farm equipment.">
     <meta name="author" content="AbhiAgri" />
 
-    
-    
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d7b4b6dd-8c93-46bf-9b9b-0ef43d9a5e65">
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://duizhwwanjktnnznrjbc.supabase.co" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
+    <!-- Font: swap display to prevent FOIT, preload for faster FCP -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
+    <!-- OG / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Premium Farm-to-Table Marketplace">
+    <meta property="og:description" content="Fresh organic produce sourced directly from local farmers. Shop premium seeds, crop protection, fertilizers, and farm equipment.">
+    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d7b4b6dd-8c93-46bf-9b9b-0ef43d9a5e65">
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:title" content="Premium Farm-to-Table Marketplace">
+    <meta name="twitter:description" content="Fresh organic produce sourced directly from local farmers. Shop premium seeds, crop protection, fertilizers, and farm equipment.">
     <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d7b4b6dd-8c93-46bf-9b9b-0ef43d9a5e65">
-    
-  
-  
-  
-  <link rel="preconnect" href="https://xttgjlfhklwvilmlixkt.supabase.co" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <meta property="og:title" content="Premium Farm-to-Table Marketplace">
-  <meta name="twitter:title" content="Premium Farm-to-Table Marketplace">
-  <meta property="og:description" content="Fresh organic produce sourced directly from local farmers. Shop premium seeds, crop protection, fertilizers, and farm equipment.">
-  <meta name="twitter:description" content="Fresh organic produce sourced directly from local farmers. Shop premium seeds, crop protection, fertilizers, and farm equipment.">
-</head>
+
+    <!-- Inline critical CSS to prevent CLS from layout shift -->
+    <style>
+      /* Prevent CLS: reserve space for hero */
+      html { font-family: Inter, system-ui, -apple-system, sans-serif; }
+      body { margin: 0; }
+      #root { min-height: 100vh; }
+    </style>
+  </head>
 
   <body>
     <div id="root"></div>

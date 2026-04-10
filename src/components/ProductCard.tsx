@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import { AddToCartButton } from "@/components/AddToCartButton";
@@ -28,7 +28,7 @@ interface ProductCardProps {
   onAddToCart?: (unit: string, price: number) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const ProductCard: React.FC<ProductCardProps> = memo(({
   id, name, brand, basePrice, originalPrice, image, tag, rating, reviewCount, units, onAddToCart,
 }) => {
   const [selectedUnit, setSelectedUnit] = useState(units[0].label);
@@ -56,8 +56,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <img
             src={image}
             alt={name}
+            width={400}
+            height={400}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
+            decoding="async"
           />
           {discount > 0 && (
             <span className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-destructive px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[8px] sm:text-[10px] font-bold text-destructive-foreground">
@@ -116,6 +119,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = "ProductCard";
 
 export { ProductCard };

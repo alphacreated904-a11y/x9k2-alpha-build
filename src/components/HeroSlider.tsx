@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -37,7 +37,10 @@ const SLIDES = [
   },
 ];
 
-const HeroSlider: React.FC = () => {
+// Fixed height values to prevent CLS
+const HERO_HEIGHTS = "h-[320px] sm:h-[420px] md:h-[520px]";
+
+const HeroSlider: React.FC = memo(() => {
   const [current, setCurrent] = useState(0);
   const loadedRef = useRef<Set<number>>(new Set([0]));
   const { language } = useLanguage();
@@ -70,7 +73,7 @@ const HeroSlider: React.FC = () => {
   }, [current]);
 
   return (
-    <section className="relative overflow-hidden">
+    <section className={cn("relative overflow-hidden", HERO_HEIGHTS)}>
       {SLIDES.map((slide, i) => {
         const isActive = i === current;
         const isLoaded = loadedRef.current.has(i);
@@ -78,44 +81,50 @@ const HeroSlider: React.FC = () => {
           <div
             key={i}
             className={cn(
-              "transition-opacity duration-700 ease-in-out",
-              isActive ? "relative opacity-100" : "absolute inset-0 opacity-0 pointer-events-none"
+              "absolute inset-0 transition-opacity duration-700 ease-in-out",
+              isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             )}
+            aria-hidden={!isActive}
           >
-            <div className="relative">
-              {(isActive || isLoaded) && (
-                <img
-                  src={slide.image}
-                  alt={slide.title[language]}
-                  className="h-[320px] sm:h-[420px] md:h-[520px] w-full object-cover"
-                  loading={i === 0 ? "eager" : "lazy"}
-                  fetchPriority={i === 0 ? "high" : "auto"}
-                  decoding={i === 0 ? "sync" : "async"}
-                />
-              )}
-              {/* Placeholder for non-loaded slides to maintain layout */}
-              {!isActive && !isLoaded && (
-                <div className="h-[320px] sm:h-[420px] md:h-[520px] w-full bg-muted" />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
-              <div className="absolute inset-0 flex items-center">
-                  <div className="container px-5 sm:px-6">
-                  <div className="max-w-xl space-y-3 sm:space-y-5">
-                    <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs sm:text-sm font-semibold text-accent-foreground">
-                      {slide.badge[language]}
-                    </span>
+            {(isActive || isLoaded) && (
+              <img
+                src={slide.image}
+                alt={slide.title[language]}
+                className={cn("w-full object-cover", HERO_HEIGHTS)}
+                width={1920}
+                height={520}
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : "auto"}
+                decoding={i === 0 ? "sync" : "async"}
+              />
+            )}
+            {!isActive && !isLoaded && (
+              <div className={cn("w-full bg-muted", HERO_HEIGHTS)} />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
+            <div className="absolute inset-0 flex items-center">
+              <div className="container px-5 sm:px-6">
+                <div className="max-w-xl space-y-3 sm:space-y-5">
+                  <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs sm:text-sm font-semibold text-accent-foreground">
+                    {slide.badge[language]}
+                  </span>
+                  {i === 0 ? (
                     <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight">
                       {slide.title[language]}
                     </h1>
-                    <p className="text-xs sm:text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
-                      {slide.subtitle[language]}
+                  ) : (
+                    <p className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-primary-foreground leading-[1.1] tracking-tight" role="heading" aria-level={2}>
+                      {slide.title[language]}
                     </p>
-                    <Button variant="accent" size="lg" className="mt-2 sm:!h-14 sm:!px-10 sm:!text-lg sm:!rounded-xl" asChild>
-                      <Link to={lp(slide.href)}>
-                        {slide.cta[language]} <ArrowRight className="size-4 sm:size-5" />
-                      </Link>
-                    </Button>
-                  </div>
+                  )}
+                  <p className="text-xs sm:text-sm md:text-base text-primary-foreground/80 leading-relaxed max-w-md">
+                    {slide.subtitle[language]}
+                  </p>
+                  <Button variant="accent" size="lg" className="mt-2 sm:!h-14 sm:!px-10 sm:!text-lg sm:!rounded-xl" asChild>
+                    <Link to={lp(slide.href)}>
+                      {slide.cta[language]} <ArrowRight className="size-4 sm:size-5" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -125,20 +134,20 @@ const HeroSlider: React.FC = () => {
 
       <button
         onClick={prev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-background/20 backdrop-blur-sm text-primary-foreground hover:bg-background/40 transition-colors min-h-0 min-w-0"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-background/20 backdrop-blur-sm text-primary-foreground hover:bg-background/40 transition-colors min-h-0 min-w-0"
         aria-label="Previous slide"
       >
         <ChevronLeft className="size-5" />
       </button>
       <button
         onClick={next}
-        className="absolute right-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-background/20 backdrop-blur-sm text-primary-foreground hover:bg-background/40 transition-colors min-h-0 min-w-0"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-background/20 backdrop-blur-sm text-primary-foreground hover:bg-background/40 transition-colors min-h-0 min-w-0"
         aria-label="Next slide"
       >
         <ChevronRight className="size-5" />
       </button>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         {SLIDES.map((_, i) => (
           <button
             key={i}
@@ -156,6 +165,8 @@ const HeroSlider: React.FC = () => {
       </div>
     </section>
   );
-};
+});
+
+HeroSlider.displayName = "HeroSlider";
 
 export { HeroSlider };
