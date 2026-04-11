@@ -86,21 +86,17 @@ const HeroSlider: React.FC = memo(() => {
             )}
             aria-hidden={!isActive}
           >
-            {(isActive || isLoaded) && (
-              <img
-                src={slide.image}
-                alt={slide.title[language]}
-                className={cn("w-full object-cover", HERO_HEIGHTS)}
-                width={1920}
-                height={520}
-                loading={i === 0 ? "eager" : "lazy"}
-                fetchPriority={i === 0 ? "high" : "auto"}
-                decoding={i === 0 ? "sync" : "async"}
-              />
-            )}
-            {!isActive && !isLoaded && (
-              <div className={cn("w-full bg-muted", HERO_HEIGHTS)} />
-            )}
+            <img
+              src={slide.image}
+              alt=""
+              role="presentation"
+              className={cn("w-full object-cover", HERO_HEIGHTS)}
+              width={1920}
+              height={520}
+              loading={i === 0 ? "eager" : "lazy"}
+              fetchPriority={i === 0 ? "high" : "auto"}
+              decoding={i === 0 ? "sync" : "async"}
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
             <div className="absolute inset-0 flex items-center">
               <div className="container px-5 sm:px-6">
