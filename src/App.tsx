@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LanguageSync } from "@/components/LanguageSync";
@@ -25,6 +26,7 @@ const lazyImports = {
   ShippingPolicy: () => import("./pages/ShippingPolicy"),
   TrackOrder: () => import("./pages/TrackOrder"),
   Login: () => import("./pages/Login"),
+  ResetPassword: () => import("./pages/ResetPassword"),
   Admin: () => import("./pages/Admin"),
   About: () => import("./pages/About"),
   Privacy: () => import("./pages/Privacy"),
@@ -39,6 +41,7 @@ const ReturnRefundPolicy = lazy(lazyImports.ReturnRefundPolicy);
 const ShippingPolicy = lazy(lazyImports.ShippingPolicy);
 const TrackOrder = lazy(lazyImports.TrackOrder);
 const Login = lazy(lazyImports.Login);
+const ResetPassword = lazy(lazyImports.ResetPassword);
 const Admin = lazy(lazyImports.Admin);
 const About = lazy(lazyImports.About);
 const Privacy = lazy(lazyImports.Privacy);
@@ -82,6 +85,7 @@ const App = () => {
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <LanguageProvider>
+        <AuthProvider>
         <CartProvider>
           <WishlistProvider>
             <BrowserRouter>
@@ -102,6 +106,7 @@ const App = () => {
                   <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
                   <Route path="/track-order" element={<TrackOrder />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/privacy" element={<Privacy />} />
@@ -126,6 +131,7 @@ const App = () => {
             </BrowserRouter>
           </WishlistProvider>
         </CartProvider>
+        </AuthProvider>
       </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>

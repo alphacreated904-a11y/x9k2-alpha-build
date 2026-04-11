@@ -1,14 +1,21 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Phone, Truck, PackageSearch, LogIn, Globe } from "lucide-react";
+import { Phone, Truck, PackageSearch, LogIn, LogOut, User, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 
 const TopBar: React.FC = () => {
   const { language, t } = useLanguage();
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const lp = useLocalizedPath();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const handleToggleLanguage = () => {
     const currentPath = location.pathname + location.search;
@@ -63,14 +70,24 @@ const TopBar: React.FC = () => {
 
           <span className="w-px h-3.5 bg-primary-foreground/20 mx-0.5 hidden sm:block" />
 
-          {/* Login */}
-          <Link
-            to={lp("/login")}
-            className="flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
-          >
-            <LogIn className="size-3.5" />
-            <span className="hidden sm:inline">{t("topbar.login")}</span>
-          </Link>
+          {/* Login / User */}
+          {user ? (
+            <button
+              onClick={handleSignOut}
+              className="flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
+            >
+              <LogOut className="size-3.5" />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
+          ) : (
+            <Link
+              to={lp("/login")}
+              className="flex items-center gap-1.5 rounded-full px-2.5 py-1 hover:bg-primary-foreground/10 transition-colors"
+            >
+              <LogIn className="size-3.5" />
+              <span className="hidden sm:inline">{t("topbar.login")}</span>
+            </Link>
+          )}
 
           <span className="w-px h-3.5 bg-primary-foreground/20 mx-0.5 hidden sm:block" />
 
