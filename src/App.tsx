@@ -85,6 +85,7 @@ const App = () => {
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <LanguageProvider>
+        <AuthProvider>
         <CartProvider>
           <WishlistProvider>
             <BrowserRouter>
@@ -105,6 +106,7 @@ const App = () => {
                   <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
                   <Route path="/track-order" element={<TrackOrder />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/privacy" element={<Privacy />} />
@@ -129,6 +131,7 @@ const App = () => {
             </BrowserRouter>
           </WishlistProvider>
         </CartProvider>
+        </AuthProvider>
       </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>
