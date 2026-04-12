@@ -125,6 +125,18 @@ const TRANSLATIONS: Translations = {
   "footer.missed_call": { en: "Missed Call to Order", hi: "ऑर्डर करने के लिए मिस्ड कॉल" },
   "footer.genuine": { en: "100% Genuine", hi: "100% असली" },
   "footer.genuine_desc": { en: "products from certified sellers", hi: "प्रमाणित विक्रेताओं से उत्पाद" },
+  // Profile
+  "profile.title": { en: "My Profile", hi: "मेरी प्रोफ़ाइल" },
+  "profile.email": { en: "Email", hi: "ईमेल" },
+  "profile.display_name": { en: "Display Name", hi: "प्रदर्शन नाम" },
+  "profile.display_name_placeholder": { en: "Enter your name", hi: "अपना नाम दर्ज करें" },
+  "profile.phone": { en: "Phone Number", hi: "फ़ोन नंबर" },
+  "profile.phone_placeholder": { en: "Enter your phone number", hi: "अपना फ़ोन नंबर दर्ज करें" },
+  "profile.save": { en: "Save Changes", hi: "परिवर्तन सहेजें" },
+  "profile.saved": { en: "Profile updated successfully", hi: "प्रोफ़ाइल सफलतापूर्वक अपडेट हुई" },
+  "profile.sign_out": { en: "Sign Out", hi: "साइन आउट" },
+  "profile.avatar_updated": { en: "Avatar updated", hi: "अवतार अपडेट हुआ" },
+  "profile.my_profile": { en: "My Profile", hi: "मेरी प्रोफ़ाइल" },
 };
 
 interface LanguageContextType {
