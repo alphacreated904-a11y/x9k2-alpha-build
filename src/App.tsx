@@ -110,6 +110,7 @@ const App = () => {
                   <Route path="/login" element={<Login />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -122,6 +123,7 @@ const App = () => {
                   <Route path="/hi/return-refund-policy" element={<ReturnRefundPolicy />} />
                   <Route path="/hi/track-order" element={<TrackOrder />} />
                   <Route path="/hi/login" element={<Login />} />
+                  <Route path="/hi/profile" element={<Profile />} />
                   <Route path="/hi/about" element={<About />} />
                   <Route path="/hi/privacy" element={<Privacy />} />
                   <Route path="/hi/terms-of-service" element={<TermsOfService />} />
