@@ -28,6 +28,7 @@ const lazyImports = {
   Login: () => import("./pages/Login"),
   ResetPassword: () => import("./pages/ResetPassword"),
   Admin: () => import("./pages/Admin"),
+  Profile: () => import("./pages/Profile"),
   About: () => import("./pages/About"),
   Privacy: () => import("./pages/Privacy"),
   TermsOfService: () => import("./pages/TermsOfService"),
@@ -43,6 +44,7 @@ const TrackOrder = lazy(lazyImports.TrackOrder);
 const Login = lazy(lazyImports.Login);
 const ResetPassword = lazy(lazyImports.ResetPassword);
 const Admin = lazy(lazyImports.Admin);
+const Profile = lazy(lazyImports.Profile);
 const About = lazy(lazyImports.About);
 const Privacy = lazy(lazyImports.Privacy);
 const TermsOfService = lazy(lazyImports.TermsOfService);
@@ -108,6 +110,7 @@ const App = () => {
                   <Route path="/login" element={<Login />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -120,6 +123,7 @@ const App = () => {
                   <Route path="/hi/return-refund-policy" element={<ReturnRefundPolicy />} />
                   <Route path="/hi/track-order" element={<TrackOrder />} />
                   <Route path="/hi/login" element={<Login />} />
+                  <Route path="/hi/profile" element={<Profile />} />
                   <Route path="/hi/about" element={<About />} />
                   <Route path="/hi/privacy" element={<Privacy />} />
                   <Route path="/hi/terms-of-service" element={<TermsOfService />} />

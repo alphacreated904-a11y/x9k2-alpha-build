@@ -16,6 +16,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const MEGA_CATEGORIES = [
   {
@@ -56,6 +63,7 @@ const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border/40">
@@ -181,11 +189,26 @@ const Navbar: React.FC = () => {
           <Button variant="ghost" size="icon" className="rounded-full sm:hidden">
             <Search className="size-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="rounded-full" asChild>
-            <Link to={lp("/login")}>
-              <User className="size-5" />
-            </Link>
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <User className="size-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to={lp("/profile")}>{t("profile.my_profile")}</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="ghost" size="icon" className="rounded-full" asChild>
+              <Link to={lp("/login")}>
+                <User className="size-5" />
+              </Link>
+            </Button>
+          )}
           <Button variant="ghost" size="icon" className="relative rounded-full" onClick={openCart}>
             <ShoppingCart className="size-5" />
             {totalItems > 0 && (
