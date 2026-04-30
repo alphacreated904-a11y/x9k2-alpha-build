@@ -35,35 +35,6 @@ export interface Product {
   pests: string[];
 }
 
-const SEED_UNITS: UnitOption[] = [
-  { label: "1 kg", multiplier: 1 },
-  { label: "500 g", multiplier: 0.55 },
-  { label: "250 g", multiplier: 0.3 },
-  { label: "100 g", multiplier: 0.15 },
-];
-
-const LIQUID_UNITS: UnitOption[] = [
-  { label: "1 L", multiplier: 1 },
-  { label: "500 ml", multiplier: 0.55 },
-  { label: "250 ml", multiplier: 0.3 },
-];
-
-const EQUIP_UNITS: UnitOption[] = [
-  { label: "1 pc", multiplier: 1 },
-];
-
-const NUTRITION_UNITS: UnitOption[] = [
-  { label: "25 kg", multiplier: 1 },
-  { label: "10 kg", multiplier: 0.45 },
-  { label: "5 kg", multiplier: 0.25 },
-];
-
-const GRANULE_UNITS: UnitOption[] = [
-  { label: "250 g", multiplier: 1 },
-  { label: "100 g", multiplier: 0.45 },
-  { label: "50 g", multiplier: 0.25 },
-];
-
 export const ALL_PRODUCTS: Product[] = [
   {
     id: "syngenta-actara",
@@ -122,6 +93,7 @@ export const ALL_PRODUCTS: Product[] = [
     crops: ["Cotton", "Rice (Paddy)", "Tomato", "Chilli", "Potato", "Vegetables"],
     pests: ["Aphids", "Whiteflies", "Thrips", "Jassids", "Leafhoppers", "Mealybugs", "Beetles"],
   },
+  ...SCRAPED_PRODUCTS,
 ];
 export const CATEGORIES = [
   { id: "seeds", name: "Seeds", description: "Hybrid & open-pollinated seeds for all crops" },
@@ -131,13 +103,13 @@ export const CATEGORIES = [
 ];
 
 export const BRANDS = [
-  { id: "syngenta", label: "Syngenta", count: 3 },
-  { id: "bayer", label: "Bayer", count: 4 },
-  { id: "upl", label: "UPL", count: 5 },
-  { id: "iffco", label: "IFFCO", count: 3 },
-  { id: "mahyco", label: "Mahyco", count: 2 },
-  { id: "aspee", label: "Aspee", count: 2 },
-  { id: "namdhari", label: "Namdhari Seeds", count: 2 },
+  { id: "syngenta", label: "Syngenta", count: 51 },
+  { id: "bayer", label: "Bayer", count: 10 },
+  { id: "upl", label: "UPL", count: 50 },
+  { id: "iffco", label: "IFFCO", count: 0 },
+  { id: "mahyco", label: "Mahyco", count: 0 },
+  { id: "aspee", label: "Aspee", count: 0 },
+  { id: "namdhari", label: "Namdhari Seeds", count: 0 },
 ];
 
 export const CROP_TYPES = [
