@@ -1,13 +1,19 @@
-import vegImage from "@/assets/product-vegetables.webp";
-import fruitImage from "@/assets/product-fruits.webp";
-import honeyImage from "@/assets/product-honey.webp";
-import breadImage from "@/assets/product-bread.webp";
 import actaraImage from "@/assets/product-actara.webp";
+import { SCRAPED_PRODUCTS } from "./scraped-products";
+import {
+  SEED_UNITS,
+  LIQUID_UNITS,
+  EQUIP_UNITS,
+  NUTRITION_UNITS,
+  GRANULE_UNITS,
+} from "./product-units";
 
 export interface UnitOption {
   label: string;
   multiplier: number;
 }
+
+export { SEED_UNITS, LIQUID_UNITS, EQUIP_UNITS, NUTRITION_UNITS, GRANULE_UNITS };
 
 export interface Product {
   id: string;
