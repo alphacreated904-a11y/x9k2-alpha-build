@@ -50,7 +50,7 @@ const Collection = () => {
       filters.push({ id: "price", label: `${formatINR(priceRange[0])} – ${formatINR(priceRange[1])}`, category: "price" });
     }
     selectedBrands.forEach((id) => {
-      const b = BRANDS.find((x) => x.id === id);
+      const b = (activeBrands || []).find((x) => x.id === id);
       if (b) filters.push({ id, label: b.label, category: "brand" });
     });
     selectedCropTypes.forEach((id) => {
