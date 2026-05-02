@@ -24,6 +24,7 @@ import { toast } from "sonner";
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data: product, isLoading, error } = useProduct(id);
+  const { data: similarProducts } = useSimilarProducts(product, 8);
   const category = CATEGORIES.find(c => c.id === product?.category);
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
@@ -340,6 +341,62 @@ const ProductDetail = () => {
           </Tabs>
         </div>
       </section>
+
+      {/* Similar Products — same category, prioritising same composition */}
+      {similarProducts && similarProducts.length > 0 && (
+        <section className="border-t border-border bg-background">
+          <div className="container py-10 md:py-14 px-4 sm:px-6">
+            <div className="mb-6 sm:mb-8 flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+                  {language === "hi" ? "समान उत्पाद देखें" : "View Similar Products"}
+                </h2>
+                <p className="mt-1.5 text-muted-foreground text-xs sm:text-sm">
+                  {language === "hi"
+                    ? `${categoryName} श्रेणी के अन्य उत्पाद`
+                    : `Other ${categoryName.toLowerCase()} you might consider`}
+                </p>
+              </div>
+              <Button variant="link" className="hidden sm:flex text-primary shrink-0" asChild>
+                <Link to={lp(`/collection?cat=${product.category}`)}>
+                  {language === "hi" ? "सभी देखें" : "View all"} <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+            </div>
+            <div
+              className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory scroll-smooth"
+              style={{ scrollbarWidth: "thin" }}
+            >
+              {similarProducts.map((sp) => (
+                <div key={sp.id} className="snap-start shrink-0 w-[160px] sm:w-[200px] md:w-[230px]">
+                  <ProductCard
+                    id={sp.id}
+                    name={sp.name}
+                    brand={sp.brand}
+                    basePrice={sp.basePrice}
+                    originalPrice={sp.originalPrice}
+                    image={sp.image}
+                    tag={sp.tag}
+                    rating={sp.rating}
+                    reviewCount={sp.reviewCount}
+                    units={sp.units}
+                    onAddToCart={(unit, price) => {
+                      addItem({
+                        id: `${sp.id}-${unit}`,
+                        name: sp.name,
+                        price,
+                        unit,
+                        image: sp.image,
+                      });
+                      toast.success(`${sp.name} (${unit}) added to cart`);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </div>
