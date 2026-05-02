@@ -93,7 +93,7 @@ const ProductDetail = () => {
     );
   }
 
-  const categoryName = language === "hi" ? CATEGORY_NAMES_HI[product.category] || category?.name || t("common.products") : category?.name || "Products";
+  const categoryName = category ? (language === "hi" ? category.nameHi : category.name) : t("common.products");
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
