@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star, Loader2 } from "lucide-react";
+import { ShieldCheck, Truck, BadgeCheck, Minus, Plus, Star, Loader2, ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { TopBar } from "@/components/TopBar";
 import { Navbar } from "@/components/Navbar";
 import { ProductGallery } from "@/components/ProductGallery";
+import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -17,15 +18,8 @@ import {
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { useProduct, CATEGORIES } from "@/hooks/useProducts";
+import { useProduct, useSimilarProducts, CATEGORIES } from "@/hooks/useProducts";
 import { toast } from "sonner";
-
-const CATEGORY_NAMES_HI: Record<string, string> = {
-  seeds: "बीज",
-  "crop-protection": "फसल सुरक्षा",
-  nutrition: "पोषण",
-  equipment: "उपकरण",
-};
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
