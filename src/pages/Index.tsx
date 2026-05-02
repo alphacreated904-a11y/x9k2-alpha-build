@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Sprout, Shield, Beaker, Wrench, ArrowRight, Loader2 } from "lucide-react";
+import { Bug, Sprout, Leaf, TrendingUp, Beaker, Wheat, Shield, Wrench, ArrowRight, Loader2, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
@@ -10,21 +10,18 @@ import { HeroSlider } from "@/components/HeroSlider";
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { useProducts, CATEGORIES, type Product } from "@/hooks/useProducts";
+import { useProducts, useActiveBrands, CATEGORIES, type Product } from "@/hooks/useProducts";
 import { toast } from "sonner";
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  seeds: <Sprout className="size-7" />,
-  "crop-protection": <Shield className="size-7" />,
-  nutrition: <Beaker className="size-7" />,
+  insecticides: <Bug className="size-7" />,
+  fungicides: <Sprout className="size-7" />,
+  herbicides: <Leaf className="size-7" />,
+  pgr: <TrendingUp className="size-7" />,
+  fertilizers: <Beaker className="size-7" />,
+  seeds: <Wheat className="size-7" />,
+  "bio-pesticides": <Shield className="size-7" />,
   equipment: <Wrench className="size-7" />,
-};
-
-const CATEGORY_TRANSLATIONS: Record<string, { name: string; description: string }> = {
-  seeds: { name: "बीज", description: "सभी फसलों के लिए हाइब्रिड और खुले परागित बीज" },
-  "crop-protection": { name: "फसल सुरक्षा", description: "कीटनाशक, फफूंदनाशक और खरपतवारनाशक" },
-  nutrition: { name: "पोषण", description: "उर्वरक, सूक्ष्म पोषक तत्व और वृद्धि प्रोत्साहक" },
-  equipment: { name: "उपकरण", description: "स्प्रेयर, उपकरण और कृषि मशीनरी" },
 };
 
 const Index = () => {
