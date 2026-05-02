@@ -22,17 +22,19 @@ const ITEMS_PER_PAGE = 8;
 const Collection = () => {
   const [searchParams] = useSearchParams();
   const categoryFilter = searchParams.get("cat") || "";
+  const brandFilterFromUrl = searchParams.get("brand") || "";
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(brandFilterFromUrl ? [brandFilterFromUrl] : []);
   const [selectedCropTypes, setSelectedCropTypes] = useState<string[]>([]);
   const [selectedPests, setSelectedPests] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("featured");
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const { addItem } = useCart();
   const { data: allProducts, isLoading } = useProducts();
+  const { data: activeBrands } = useActiveBrands();
 
   const toggle = useCallback((list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id]
@@ -42,7 +44,7 @@ const Collection = () => {
     const filters: ActiveFilter[] = [];
     if (categoryFilter) {
       const cat = CATEGORIES.find(c => c.id === categoryFilter);
-      if (cat) filters.push({ id: categoryFilter, label: language === "hi" ? CATEGORY_NAMES_HI[cat.id] || cat.name : cat.name, category: "category" });
+      if (cat) filters.push({ id: categoryFilter, label: language === "hi" ? cat.nameHi : cat.name, category: "category" });
     }
     if (priceRange[0] > 0 || priceRange[1] < 5000) {
       filters.push({ id: "price", label: `${formatINR(priceRange[0])} – ${formatINR(priceRange[1])}`, category: "price" });
