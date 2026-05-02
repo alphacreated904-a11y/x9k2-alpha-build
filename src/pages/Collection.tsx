@@ -90,9 +90,13 @@ const Collection = () => {
   const isComingSoon = categoryFilter && categoryProductCount === 0 && !isLoading;
 
   const filteredProducts = useMemo(() => {
+    const brandLabels = new Set(
+      selectedBrands.map((id) => (activeBrands || []).find((b) => b.id === id)?.label).filter(Boolean) as string[]
+    );
     return products
       .filter((p) => {
         if (categoryFilter && p.category !== categoryFilter) return false;
+        if (brandLabels.size > 0 && !brandLabels.has(p.brand)) return false;
         if (p.basePrice < priceRange[0] || p.basePrice > priceRange[1]) return false;
         return true;
       })
@@ -105,7 +109,7 @@ const Collection = () => {
           default: return 0;
         }
       });
-  }, [categoryFilter, priceRange, sortBy, products]);
+  }, [categoryFilter, priceRange, sortBy, products, selectedBrands, activeBrands]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;
@@ -121,17 +125,18 @@ const Collection = () => {
     toast.success(`${product.name} (${unit}) — ${formatINR(price)} added to cart`);
   };
 
-  const pageTitle = categoryFilter
-    ? (language === "hi"
-        ? CATEGORY_NAMES_HI[categoryFilter] || CATEGORIES.find(c => c.id === categoryFilter)?.name || t("common.products")
-        : CATEGORIES.find(c => c.id === categoryFilter)?.name || "Products")
-    : t("collection.all_products");
+  const pageTitle = (() => {
+    if (!categoryFilter) return t("collection.all_products");
+    const cat = CATEGORIES.find(c => c.id === categoryFilter);
+    if (!cat) return t("common.products");
+    return language === "hi" ? cat.nameHi : cat.name;
+  })();
 
   const filterSidebarContent = (
     <FilterSidebar
       priceRange={priceRange}
       onPriceChange={setPriceRange}
-      brands={BRANDS}
+      brands={activeBrands || []}
       selectedBrands={selectedBrands}
       onBrandToggle={(id) => setSelectedBrands((s) => toggle(s, id))}
       cropTypes={CROP_TYPES}
