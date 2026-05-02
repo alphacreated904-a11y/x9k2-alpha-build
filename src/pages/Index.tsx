@@ -29,6 +29,7 @@ const Index = () => {
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
   const { data: products, isLoading } = useProducts();
+  const { data: activeBrands } = useActiveBrands();
 
   const bestSellers = useMemo(
     () => (products || []).filter(p => p.tag || p.rating >= 4.5).slice(0, 8),
