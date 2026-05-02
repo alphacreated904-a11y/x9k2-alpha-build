@@ -14,32 +14,27 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { useProducts, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES, type Product } from "@/hooks/useProducts";
+import { useProducts, useActiveBrands, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES, type Product } from "@/hooks/useProducts";
 import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 8;
 
-const CATEGORY_NAMES_HI: Record<string, string> = {
-  seeds: "बीज",
-  "crop-protection": "फसल सुरक्षा",
-  nutrition: "पोषण",
-  equipment: "उपकरण",
-};
-
 const Collection = () => {
   const [searchParams] = useSearchParams();
   const categoryFilter = searchParams.get("cat") || "";
+  const brandFilterFromUrl = searchParams.get("brand") || "";
   const { language, t } = useLanguage();
   const lp = useLocalizedPath();
 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(brandFilterFromUrl ? [brandFilterFromUrl] : []);
   const [selectedCropTypes, setSelectedCropTypes] = useState<string[]>([]);
   const [selectedPests, setSelectedPests] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("featured");
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const { addItem } = useCart();
   const { data: allProducts, isLoading } = useProducts();
+  const { data: activeBrands } = useActiveBrands();
 
   const toggle = useCallback((list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id]
@@ -49,13 +44,13 @@ const Collection = () => {
     const filters: ActiveFilter[] = [];
     if (categoryFilter) {
       const cat = CATEGORIES.find(c => c.id === categoryFilter);
-      if (cat) filters.push({ id: categoryFilter, label: language === "hi" ? CATEGORY_NAMES_HI[cat.id] || cat.name : cat.name, category: "category" });
+      if (cat) filters.push({ id: categoryFilter, label: language === "hi" ? cat.nameHi : cat.name, category: "category" });
     }
     if (priceRange[0] > 0 || priceRange[1] < 5000) {
       filters.push({ id: "price", label: `${formatINR(priceRange[0])} – ${formatINR(priceRange[1])}`, category: "price" });
     }
     selectedBrands.forEach((id) => {
-      const b = BRANDS.find((x) => x.id === id);
+      const b = (activeBrands || []).find((x) => x.id === id);
       if (b) filters.push({ id, label: b.label, category: "brand" });
     });
     selectedCropTypes.forEach((id) => {
@@ -95,9 +90,13 @@ const Collection = () => {
   const isComingSoon = categoryFilter && categoryProductCount === 0 && !isLoading;
 
   const filteredProducts = useMemo(() => {
+    const brandLabels = new Set(
+      selectedBrands.map((id) => (activeBrands || []).find((b) => b.id === id)?.label).filter(Boolean) as string[]
+    );
     return products
       .filter((p) => {
         if (categoryFilter && p.category !== categoryFilter) return false;
+        if (brandLabels.size > 0 && !brandLabels.has(p.brand)) return false;
         if (p.basePrice < priceRange[0] || p.basePrice > priceRange[1]) return false;
         return true;
       })
@@ -110,7 +109,7 @@ const Collection = () => {
           default: return 0;
         }
       });
-  }, [categoryFilter, priceRange, sortBy, products]);
+  }, [categoryFilter, priceRange, sortBy, products, selectedBrands, activeBrands]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;
@@ -126,17 +125,18 @@ const Collection = () => {
     toast.success(`${product.name} (${unit}) — ${formatINR(price)} added to cart`);
   };
 
-  const pageTitle = categoryFilter
-    ? (language === "hi"
-        ? CATEGORY_NAMES_HI[categoryFilter] || CATEGORIES.find(c => c.id === categoryFilter)?.name || t("common.products")
-        : CATEGORIES.find(c => c.id === categoryFilter)?.name || "Products")
-    : t("collection.all_products");
+  const pageTitle = (() => {
+    if (!categoryFilter) return t("collection.all_products");
+    const cat = CATEGORIES.find(c => c.id === categoryFilter);
+    if (!cat) return t("common.products");
+    return language === "hi" ? cat.nameHi : cat.name;
+  })();
 
   const filterSidebarContent = (
     <FilterSidebar
       priceRange={priceRange}
       onPriceChange={setPriceRange}
-      brands={BRANDS}
+      brands={activeBrands || []}
       selectedBrands={selectedBrands}
       onBrandToggle={(id) => setSelectedBrands((s) => toggle(s, id))}
       cropTypes={CROP_TYPES}

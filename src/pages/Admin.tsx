@@ -40,13 +40,14 @@ import {
   type ProductSpec,
 } from "@/hooks/useProducts";
 import { formatINR } from "@/contexts/CartContext";
+import { BulkProductUploader } from "@/components/admin/BulkProductUploader";
 import { toast } from "sonner";
 
 const EMPTY_PRODUCT: Omit<Product, "createdAt"> = {
   id: "",
   name: "",
   brand: "",
-  category: "crop-protection",
+  category: "insecticides",
   basePrice: 0,
   originalPrice: 0,
   image: "",
@@ -231,9 +232,12 @@ const Admin = () => {
           <h2 className="text-lg font-semibold text-foreground">
             Products ({products?.length || 0})
           </h2>
-          <Button onClick={openAdd}>
-            <Plus className="size-4 mr-1" /> Add Product
-          </Button>
+          <div className="flex items-center gap-2">
+            <BulkProductUploader />
+            <Button onClick={openAdd}>
+              <Plus className="size-4 mr-1" /> Add Product
+            </Button>
+          </div>
         </div>
 
         {isLoading ? (

@@ -12,11 +12,21 @@ export interface ProductSpec {
   value: string;
 }
 
+export type ProductCategory =
+  | "insecticides"
+  | "fungicides"
+  | "herbicides"
+  | "pgr"
+  | "fertilizers"
+  | "seeds"
+  | "bio-pesticides"
+  | "equipment";
+
 export interface Product {
   id: string;
   name: string;
   brand: string;
-  category: "seeds" | "crop-protection" | "nutrition" | "equipment";
+  category: ProductCategory;
   basePrice: number;
   originalPrice: number;
   image: string;
@@ -177,22 +187,28 @@ export function useDeleteProduct() {
   });
 }
 
-export const CATEGORIES = [
-  { id: "seeds", name: "Seeds", description: "Hybrid & open-pollinated seeds for all crops" },
-  { id: "crop-protection", name: "Crop Protection", description: "Insecticides, fungicides & herbicides" },
-  { id: "nutrition", name: "Nutrition", description: "Fertilizers, micronutrients & growth promoters" },
-  { id: "equipment", name: "Equipment", description: "Sprayers, tools & farm machinery" },
+export interface CategoryDef {
+  id: ProductCategory;
+  name: string;
+  nameHi: string;
+  description: string;
+  descriptionHi: string;
+  icon: string; // lucide icon key — resolved in components
+}
+
+export const CATEGORIES: CategoryDef[] = [
+  { id: "insecticides", name: "Insecticides", nameHi: "कीटनाशक", description: "Control sucking, chewing & boring pests", descriptionHi: "रस चूसने व काटने वाले कीटों का नियंत्रण", icon: "bug" },
+  { id: "fungicides", name: "Fungicides", nameHi: "फफूंदनाशक", description: "Prevent & cure fungal diseases", descriptionHi: "फफूंद रोगों की रोकथाम व उपचार", icon: "sprout" },
+  { id: "herbicides", name: "Herbicides", nameHi: "खरपतवारनाशक", description: "Selective & non-selective weed control", descriptionHi: "चयनात्मक व गैर-चयनात्मक खरपतवार नियंत्रण", icon: "leaf" },
+  { id: "pgr", name: "Plant Growth Regulators", nameHi: "वृद्धि नियंत्रक", description: "Hormones & biostimulants for growth", descriptionHi: "वृद्धि के लिए हार्मोन व जैव-उत्तेजक", icon: "trending-up" },
+  { id: "fertilizers", name: "Fertilizers", nameHi: "उर्वरक", description: "Macro, micro & water-soluble nutrition", descriptionHi: "मुख्य, सूक्ष्म व पानी में घुलनशील पोषण", icon: "beaker" },
+  { id: "seeds", name: "Seeds", nameHi: "बीज", description: "Hybrid & open-pollinated varieties", descriptionHi: "हाइब्रिड व खुले परागित बीज", icon: "wheat" },
+  { id: "bio-pesticides", name: "Bio-Pesticides", nameHi: "जैव कीटनाशक", description: "Eco-friendly biological pest control", descriptionHi: "पर्यावरण-अनुकूल जैविक नियंत्रण", icon: "shield" },
+  { id: "equipment", name: "Equipment", nameHi: "उपकरण", description: "Sprayers, tools & farm machinery", descriptionHi: "स्प्रेयर, उपकरण व कृषि मशीनरी", icon: "wrench" },
 ];
 
-export const BRANDS = [
-  { id: "syngenta", label: "Syngenta", count: 3 },
-  { id: "bayer", label: "Bayer", count: 4 },
-  { id: "upl", label: "UPL", count: 5 },
-  { id: "iffco", label: "IFFCO", count: 3 },
-  { id: "mahyco", label: "Mahyco", count: 2 },
-  { id: "aspee", label: "Aspee", count: 2 },
-  { id: "namdhari", label: "Namdhari Seeds", count: 2 },
-];
+// Brands are dynamically computed from listed products. Empty until products are added.
+export const BRANDS: { id: string; label: string; count: number }[] = [];
 
 export const CROP_TYPES = [
   { id: "cotton", label: "Cotton", count: 8 },
@@ -211,3 +227,64 @@ export const PEST_TYPES = [
   { id: "thrips", label: "Thrips", count: 4 },
   { id: "termites", label: "Termites", count: 3 },
 ];
+
+// Extracts the active ingredient / composition from a product's specs.
+const COMPOSITION_KEYS = ["composition", "active ingredient", "technical name", "active"];
+export function getComposition(p: Pick<Product, "specs">): string | null {
+  if (!p.specs?.length) return null;
+  for (const spec of p.specs) {
+    const k = spec.label?.toLowerCase().trim() ?? "";
+    if (COMPOSITION_KEYS.some((key) => k.includes(key))) {
+      return spec.value?.trim() || null;
+    }
+  }
+  return null;
+}
+
+function normalizeComposition(s: string | null): string {
+  if (!s) return "";
+  return s.toLowerCase().replace(/[^a-z0-9%]/g, "");
+}
+
+// Returns products in same category, prioritising exact composition matches.
+export function useSimilarProducts(product: Product | null | undefined, limit = 8) {
+  return useQuery({
+    queryKey: ["similar-products", product?.id, product?.category],
+    queryFn: async (): Promise<Product[]> => {
+      if (!product) return [];
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("category", product.category)
+        .neq("id", product.id)
+        .limit(50);
+      if (error) throw error;
+      const all = (data as unknown as DbProduct[]).map(mapDbToProduct);
+      const myComp = normalizeComposition(getComposition(product));
+      if (!myComp) return all.slice(0, limit);
+      const exact = all.filter((p) => normalizeComposition(getComposition(p)) === myComp);
+      const rest = all.filter((p) => normalizeComposition(getComposition(p)) !== myComp);
+      return [...exact, ...rest].slice(0, limit);
+    },
+    enabled: !!product,
+  });
+}
+
+// Active brands derived from current products (only shown when products exist).
+export function useActiveBrands() {
+  return useQuery({
+    queryKey: ["active-brands"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("products").select("brand");
+      if (error) throw error;
+      const counts = new Map<string, number>();
+      (data || []).forEach((r: { brand: string }) => {
+        if (!r.brand) return;
+        counts.set(r.brand, (counts.get(r.brand) || 0) + 1);
+      });
+      return Array.from(counts.entries())
+        .map(([label, count]) => ({ id: label.toLowerCase().replace(/\s+/g, "-"), label, count }))
+        .sort((a, b) => b.count - a.count);
+    },
+  });
+}

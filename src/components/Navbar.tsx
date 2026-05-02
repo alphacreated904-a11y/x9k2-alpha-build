@@ -1,22 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, Sprout, Shield, Beaker, Wrench, Menu } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, Bug, Sprout, Leaf, TrendingUp, Beaker, Wheat, Shield, Wrench } from "lucide-react";
 import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { useAuth } from "@/contexts/AuthContext";
+import { CATEGORIES } from "@/hooks/useProducts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,40 +17,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const MEGA_CATEGORIES = [
-  {
-    nameKey: "nav.seeds",
-    icon: <Sprout className="size-5 text-primary" />,
-    href: "/collection?cat=seeds",
-    descKey: "cat.seeds.desc",
-    items: ["Vegetable Seeds", "Field Crop Seeds", "Flower Seeds", "Fodder Seeds"],
-    itemsHi: ["सब्जी के बीज", "फसल के बीज", "फूल के बीज", "चारा बीज"],
-  },
-  {
-    nameKey: "nav.crop_protection",
-    icon: <Shield className="size-5 text-primary" />,
-    href: "/collection?cat=crop-protection",
-    descKey: "cat.crop_protection.desc",
-    items: ["Insecticides", "Fungicides", "Herbicides", "Bio Pesticides"],
-    itemsHi: ["कीटनाशक", "फफूंदनाशक", "खरपतवारनाशक", "जैव कीटनाशक"],
-  },
-  {
-    nameKey: "nav.nutrition",
-    icon: <Beaker className="size-5 text-primary" />,
-    href: "/collection?cat=nutrition",
-    descKey: "cat.nutrition.desc",
-    items: ["NPK Fertilizers", "Micronutrients", "Organic Manure", "Growth Regulators"],
-    itemsHi: ["NPK उर्वरक", "सूक्ष्म पोषक तत्व", "जैविक खाद", "वृद्धि नियंत्रक"],
-  },
-  {
-    nameKey: "nav.equipment",
-    icon: <Wrench className="size-5 text-primary" />,
-    href: "/collection?cat=equipment",
-    descKey: "cat.equipment.desc",
-    items: ["Sprayers", "Hand Tools", "Irrigation", "Safety Gear"],
-    itemsHi: ["स्प्रेयर", "हाथ के उपकरण", "सिंचाई", "सुरक्षा उपकरण"],
-  },
-];
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  insecticides: <Bug className="size-4" />,
+  fungicides: <Sprout className="size-4" />,
+  herbicides: <Leaf className="size-4" />,
+  pgr: <TrendingUp className="size-4" />,
+  fertilizers: <Beaker className="size-4" />,
+  seeds: <Wheat className="size-4" />,
+  "bio-pesticides": <Shield className="size-4" />,
+  equipment: <Wrench className="size-4" />,
+};
 
 const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
@@ -80,34 +49,22 @@ const Navbar: React.FC = () => {
               <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
               <span className="text-lg font-bold text-foreground">AbhiAgri</span>
             </div>
-            <nav className="space-y-6">
-              {MEGA_CATEGORIES.map((cat) => (
-                <div key={cat.nameKey}>
-                  <Link
-                    to={lp(cat.href)}
-                    className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2"
-                  >
-                    {cat.icon}
-                    {t(cat.nameKey)}
-                  </Link>
-                  <div className="space-y-1 pl-7">
-                    {(language === "hi" ? cat.itemsHi : cat.items).map((item, idx) => (
-                      <Link
-                        key={idx}
-                        to={lp(cat.href)}
-                        className="block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {item}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+            <nav className="space-y-1">
+              {CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.id}
+                  to={lp(`/collection?cat=${cat.id}`)}
+                  className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                >
+                  <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
+                  {language === "hi" ? cat.nameHi : cat.name}
+                </Link>
               ))}
               <Link
                 to={lp("/collection")}
-                className="block py-2 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                className="block mt-3 py-2.5 px-3 rounded-lg text-sm font-semibold text-primary hover:bg-secondary transition-colors"
               >
-                {t("nav.shop_all")}
+                {t("nav.shop_all")} →
               </Link>
             </nav>
           </SheetContent>
@@ -119,59 +76,25 @@ const Navbar: React.FC = () => {
           <span className="text-xl font-bold text-foreground tracking-tight">AbhiAgri</span>
         </Link>
 
-        {/* Desktop Mega-Menu */}
-        <NavigationMenu className="hidden lg:flex mx-6">
-          <NavigationMenuList className="gap-1">
-            {MEGA_CATEGORIES.map((cat) => (
-              <NavigationMenuItem key={cat.nameKey}>
-                <NavigationMenuTrigger className="h-9 px-3 text-sm font-medium bg-transparent hover:bg-secondary">
-                  {t(cat.nameKey)}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-[480px] p-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      {cat.icon}
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">{t(cat.nameKey)}</p>
-                        <p className="text-xs text-muted-foreground">{t(cat.descKey)}</p>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {(language === "hi" ? cat.itemsHi : cat.items).map((item, idx) => (
-                        <NavigationMenuLink key={idx} asChild>
-                          <Link
-                            to={lp(cat.href)}
-                            className="block rounded-lg p-3 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
-                          >
-                            {item}
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        to={lp(cat.href)}
-                        className="block mt-3 pt-3 border-t border-border text-sm font-semibold text-primary hover:underline"
-                      >
-                        {language === "hi" ? `सभी ${t(cat.nameKey)} देखें →` : `View all ${t(cat.nameKey)} →`}
-                      </Link>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            ))}
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link
-                  to={lp("/collection")}
-                  className="inline-flex h-9 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-secondary"
-                >
-                  {t("nav.shop_all")}
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+        {/* Desktop Nav — flat category links */}
+        <nav className="hidden lg:flex items-center gap-0.5 mx-4 overflow-x-auto">
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.id}
+              to={lp(`/collection?cat=${cat.id}`)}
+              className="inline-flex items-center gap-1.5 h-9 px-2.5 rounded-md text-[13px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors whitespace-nowrap"
+            >
+              <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
+              {language === "hi" ? cat.nameHi : cat.name}
+            </Link>
+          ))}
+          <Link
+            to={lp("/collection")}
+            className="inline-flex h-9 items-center px-2.5 rounded-md text-[13px] font-semibold text-primary hover:bg-primary/10 transition-colors whitespace-nowrap"
+          >
+            {t("nav.shop_all")}
+          </Link>
+        </nav>
 
         {/* Search */}
         <div className="flex-1 max-w-md mx-auto hidden sm:block">

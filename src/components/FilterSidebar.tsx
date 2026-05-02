@@ -74,19 +74,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </div>
       </FilterSection>
 
-      <FilterSection title="Brand">
-        {brands.map((b) => (
-          <label key={b.id} className="flex items-center gap-2.5 cursor-pointer">
-            <Checkbox
-              checked={selectedBrands.includes(b.id)}
-              onCheckedChange={() => onBrandToggle(b.id)}
-              className="min-h-0 min-w-0"
-            />
-            <span className="text-sm text-foreground flex-1">{b.label}</span>
-            {b.count !== undefined && <span className="text-xs text-muted-foreground">{b.count}</span>}
-          </label>
-        ))}
-      </FilterSection>
+      {brands.length > 0 && (
+        <FilterSection title="Brand">
+          {brands.map((b) => (
+            <label key={b.id} className="flex items-center gap-2.5 cursor-pointer">
+              <Checkbox
+                checked={selectedBrands.includes(b.id)}
+                onCheckedChange={() => onBrandToggle(b.id)}
+                className="min-h-0 min-w-0"
+              />
+              <span className="text-sm text-foreground flex-1">{b.label}</span>
+              {b.count !== undefined && <span className="text-xs text-muted-foreground">{b.count}</span>}
+            </label>
+          ))}
+        </FilterSection>
+      )}
 
       <FilterSection title="Crop Type">
         {cropTypes.map((c) => (
