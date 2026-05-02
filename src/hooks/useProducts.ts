@@ -227,3 +227,64 @@ export const PEST_TYPES = [
   { id: "thrips", label: "Thrips", count: 4 },
   { id: "termites", label: "Termites", count: 3 },
 ];
+
+// Extracts the active ingredient / composition from a product's specs.
+const COMPOSITION_KEYS = ["composition", "active ingredient", "technical name", "active"];
+export function getComposition(p: Pick<Product, "specs">): string | null {
+  if (!p.specs?.length) return null;
+  for (const spec of p.specs) {
+    const k = spec.label?.toLowerCase().trim() ?? "";
+    if (COMPOSITION_KEYS.some((key) => k.includes(key))) {
+      return spec.value?.trim() || null;
+    }
+  }
+  return null;
+}
+
+function normalizeComposition(s: string | null): string {
+  if (!s) return "";
+  return s.toLowerCase().replace(/[^a-z0-9%]/g, "");
+}
+
+// Returns products in same category, prioritising exact composition matches.
+export function useSimilarProducts(product: Product | null | undefined, limit = 8) {
+  return useQuery({
+    queryKey: ["similar-products", product?.id, product?.category],
+    queryFn: async (): Promise<Product[]> => {
+      if (!product) return [];
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("category", product.category)
+        .neq("id", product.id)
+        .limit(50);
+      if (error) throw error;
+      const all = (data as unknown as DbProduct[]).map(mapDbToProduct);
+      const myComp = normalizeComposition(getComposition(product));
+      if (!myComp) return all.slice(0, limit);
+      const exact = all.filter((p) => normalizeComposition(getComposition(p)) === myComp);
+      const rest = all.filter((p) => normalizeComposition(getComposition(p)) !== myComp);
+      return [...exact, ...rest].slice(0, limit);
+    },
+    enabled: !!product,
+  });
+}
+
+// Active brands derived from current products (only shown when products exist).
+export function useActiveBrands() {
+  return useQuery({
+    queryKey: ["active-brands"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("products").select("brand");
+      if (error) throw error;
+      const counts = new Map<string, number>();
+      (data || []).forEach((r: { brand: string }) => {
+        if (!r.brand) return;
+        counts.set(r.brand, (counts.get(r.brand) || 0) + 1);
+      });
+      return Array.from(counts.entries())
+        .map(([label, count]) => ({ id: label.toLowerCase().replace(/\s+/g, "-"), label, count }))
+        .sort((a, b) => b.count - a.count);
+    },
+  });
+}
