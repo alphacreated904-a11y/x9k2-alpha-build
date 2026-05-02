@@ -46,7 +46,7 @@ const EMPTY_PRODUCT: Omit<Product, "createdAt"> = {
   id: "",
   name: "",
   brand: "",
-  category: "crop-protection",
+  category: "insecticides",
   basePrice: 0,
   originalPrice: 0,
   image: "",
