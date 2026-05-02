@@ -12,11 +12,21 @@ export interface ProductSpec {
   value: string;
 }
 
+export type ProductCategory =
+  | "insecticides"
+  | "fungicides"
+  | "herbicides"
+  | "pgr"
+  | "fertilizers"
+  | "seeds"
+  | "bio-pesticides"
+  | "equipment";
+
 export interface Product {
   id: string;
   name: string;
   brand: string;
-  category: "seeds" | "crop-protection" | "nutrition" | "equipment";
+  category: ProductCategory;
   basePrice: number;
   originalPrice: number;
   image: string;
@@ -177,22 +187,28 @@ export function useDeleteProduct() {
   });
 }
 
-export const CATEGORIES = [
-  { id: "seeds", name: "Seeds", description: "Hybrid & open-pollinated seeds for all crops" },
-  { id: "crop-protection", name: "Crop Protection", description: "Insecticides, fungicides & herbicides" },
-  { id: "nutrition", name: "Nutrition", description: "Fertilizers, micronutrients & growth promoters" },
-  { id: "equipment", name: "Equipment", description: "Sprayers, tools & farm machinery" },
+export interface CategoryDef {
+  id: ProductCategory;
+  name: string;
+  nameHi: string;
+  description: string;
+  descriptionHi: string;
+  icon: string; // lucide icon key — resolved in components
+}
+
+export const CATEGORIES: CategoryDef[] = [
+  { id: "insecticides", name: "Insecticides", nameHi: "कीटनाशक", description: "Control sucking, chewing & boring pests", descriptionHi: "रस चूसने व काटने वाले कीटों का नियंत्रण", icon: "bug" },
+  { id: "fungicides", name: "Fungicides", nameHi: "फफूंदनाशक", description: "Prevent & cure fungal diseases", descriptionHi: "फफूंद रोगों की रोकथाम व उपचार", icon: "sprout" },
+  { id: "herbicides", name: "Herbicides", nameHi: "खरपतवारनाशक", description: "Selective & non-selective weed control", descriptionHi: "चयनात्मक व गैर-चयनात्मक खरपतवार नियंत्रण", icon: "leaf" },
+  { id: "pgr", name: "Plant Growth Regulators", nameHi: "वृद्धि नियंत्रक", description: "Hormones & biostimulants for growth", descriptionHi: "वृद्धि के लिए हार्मोन व जैव-उत्तेजक", icon: "trending-up" },
+  { id: "fertilizers", name: "Fertilizers", nameHi: "उर्वरक", description: "Macro, micro & water-soluble nutrition", descriptionHi: "मुख्य, सूक्ष्म व पानी में घुलनशील पोषण", icon: "beaker" },
+  { id: "seeds", name: "Seeds", nameHi: "बीज", description: "Hybrid & open-pollinated varieties", descriptionHi: "हाइब्रिड व खुले परागित बीज", icon: "wheat" },
+  { id: "bio-pesticides", name: "Bio-Pesticides", nameHi: "जैव कीटनाशक", description: "Eco-friendly biological pest control", descriptionHi: "पर्यावरण-अनुकूल जैविक नियंत्रण", icon: "shield" },
+  { id: "equipment", name: "Equipment", nameHi: "उपकरण", description: "Sprayers, tools & farm machinery", descriptionHi: "स्प्रेयर, उपकरण व कृषि मशीनरी", icon: "wrench" },
 ];
 
-export const BRANDS = [
-  { id: "syngenta", label: "Syngenta", count: 3 },
-  { id: "bayer", label: "Bayer", count: 4 },
-  { id: "upl", label: "UPL", count: 5 },
-  { id: "iffco", label: "IFFCO", count: 3 },
-  { id: "mahyco", label: "Mahyco", count: 2 },
-  { id: "aspee", label: "Aspee", count: 2 },
-  { id: "namdhari", label: "Namdhari Seeds", count: 2 },
-];
+// Brands are dynamically computed from listed products. Empty until products are added.
+export const BRANDS: { id: string; label: string; count: number }[] = [];
 
 export const CROP_TYPES = [
   { id: "cotton", label: "Cotton", count: 8 },
