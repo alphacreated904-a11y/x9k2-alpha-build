@@ -59,7 +59,7 @@ const Index = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">{t("index.shop_by_category")}</h2>
           <p className="mt-1.5 sm:mt-2 text-muted-foreground text-xs sm:text-sm">{t("index.category_subtitle")}</p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.id}
@@ -70,15 +70,50 @@ const Index = () => {
                 {CATEGORY_ICONS[cat.id]}
               </div>
               <span className="font-semibold text-foreground text-sm">
-                {language === "hi" ? CATEGORY_TRANSLATIONS[cat.id]?.name || cat.name : cat.name}
+                {language === "hi" ? cat.nameHi : cat.name}
               </span>
               <span className="text-xs text-muted-foreground leading-snug">
-                {language === "hi" ? CATEGORY_TRANSLATIONS[cat.id]?.description || cat.description : cat.description}
+                {language === "hi" ? cat.descriptionHi : cat.description}
               </span>
             </Link>
           ))}
         </div>
       </section>
+
+      {/* Shop by Brand — only renders when products with brands exist */}
+      {activeBrands && activeBrands.length > 0 && (
+        <section className="bg-secondary/20 py-10 sm:py-14 md:py-16">
+          <div className="container px-4 sm:px-6">
+            <div className="mb-6 sm:mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+                  {language === "hi" ? "ब्रांड के अनुसार खरीदें" : "Shop by Brand"}
+                </h2>
+                <p className="mt-1.5 text-muted-foreground text-xs sm:text-sm">
+                  {language === "hi" ? "विश्वसनीय निर्माताओं से असली उत्पाद" : "Genuine products from trusted manufacturers"}
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+              {activeBrands.map((brand) => (
+                <Link
+                  key={brand.id}
+                  to={lp(`/collection?brand=${brand.id}`)}
+                  className="card-hover group flex flex-col items-center justify-center gap-2 rounded-2xl bg-card p-4 sm:p-5 text-center transition-all duration-200 hover:bg-primary/5 border border-border/40"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <Store className="size-4" />
+                  </div>
+                  <span className="font-semibold text-foreground text-sm leading-tight">{brand.label}</span>
+                  <span className="text-[11px] text-muted-foreground">
+                    {brand.count} {language === "hi" ? "उत्पाद" : brand.count === 1 ? "product" : "products"}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Best Sellers — use content-visibility for below-fold paint optimization */}
       <section className="bg-secondary/30 py-10 sm:py-16 md:py-20" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 800px" }}>
