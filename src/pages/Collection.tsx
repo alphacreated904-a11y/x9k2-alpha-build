@@ -14,17 +14,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart, formatINR } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
-import { useProducts, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES, type Product } from "@/hooks/useProducts";
+import { useProducts, useActiveBrands, BRANDS, CROP_TYPES, PEST_TYPES, CATEGORIES, type Product } from "@/hooks/useProducts";
 import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 8;
-
-const CATEGORY_NAMES_HI: Record<string, string> = {
-  seeds: "बीज",
-  "crop-protection": "फसल सुरक्षा",
-  nutrition: "पोषण",
-  equipment: "उपकरण",
-};
 
 const Collection = () => {
   const [searchParams] = useSearchParams();
