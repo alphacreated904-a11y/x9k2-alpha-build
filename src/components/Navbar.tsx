@@ -49,34 +49,22 @@ const Navbar: React.FC = () => {
               <img src={logoImg} alt="AbhiAgri" className="size-8 object-contain" />
               <span className="text-lg font-bold text-foreground">AbhiAgri</span>
             </div>
-            <nav className="space-y-6">
-              {MEGA_CATEGORIES.map((cat) => (
-                <div key={cat.nameKey}>
-                  <Link
-                    to={lp(cat.href)}
-                    className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2"
-                  >
-                    {cat.icon}
-                    {t(cat.nameKey)}
-                  </Link>
-                  <div className="space-y-1 pl-7">
-                    {(language === "hi" ? cat.itemsHi : cat.items).map((item, idx) => (
-                      <Link
-                        key={idx}
-                        to={lp(cat.href)}
-                        className="block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {item}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+            <nav className="space-y-1">
+              {CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.id}
+                  to={lp(`/collection?cat=${cat.id}`)}
+                  className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                >
+                  <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
+                  {language === "hi" ? cat.nameHi : cat.name}
+                </Link>
               ))}
               <Link
                 to={lp("/collection")}
-                className="block py-2 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                className="block mt-3 py-2.5 px-3 rounded-lg text-sm font-semibold text-primary hover:bg-secondary transition-colors"
               >
-                {t("nav.shop_all")}
+                {t("nav.shop_all")} →
               </Link>
             </nav>
           </SheetContent>
@@ -88,59 +76,25 @@ const Navbar: React.FC = () => {
           <span className="text-xl font-bold text-foreground tracking-tight">AbhiAgri</span>
         </Link>
 
-        {/* Desktop Mega-Menu */}
-        <NavigationMenu className="hidden lg:flex mx-6">
-          <NavigationMenuList className="gap-1">
-            {MEGA_CATEGORIES.map((cat) => (
-              <NavigationMenuItem key={cat.nameKey}>
-                <NavigationMenuTrigger className="h-9 px-3 text-sm font-medium bg-transparent hover:bg-secondary">
-                  {t(cat.nameKey)}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-[480px] p-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      {cat.icon}
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">{t(cat.nameKey)}</p>
-                        <p className="text-xs text-muted-foreground">{t(cat.descKey)}</p>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {(language === "hi" ? cat.itemsHi : cat.items).map((item, idx) => (
-                        <NavigationMenuLink key={idx} asChild>
-                          <Link
-                            to={lp(cat.href)}
-                            className="block rounded-lg p-3 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
-                          >
-                            {item}
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        to={lp(cat.href)}
-                        className="block mt-3 pt-3 border-t border-border text-sm font-semibold text-primary hover:underline"
-                      >
-                        {language === "hi" ? `सभी ${t(cat.nameKey)} देखें →` : `View all ${t(cat.nameKey)} →`}
-                      </Link>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            ))}
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link
-                  to={lp("/collection")}
-                  className="inline-flex h-9 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-secondary"
-                >
-                  {t("nav.shop_all")}
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+        {/* Desktop Nav — flat category links */}
+        <nav className="hidden lg:flex items-center gap-0.5 mx-4 overflow-x-auto">
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.id}
+              to={lp(`/collection?cat=${cat.id}`)}
+              className="inline-flex items-center gap-1.5 h-9 px-2.5 rounded-md text-[13px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors whitespace-nowrap"
+            >
+              <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
+              {language === "hi" ? cat.nameHi : cat.name}
+            </Link>
+          ))}
+          <Link
+            to={lp("/collection")}
+            className="inline-flex h-9 items-center px-2.5 rounded-md text-[13px] font-semibold text-primary hover:bg-primary/10 transition-colors whitespace-nowrap"
+          >
+            {t("nav.shop_all")}
+          </Link>
+        </nav>
 
         {/* Search */}
         <div className="flex-1 max-w-md mx-auto hidden sm:block">
