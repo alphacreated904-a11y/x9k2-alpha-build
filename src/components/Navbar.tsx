@@ -1,22 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, Sprout, Shield, Beaker, Wrench, Menu } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, Bug, Sprout, Leaf, TrendingUp, Beaker, Wheat, Shield, Wrench } from "lucide-react";
 import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { useAuth } from "@/contexts/AuthContext";
+import { CATEGORIES } from "@/hooks/useProducts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,40 +17,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const MEGA_CATEGORIES = [
-  {
-    nameKey: "nav.seeds",
-    icon: <Sprout className="size-5 text-primary" />,
-    href: "/collection?cat=seeds",
-    descKey: "cat.seeds.desc",
-    items: ["Vegetable Seeds", "Field Crop Seeds", "Flower Seeds", "Fodder Seeds"],
-    itemsHi: ["सब्जी के बीज", "फसल के बीज", "फूल के बीज", "चारा बीज"],
-  },
-  {
-    nameKey: "nav.crop_protection",
-    icon: <Shield className="size-5 text-primary" />,
-    href: "/collection?cat=crop-protection",
-    descKey: "cat.crop_protection.desc",
-    items: ["Insecticides", "Fungicides", "Herbicides", "Bio Pesticides"],
-    itemsHi: ["कीटनाशक", "फफूंदनाशक", "खरपतवारनाशक", "जैव कीटनाशक"],
-  },
-  {
-    nameKey: "nav.nutrition",
-    icon: <Beaker className="size-5 text-primary" />,
-    href: "/collection?cat=nutrition",
-    descKey: "cat.nutrition.desc",
-    items: ["NPK Fertilizers", "Micronutrients", "Organic Manure", "Growth Regulators"],
-    itemsHi: ["NPK उर्वरक", "सूक्ष्म पोषक तत्व", "जैविक खाद", "वृद्धि नियंत्रक"],
-  },
-  {
-    nameKey: "nav.equipment",
-    icon: <Wrench className="size-5 text-primary" />,
-    href: "/collection?cat=equipment",
-    descKey: "cat.equipment.desc",
-    items: ["Sprayers", "Hand Tools", "Irrigation", "Safety Gear"],
-    itemsHi: ["स्प्रेयर", "हाथ के उपकरण", "सिंचाई", "सुरक्षा उपकरण"],
-  },
-];
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  insecticides: <Bug className="size-4" />,
+  fungicides: <Sprout className="size-4" />,
+  herbicides: <Leaf className="size-4" />,
+  pgr: <TrendingUp className="size-4" />,
+  fertilizers: <Beaker className="size-4" />,
+  seeds: <Wheat className="size-4" />,
+  "bio-pesticides": <Shield className="size-4" />,
+  equipment: <Wrench className="size-4" />,
+};
 
 const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
