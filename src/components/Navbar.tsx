@@ -45,22 +45,15 @@ const Navbar: React.FC = () => {
               <span className="text-lg font-bold text-foreground">AbhiAgri</span>
             </div>
             <nav className="space-y-1">
-              {CATEGORIES.map((cat) => (
+              {NAV_LINKS.map((link) => (
                 <Link
-                  key={cat.id}
-                  to={lp(`/collection?cat=${cat.id}`)}
-                  className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                  key={link.id}
+                  to={lp(link.path)}
+                  className="block py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                 >
-                  <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
-                  {language === "hi" ? cat.nameHi : cat.name}
+                  {language === "hi" ? link.labelHi : link.labelEn}
                 </Link>
               ))}
-              <Link
-                to={lp("/collection")}
-                className="block mt-3 py-2.5 px-3 rounded-lg text-sm font-semibold text-primary hover:bg-secondary transition-colors"
-              >
-                {t("nav.shop_all")} →
-              </Link>
             </nav>
           </SheetContent>
         </Sheet>
