@@ -9,7 +9,6 @@ import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { useAuth } from "@/contexts/AuthContext";
-import { CATEGORIES } from "@/hooks/useProducts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,16 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  insecticides: <Bug className="size-4" />,
-  fungicides: <Sprout className="size-4" />,
-  herbicides: <Leaf className="size-4" />,
-  pgr: <TrendingUp className="size-4" />,
-  fertilizers: <Beaker className="size-4" />,
-  seeds: <Wheat className="size-4" />,
-  "bio-pesticides": <Shield className="size-4" />,
-  equipment: <Wrench className="size-4" />,
-};
+const NAV_LINKS = [
+  { id: "home", path: "/", labelEn: "Home", labelHi: "होम" },
+  { id: "shop", path: "/collection", labelEn: "Shop", labelHi: "शॉप" },
+  { id: "about", path: "/about", labelEn: "About", labelHi: "हमारे बारे में" },
+  { id: "contact", path: "/contact", labelEn: "Contact", labelHi: "संपर्क" },
+];
 
 const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
@@ -50,22 +45,15 @@ const Navbar: React.FC = () => {
               <span className="text-lg font-bold text-foreground">AbhiAgri</span>
             </div>
             <nav className="space-y-1">
-              {CATEGORIES.map((cat) => (
+              {NAV_LINKS.map((link) => (
                 <Link
-                  key={cat.id}
-                  to={lp(`/collection?cat=${cat.id}`)}
-                  className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                  key={link.id}
+                  to={lp(link.path)}
+                  className="block py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                 >
-                  <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
-                  {language === "hi" ? cat.nameHi : cat.name}
+                  {language === "hi" ? link.labelHi : link.labelEn}
                 </Link>
               ))}
-              <Link
-                to={lp("/collection")}
-                className="block mt-3 py-2.5 px-3 rounded-lg text-sm font-semibold text-primary hover:bg-secondary transition-colors"
-              >
-                {t("nav.shop_all")} →
-              </Link>
             </nav>
           </SheetContent>
         </Sheet>
@@ -76,24 +64,17 @@ const Navbar: React.FC = () => {
           <span className="text-xl font-bold text-foreground tracking-tight">AbhiAgri</span>
         </Link>
 
-        {/* Desktop Nav — flat category links */}
-        <nav className="hidden lg:flex items-center gap-0.5 mx-4 overflow-x-auto">
-          {CATEGORIES.map((cat) => (
+        {/* Desktop Nav — simple top-level links */}
+        <nav className="hidden lg:flex items-center gap-1 mx-6">
+          {NAV_LINKS.map((link) => (
             <Link
-              key={cat.id}
-              to={lp(`/collection?cat=${cat.id}`)}
-              className="inline-flex items-center gap-1.5 h-9 px-2.5 rounded-md text-[13px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors whitespace-nowrap"
+              key={link.id}
+              to={lp(link.path)}
+              className="inline-flex h-9 items-center px-3 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
             >
-              <span className="text-primary">{CATEGORY_ICONS[cat.id]}</span>
-              {language === "hi" ? cat.nameHi : cat.name}
+              {language === "hi" ? link.labelHi : link.labelEn}
             </Link>
           ))}
-          <Link
-            to={lp("/collection")}
-            className="inline-flex h-9 items-center px-2.5 rounded-md text-[13px] font-semibold text-primary hover:bg-primary/10 transition-colors whitespace-nowrap"
-          >
-            {t("nav.shop_all")}
-          </Link>
         </nav>
 
         {/* Search */}
