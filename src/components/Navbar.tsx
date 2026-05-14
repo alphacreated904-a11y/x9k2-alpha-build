@@ -9,7 +9,6 @@ import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { useAuth } from "@/contexts/AuthContext";
-import { CATEGORIES } from "@/hooks/useProducts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,16 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  insecticides: <Bug className="size-4" />,
-  fungicides: <Sprout className="size-4" />,
-  herbicides: <Leaf className="size-4" />,
-  pgr: <TrendingUp className="size-4" />,
-  fertilizers: <Beaker className="size-4" />,
-  seeds: <Wheat className="size-4" />,
-  "bio-pesticides": <Shield className="size-4" />,
-  equipment: <Wrench className="size-4" />,
-};
+const NAV_LINKS = [
+  { id: "home", path: "/", labelEn: "Home", labelHi: "होम" },
+  { id: "shop", path: "/collection", labelEn: "Shop", labelHi: "शॉप" },
+  { id: "about", path: "/about", labelEn: "About", labelHi: "हमारे बारे में" },
+  { id: "contact", path: "/contact", labelEn: "Contact", labelHi: "संपर्क" },
+];
 
 const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
