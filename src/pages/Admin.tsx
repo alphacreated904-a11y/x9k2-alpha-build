@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, LogOut, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { sanitizeDescriptionHtml } from "@/lib/sanitizeDescriptionHtml";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -374,8 +375,24 @@ const Admin = () => {
               <Textarea
                 value={form.description}
                 onChange={(e) => updateField("description", e.target.value)}
+                onPaste={(e) => {
+                  const pasted = e.clipboardData.getData("text/html");
+                  // Only intercept when the clipboard actually contains HTML
+                  // (e.g. copied from Word/Docs/a webpage). Plain-text pastes
+                  // fall through to the default textarea behavior.
+                  if (pasted) {
+                    e.preventDefault();
+                    const cleaned = sanitizeDescriptionHtml(pasted);
+                    const target = e.currentTarget;
+                    const start = target.selectionStart ?? form.description.length;
+                    const end = target.selectionEnd ?? form.description.length;
+                    const next =
+                      form.description.slice(0, start) + cleaned + form.description.slice(end);
+                    updateField("description", next);
+                  }
+                }}
                 rows={8}
-                placeholder="Enter product description (HTML supported)"
+                placeholder="Enter product description (HTML supported) — paste from Word/Docs is auto-cleaned"
               />
             </div>
 
