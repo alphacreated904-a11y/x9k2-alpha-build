@@ -182,6 +182,29 @@ const Collection = () => {
           <span className="mx-2">/</span>
           <span className="text-foreground font-medium">{pageTitle}</span>
         </nav>
+
+        {/* Quick category switcher — one click to any category */}
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Link
+            to={lp("/collection")}
+            className={`shrink-0 rounded-full px-4 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+              !categoryFilter ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-secondary/70"
+            }`}
+          >
+            {t("collection.all_products")}
+          </Link>
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.id}
+              to={lp(`/collection?cat=${cat.id}`)}
+              className={`shrink-0 rounded-full px-4 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+                categoryFilter === cat.id ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-secondary/70"
+              }`}
+            >
+              {language === "hi" ? cat.nameHi : cat.name}
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="container pb-16">
