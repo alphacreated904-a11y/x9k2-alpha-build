@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, Menu, Bug, Sprout, Leaf, TrendingUp, Beaker, Wheat, Shield, Wrench } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, ChevronDown, Bug, Sprout, Leaf, TrendingUp, Beaker, Wheat, Shield, Wrench } from "lucide-react";
 import logoImg from "@/assets/logo.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +9,12 @@ import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalizedPath } from "@/hooks/useLocalizedPath";
 import { useAuth } from "@/contexts/AuthContext";
+import { CATEGORIES } from "@/hooks/useProducts";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -22,6 +24,17 @@ const NAV_LINKS = [
   { id: "about", path: "/about", labelEn: "About", labelHi: "हमारे बारे में" },
   { id: "contact", path: "/contact", labelEn: "Contact", labelHi: "संपर्क" },
 ];
+
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  insecticides: Bug,
+  fungicides: Sprout,
+  herbicides: Leaf,
+  pgr: TrendingUp,
+  fertilizers: Beaker,
+  seeds: Wheat,
+  "bio-pesticides": Shield,
+  equipment: Wrench,
+};
 
 const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
@@ -55,6 +68,26 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
             </nav>
+            <div className="mt-6">
+              <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {language === "hi" ? "श्रेणी के अनुसार खरीदें" : "Shop by Category"}
+              </p>
+              <nav className="space-y-1">
+                {CATEGORIES.map((cat) => {
+                  const Icon = CATEGORY_ICONS[cat.id] || Leaf;
+                  return (
+                    <Link
+                      key={cat.id}
+                      to={lp(`/collection?cat=${cat.id}`)}
+                      className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+                    >
+                      <Icon className="size-4 text-primary shrink-0" />
+                      {language === "hi" ? cat.nameHi : cat.name}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
           </SheetContent>
         </Sheet>
 
@@ -64,17 +97,54 @@ const Navbar: React.FC = () => {
           <span className="text-xl font-bold text-foreground tracking-tight">AbhiAgri</span>
         </Link>
 
-        {/* Desktop Nav — simple top-level links */}
+        {/* Desktop Nav — Shop opens category dropdown */}
         <nav className="hidden lg:flex items-center gap-1 mx-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.id}
-              to={lp(link.path)}
-              className="inline-flex h-9 items-center px-3 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
-            >
-              {language === "hi" ? link.labelHi : link.labelEn}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.id === "shop" ? (
+              <DropdownMenu key={link.id}>
+                <DropdownMenuTrigger asChild>
+                  <button className="inline-flex h-9 items-center gap-1 px-3 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors">
+                    {language === "hi" ? link.labelHi : link.labelEn}
+                    <ChevronDown className="size-3.5 opacity-60" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-64">
+                  {CATEGORIES.map((cat) => {
+                    const Icon = CATEGORY_ICONS[cat.id] || Leaf;
+                    return (
+                      <DropdownMenuItem asChild key={cat.id}>
+                        <Link
+                          to={lp(`/collection?cat=${cat.id}`)}
+                          className="flex items-center gap-3 cursor-pointer"
+                        >
+                          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                            <Icon className="size-4" />
+                          </span>
+                          <span className="text-sm">
+                            {language === "hi" ? cat.nameHi : cat.name}
+                          </span>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to={lp("/collection")} className="cursor-pointer text-sm font-semibold text-primary">
+                      {language === "hi" ? "सभी उत्पाद देखें" : "View All Products"}
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                key={link.id}
+                to={lp(link.path)}
+                className="inline-flex h-9 items-center px-3 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
+              >
+                {language === "hi" ? link.labelHi : link.labelEn}
+              </Link>
+            )
+          )}
         </nav>
 
         {/* Search */}
