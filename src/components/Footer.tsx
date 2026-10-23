@@ -28,17 +28,25 @@ const QUICK_LINKS_HI = [
 ];
 
 const SHOP_LINKS_EN = [
+  { label: "Insecticides", href: "/collection?cat=insecticides" },
+  { label: "Fungicides", href: "/collection?cat=fungicides" },
+  { label: "Herbicides", href: "/collection?cat=herbicides" },
+  { label: "Plant Growth Regulators", href: "/collection?cat=pgr" },
+  { label: "Fertilizers", href: "/collection?cat=fertilizers" },
   { label: "Seeds", href: "/collection?cat=seeds" },
-  { label: "Crop Protection", href: "/collection?cat=crop-protection" },
-  { label: "Nutrition", href: "/collection?cat=nutrition" },
+  { label: "Bio-Pesticides", href: "/collection?cat=bio-pesticides" },
   { label: "Equipment", href: "/collection?cat=equipment" },
   { label: "Shop All", href: "/collection" },
 ];
 
 const SHOP_LINKS_HI = [
+  { label: "कीटनाशक", href: "/collection?cat=insecticides" },
+  { label: "फफूंदनाशक", href: "/collection?cat=fungicides" },
+  { label: "खरपतवारनाशक", href: "/collection?cat=herbicides" },
+  { label: "वृद्धि नियंत्रक", href: "/collection?cat=pgr" },
+  { label: "उर्वरक", href: "/collection?cat=fertilizers" },
   { label: "बीज", href: "/collection?cat=seeds" },
-  { label: "फसल सुरक्षा", href: "/collection?cat=crop-protection" },
-  { label: "पोषण", href: "/collection?cat=nutrition" },
+  { label: "जैव कीटनाशक", href: "/collection?cat=bio-pesticides" },
   { label: "उपकरण", href: "/collection?cat=equipment" },
   { label: "सभी खरीदें", href: "/collection" },
 ];
